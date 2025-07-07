@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A-1APSVC Dashboard PWA</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="/style.css">
+    
+    <!-- Theme color for mobile browsers -->
+    <meta name="theme-color" content="#007ACC">
+    
+    <!-- Apple Touch Icon -->
+    <link rel="apple-touch-icon" href="/images/icon-192.png">
+    
+    <!-- Basic styling -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .header {
+            background-color: #007ACC;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .dashboard-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .install-prompt {
+            background-color: #e7f3ff;
+            border: 1px solid #007ACC;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .install-button {
+            background-color: #007ACC;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
+        .install-button:hover {
+            background-color: #005a9e;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .online {
+            background-color: #4CAF50;
+        }
+        
+        .offline {
+            background-color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>A-1APSVC</h1>
+        <h2>Dashboard PWA</h2>
+        <div id="connection-status">
+            <span class="status-indicator online" id="status-dot"></span>
+            <span id="status-text">Online</span>
+        </div>
+    </div>
+    
+    <div class="install-prompt" id="install-prompt">
+        <h3>Install A-1APSVC Dashboard App</h3>
+        <p>Install this dashboard as an app on your device for quick access and offline functionality.</p>
+        <button class="install-button" id="install-button">Install App</button>
+        <button class="install-button" id="dismiss-button" style="background-color: #666;">Not Now</button>
+    </div>
+    
+    <div class="dashboard-content">
+        <h3>Welcome to Your A-1APSVC Dashboard</h3>
+        <p>This is a sample dashboard that demonstrates Progressive Web App (PWA) functionality.</p>
+        
+        <h4>PWA Features:</h4>
+        <ul>
+            <li>✅ Installable as a native app</li>
+            <li>✅ Works offline</li>
+            <li>✅ Fast loading with caching</li>
+            <li>✅ Responsive design</li>
+            <li>✅ App-like experience</li>
+        </ul>
+        
+        <h4>Dashboard Sections:</h4>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 15px;">
+            <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #007ACC;">
+                <h5>Service Requests</h5>
+                <p>Manage and track plumbing service requests</p>
+            </div>
+            <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #007ACC;">
+                <h5>Customer Management</h5>
+                <p>View and manage customer information</p>
+            </div>
+            <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #007ACC;">
+                <h5>Scheduling</h5>
+                <p>Schedule appointments and manage calendar</p>
+            </div>
+            <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #007ACC;">
+                <h5>Reports</h5>
+                <p>View business analytics and reports</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- External JavaScript -->
+    <script src="/script.js"></script>
+    
+    <!-- PWA Service Worker Registration -->
+    <script>
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js')
+                .then(function(registration) {
+                    console.log('Service Worker registered successfully:', registration.scope);
+                })
+                .catch(function(error) {
+                    console.log('Service Worker registration failed:', error);
+                });
+        }
+
+        // PWA Install Prompt
+        let deferredPrompt;
+        const installPrompt = document.getElementById('install-prompt');
+        const installButton = document.getElementById('install-button');
+        const dismissButton = document.getElementById('dismiss-button');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevent the mini-infobar from appearing on mobile
+            e.preventDefault();
+            // Stash the event so it can be triggered later
+            deferredPrompt = e;
+            // Show the install prompt
+            installPrompt.style.display = 'block';
+        });
+
+        installButton.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                // Show the install prompt
+                deferredPrompt.prompt();
+                // Wait for the user to respond to the prompt
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`User response to the install prompt: ${outcome}`);
+                // Clear the deferredPrompt variable
+                deferredPrompt = null;
+                // Hide the install prompt
+                installPrompt.style.display = 'none';
+            }
+        });
+
+        dismissButton.addEventListener('click', () => {
+            installPrompt.style.display = 'none';
+        });
+
+        // Online/Offline Status
+        const statusDot = document.getElementById('status-dot');
+        const statusText = document.getElementById('status-text');
+
+        function updateOnlineStatus() {
+            if (navigator.onLine) {
+                statusDot.className = 'status-indicator online';
+                statusText.textContent = 'Online';
+            } else {
+                statusDot.className = 'status-indicator offline';
+                statusText.textContent = 'Offline';
+            }
+        }
+
+        window.addEventListener('online', updateOnlineStatus);
+        window.addEventListener('offline', updateOnlineStatus);
+        
+        // Initial status check
+        updateOnlineStatus();
+    </script>
+</body>
+</html>
+

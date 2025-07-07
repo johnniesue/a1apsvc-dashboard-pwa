@@ -114,22 +114,39 @@
         
         <h4>Dashboard Sections:</h4>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 15px;">
-            <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #007ACC;">
-                <h5>Service Requests</h5>
+            <div class="dashboard-card" style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #007ACC; cursor: pointer; transition: all 0.3s ease;" onclick="window.open('#', '_blank')">
+                <h5>🔧 Service Requests</h5>
                 <p>Manage and track plumbing service requests</p>
+                <small style="color: #666;">Coming Soon</small>
             </div>
-            <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #007ACC;">
-                <h5>Customer Management</h5>
+            <div class="dashboard-card" style="background-color: #e8f5e8; padding: 15px; border-radius: 8px; border-left: 4px solid #28a745; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" onclick="window.open('https://johnniesue.github.io/a1apsvc-dashboard-customers/', '_blank')">
+                <h5>👥 Customer Management</h5>
                 <p>View and manage customer information</p>
+                <small style="color: #28a745; font-weight: bold;">✅ Active System</small>
             </div>
-            <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #007ACC;">
-                <h5>Scheduling</h5>
+            <div class="dashboard-card" style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #007ACC; cursor: pointer; transition: all 0.3s ease;" onclick="window.open('#', '_blank')">
+                <h5>📅 Scheduling</h5>
                 <p>Schedule appointments and manage calendar</p>
+                <small style="color: #666;">Coming Soon</small>
             </div>
-            <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #007ACC;">
-                <h5>Reports</h5>
+            <div class="dashboard-card" style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #007ACC; cursor: pointer; transition: all 0.3s ease;" onclick="window.open('#', '_blank')">
+                <h5>📊 Reports</h5>
                 <p>View business analytics and reports</p>
+                <small style="color: #666;">Coming Soon</small>
             </div>
+        </div>
+        
+        <div style="margin-top: 30px; padding: 20px; background-color: #e7f3ff; border-radius: 8px; border-left: 4px solid #007ACC;">
+            <h4>🚀 Quick Access</h4>
+            <p>Click on the <strong>Customer Management</strong> section above to access your full customer and job management system.</p>
+            <ul style="margin: 10px 0;">
+                <li>✅ Customer data entry and management</li>
+                <li>✅ Job tracking and status updates</li>
+                <li>✅ Technician assignment and scheduling</li>
+                <li>✅ Real-time Firebase database</li>
+                <li>✅ Google Maps integration</li>
+                <li>✅ Mobile-friendly for field work</li>
+            </ul>
         </div>
     </div>
 

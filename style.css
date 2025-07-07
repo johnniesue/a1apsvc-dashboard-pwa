@@ -200,3 +200,111 @@ body {
     to { transform: rotate(360deg); }
 }
 
+
+/* Enhanced Dashboard Card Styles */
+.dashboard-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.dashboard-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s;
+}
+
+.dashboard-card:hover::before {
+    transform: translateX(100%);
+}
+
+.dashboard-card.active {
+    background-color: #e8f5e8 !important;
+    border-left-color: #28a745 !important;
+}
+
+.dashboard-card.active:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(40, 167, 69, 0.2);
+}
+
+.dashboard-card.coming-soon {
+    opacity: 0.7;
+}
+
+.dashboard-card.coming-soon:hover {
+    opacity: 1;
+}
+
+/* Quick Access Section */
+.quick-access {
+    background: linear-gradient(135deg, #e7f3ff, #f0f8ff);
+    border-radius: 12px;
+    padding: 25px;
+    margin-top: 30px;
+    border-left: 4px solid var(--primary-color);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.quick-access h4 {
+    margin: 0 0 15px 0;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.quick-access ul {
+    margin: 15px 0;
+    padding-left: 20px;
+}
+
+.quick-access li {
+    margin: 8px 0;
+    color: #555;
+}
+
+/* Status badges */
+.status-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: bold;
+    margin-top: 8px;
+}
+
+.status-active {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status-coming-soon {
+    background-color: #f8f9fa;
+    color: #6c757d;
+}
+
+/* Click feedback */
+.dashboard-card:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Mobile enhancements */
+@media (max-width: 768px) {
+    .dashboard-card {
+        padding: 20px;
+        margin-bottom: 15px;
+    }
+    
+    .quick-access {
+        padding: 20px;
+        margin-top: 20px;
+    }
+}
+

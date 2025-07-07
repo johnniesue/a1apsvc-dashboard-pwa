@@ -295,3 +295,208 @@ if (typeof module !== 'undefined' && module.exports) {
     module.exports = A1Dashboard;
 }
 
+
+// Enhanced Dashboard Integration
+class DashboardIntegration {
+    constructor() {
+        this.customerSystemUrl = 'https://johnniesue.github.io/a1apsvc-dashboard-customers/';
+        this.init();
+    }
+
+    init() {
+        this.setupDashboardCards();
+        this.setupQuickActions();
+        this.checkSystemStatus();
+    }
+
+    setupDashboardCards() {
+        // Add enhanced click handlers for dashboard cards
+        const customerCard = document.querySelector('[onclick*="a1apsvc-dashboard-customers"]');
+        if (customerCard) {
+            customerCard.classList.add('active');
+            
+            // Add enhanced click feedback
+            customerCard.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.openCustomerSystem();
+            });
+
+            // Add keyboard support
+            customerCard.setAttribute('tabindex', '0');
+            customerCard.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.openCustomerSystem();
+                }
+            });
+        }
+
+        // Add coming soon handlers for other cards
+        const comingSoonCards = document.querySelectorAll('.dashboard-card:not(.active)');
+        comingSoonCards.forEach(card => {
+            card.classList.add('coming-soon');
+            card.addEventListener('click', (e) => {
+                e.preventDefault();
+                const cardTitle = card.querySelector('h5')?.textContent || 'Feature';
+                this.showComingSoonMessage(cardTitle);
+            });
+        });
+    }
+
+    openCustomerSystem() {
+        // Show loading feedback
+        this.showNotification('Opening Customer Management System...', 'info');
+        
+        // Add visual feedback
+        const customerCard = document.querySelector('[onclick*="a1apsvc-dashboard-customers"]');
+        if (customerCard) {
+            customerCard.style.transform = 'scale(0.98)';
+            setTimeout(() => {
+                customerCard.style.transform = '';
+            }, 150);
+        }
+
+        // Open in new tab with focus
+        const newWindow = window.open(this.customerSystemUrl, '_blank');
+        if (newWindow) {
+            newWindow.focus();
+        } else {
+            this.showNotification('Please allow popups to open the Customer Management System', 'warning');
+        }
+    }
+
+    showComingSoonMessage(featureName) {
+        const cleanName = featureName.replace(/[^\w\s]/gi, '').trim();
+        this.showNotification(`${cleanName} is coming soon! Currently available: Customer Management System`, 'info');
+    }
+
+    setupQuickActions() {
+        // Add quick action buttons to the dashboard
+        const quickAccessDiv = document.querySelector('.quick-access') || 
+                              document.querySelector('[style*="background-color: #e7f3ff"]');
+        
+        if (quickAccessDiv) {
+            const actionsHTML = `
+                <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd;">
+                    <h5 style="margin: 0 0 15px 0; color: #007ACC;">🚀 Quick Actions</h5>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button class="quick-action-btn" onclick="dashboardIntegration.openCustomerSystem()" 
+                                style="padding: 8px 16px; background: #28a745; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.9em;">
+                            👥 Open Customer System
+                        </button>
+                        <button class="quick-action-btn" onclick="dashboardIntegration.showSystemStatus()" 
+                                style="padding: 8px 16px; background: #007ACC; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.9em;">
+                            📊 System Status
+                        </button>
+                        <button class="quick-action-btn" onclick="dashboardIntegration.showHelp()" 
+                                style="padding: 8px 16px; background: #6c757d; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.9em;">
+                            ❓ Help
+                        </button>
+                    </div>
+                </div>
+            `;
+            quickAccessDiv.insertAdjacentHTML('beforeend', actionsHTML);
+
+            // Add hover effects to quick action buttons
+            const quickBtns = quickAccessDiv.querySelectorAll('.quick-action-btn');
+            quickBtns.forEach(btn => {
+                btn.addEventListener('mouseenter', () => {
+                    btn.style.transform = 'translateY(-1px)';
+                    btn.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
+                });
+                btn.addEventListener('mouseleave', () => {
+                    btn.style.transform = '';
+                    btn.style.boxShadow = '';
+                });
+            });
+        }
+    }
+
+    async checkSystemStatus() {
+        try {
+            // Check if customer system is accessible
+            const response = await fetch(this.customerSystemUrl, { mode: 'no-cors' });
+            this.updateSystemStatus('Customer Management', 'online');
+        } catch (error) {
+            this.updateSystemStatus('Customer Management', 'offline');
+        }
+    }
+
+    updateSystemStatus(systemName, status) {
+        const statusElement = document.querySelector(`[data-system="${systemName}"]`);
+        if (statusElement) {
+            statusElement.textContent = status === 'online' ? '✅ Online' : '❌ Offline';
+            statusElement.style.color = status === 'online' ? '#28a745' : '#dc3545';
+        }
+    }
+
+    showSystemStatus() {
+        const statusInfo = `
+            <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+                <h4 style="margin: 0 0 15px 0; color: #007ACC;">🔧 A-1APSVC System Status</h4>
+                <div style="margin: 10px 0;">
+                    <strong>Main Dashboard PWA:</strong> <span style="color: #28a745;">✅ Active</span>
+                </div>
+                <div style="margin: 10px 0;">
+                    <strong>Customer Management:</strong> <span style="color: #28a745;">✅ Active</span>
+                </div>
+                <div style="margin: 10px 0;">
+                    <strong>Service Requests:</strong> <span style="color: #6c757d;">⏳ Coming Soon</span>
+                </div>
+                <div style="margin: 10px 0;">
+                    <strong>Scheduling:</strong> <span style="color: #6c757d;">⏳ Coming Soon</span>
+                </div>
+                <div style="margin: 10px 0;">
+                    <strong>Reports:</strong> <span style="color: #6c757d;">⏳ Coming Soon</span>
+                </div>
+                <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #eee; font-size: 0.9em; color: #666;">
+                    Last updated: ${new Date().toLocaleString()}
+                </div>
+            </div>
+        `;
+        this.showNotification(statusInfo, 'info');
+    }
+
+    showHelp() {
+        const helpInfo = `
+            <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); max-width: 400px;">
+                <h4 style="margin: 0 0 15px 0; color: #007ACC;">📚 A-1APSVC Dashboard Help</h4>
+                <div style="margin: 10px 0;">
+                    <strong>Customer Management:</strong><br>
+                    Click the green "Customer Management" card to access your full customer and job tracking system.
+                </div>
+                <div style="margin: 10px 0;">
+                    <strong>PWA Features:</strong><br>
+                    • Install as app on your device<br>
+                    • Works offline<br>
+                    • Fast loading with caching
+                </div>
+                <div style="margin: 10px 0;">
+                    <strong>Mobile Use:</strong><br>
+                    Optimized for field technicians on mobile devices.
+                </div>
+                <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #eee;">
+                    <strong>Support:</strong> 469-900-5194<br>
+                    <strong>Email:</strong> johnniesue@a-1apsvc.com
+                </div>
+            </div>
+        `;
+        this.showNotification(helpInfo, 'info');
+    }
+
+    showNotification(message, type = 'info') {
+        // Use the existing notification system from A1Dashboard
+        if (window.a1Dashboard && window.a1Dashboard.showNotification) {
+            window.a1Dashboard.showNotification(message, type);
+        } else {
+            // Fallback notification
+            console.log(`${type.toUpperCase()}: ${message}`);
+        }
+    }
+}
+
+// Initialize dashboard integration
+document.addEventListener('DOMContentLoaded', () => {
+    window.dashboardIntegration = new DashboardIntegration();
+});
+

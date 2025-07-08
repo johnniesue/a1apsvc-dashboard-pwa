@@ -724,11 +724,13 @@
     </div>
 
     <script src="logo-manager.js"></script>
+    <script src="customer-data.js"></script>
     <script>
         // Customer Management System with Duplicate Detection
         class CustomerManager {
             constructor() {
-                this.customers = JSON.parse(localStorage.getItem('a1apsvc_customers') || '[]');
+                // Initialize with pre-loaded customer data if none exists
+                this.customers = initializeCustomerData();
                 this.duplicates = [];
                 this.selectedCustomer = null;
                 this.init();

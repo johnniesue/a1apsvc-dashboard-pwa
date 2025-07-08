@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule - A-1APSVC Dashboard</title>
+    <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8fafc;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #007ACC 0%, #0056b3 100%);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .back-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .calendar-nav {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .nav-btn {
+            background: #f1f5f9;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.25rem;
+        }
+        
+        .nav-btn:hover {
+            background: #e2e8f0;
+        }
+        
+        .calendar-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .view-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .view-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #e2e8f0;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+        
+        .view-btn.active {
+            background: #007ACC;
+            color: white;
+            border-color: #007ACC;
+        }
+        
+        .calendar-grid {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .calendar-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .day-header {
+            padding: 1rem;
+            text-align: center;
+            font-weight: 600;
+            color: #64748b;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .calendar-body {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            min-height: 600px;
+        }
+        
+        .calendar-cell {
+            border-right: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 0.5rem;
+            min-height: 120px;
+            position: relative;
+        }
+        
+        .calendar-cell:nth-child(7n) {
+            border-right: none;
+        }
+        
+        .cell-date {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+        
+        .cell-date.other-month {
+            color: #94a3b8;
+        }
+        
+        .cell-date.today {
+            background: #007ACC;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+        }
+        
+        .appointment {
+            background: #fbbf24;
+            color: #92400e;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            margin-bottom: 0.25rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .appointment:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .appointment.chris {
+            background: #fbbf24;
+            color: #92400e;
+        }
+        
+        .appointment.kian {
+            background: #60a5fa;
+            color: #1e40af;
+        }
+        
+        .technician-legend {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            background: white;
+            padding: 1rem;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+        }
+        
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+        }
+        
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        
+        .stat-label {
+            font-size: 0.875rem;
+            color: #64748b;
+            margin-top: 0.25rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="/" class="back-btn">← Back to Dashboard</a>
+            <h1>Schedule Management</h1>
+            <div></div>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-value">12</div>
+                <div class="stat-label">Appointments Today</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">68</div>
+                <div class="stat-label">This Week</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">2</div>
+                <div class="stat-label">Active Technicians</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">95%</div>
+                <div class="stat-label">Schedule Utilization</div>
+            </div>
+        </div>
+
+        <div class="technician-legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background: #fbbf24;"></div>
+                <span>Chris Crabtree</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #60a5fa;"></div>
+                <span>Kian Crabtree</span>
+            </div>
+        </div>
+
+        <div class="calendar-header">
+            <div class="calendar-nav">
+                <button class="nav-btn">‹</button>
+                <h2 class="calendar-title">July 2025</h2>
+                <button class="nav-btn">›</button>
+            </div>
+            <div class="view-controls">
+                <button class="view-btn">Day</button>
+                <button class="view-btn active">Week</button>
+                <button class="view-btn">Month</button>
+            </div>
+        </div>
+
+        <div class="calendar-grid">
+            <div class="calendar-days">
+                <div class="day-header">Sun</div>
+                <div class="day-header">Mon</div>
+                <div class="day-header">Tue</div>
+                <div class="day-header">Wed</div>
+                <div class="day-header">Thu</div>
+                <div class="day-header">Fri</div>
+                <div class="day-header">Sat</div>
+            </div>
+            
+            <div class="calendar-body">
+                <div class="calendar-cell">
+                    <div class="cell-date other-month">29</div>
+                </div>
+                <div class="calendar-cell">
+                    <div class="cell-date other-month">30</div>
+                </div>
+                <div class="calendar-cell">
+                    <div class="cell-date">1</div>
+                </div>
+                <div class="calendar-cell">
+                    <div class="cell-date">2</div>
+                </div>
+                <div class="calendar-cell">
+                    <div class="cell-date">3</div>
+                </div>
+                <div class="calendar-cell">
+                    <div class="cell-date">4</div>
+                </div>
+                <div class="calendar-cell">
+                    <div class="cell-date">5</div>
+                </div>
+                
+                <div class="calendar-cell">
+                    <div class="cell-date">6</div>
+                </div>
+                <div class="calendar-cell">
+                    <div class="cell-date">7</div>
+                    <div class="appointment chris">9:00 AM - Water Heater</div>
+                    <div class="appointment kian">2:00 PM - Leak Repair</div>
+                </div>
+                <div class="calendar-cell">
+                    <div class="cell-date today">8</div>
+                    <div class="appointment chris">10:00 AM - Drain Clean</div>
+                    <div class="appointment chris">2:00 PM - Sewer Line</div>
+                </div>
+                <div class="calendar-cell">
+                    <div class="cell-date">9</div>
+                    <div class="appointment kian">11:00 AM - Toilet Install</div>
+                </div>
+                <div class="calendar-cell">
+                    <div class="cell-date">10</div>
+                    <div class="appointment chris">9:00 AM - Inspection</div>
+                    <div class="appointment kian">1:00 PM - Faucet Repair</div>
+                </div>
+                <div class="calendar-cell">
+                    <div class="cell-date">11</div>
+                    <div class="appointment chris">8:00 AM - Emergency</div>
+                </div>
+                <div class="calendar-cell">
+                    <div class="cell-date">12</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Calendar functionality would go here
+        console.log('Schedule page loaded');
+        
+        // Demo appointment click handler
+        document.querySelectorAll('.appointment').forEach(apt => {
+            apt.addEventListener('click', function() {
+                alert(`Appointment Details:\n${this.textContent}\nClick to edit or view details`);
+            });
+        });
+    </script>
+</body>
+</html>
+

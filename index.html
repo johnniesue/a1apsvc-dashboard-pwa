@@ -17,143 +17,527 @@
     <!-- Apple Touch Icon -->
     <link rel="apple-touch-icon" href="/images/icon-192.png">
     
-    <!-- Basic styling -->
+    <!-- Enhanced styling -->
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        * {
             margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            line-height: 1.6;
         }
         
         .header {
-            background-color: #007ACC;
+            background: linear-gradient(135deg, #007ACC 0%, #0056b3 100%);
             color: white;
-            padding: 20px;
-            border-radius: 8px;
-            text-align: center;
-            margin-bottom: 20px;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
         
-        .dashboard-content {
-            background-color: white;
-            padding: 20px;
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header-title h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .header-title p {
+            opacity: 0.9;
+            font-size: 0.875rem;
+        }
+        
+        .header-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10b981;
+        }
+        
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .welcome-section {
+            margin-bottom: 2rem;
+        }
+        
+        .welcome-section h2 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+        
+        .welcome-section p {
+            color: #64748b;
+            font-size: 1rem;
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .metric-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s ease;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .metric-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        
+        .metric-icon {
+            width: 40px;
+            height: 40px;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+        
+        .metric-title {
+            font-size: 0.875rem;
+            color: #64748b;
+            text-transform: uppercase;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+        }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.25rem;
+        }
+        
+        .metric-subtitle {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+        
+        .metric-change {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+        
+        .metric-change.positive {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .metric-change.neutral {
+            background: #f1f5f9;
+            color: #475569;
+        }
+        
+        .dashboard-sections {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .section-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .section-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .section-card.active {
+            border-color: #10b981;
+            background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%);
+        }
+        
+        .section-card.active::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: #10b981;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        .section-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            background: #f1f5f9;
+        }
+        
+        .section-card.active .section-icon {
+            background: #10b981;
+            color: white;
+        }
+        
+        .section-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.25rem;
+        }
+        
+        .section-description {
+            color: #64748b;
+            font-size: 0.875rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .section-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .status-active {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .status-coming-soon {
+            background: #f1f5f9;
+            color: #475569;
+        }
+        
+        .quick-stats {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+            margin-bottom: 2rem;
+        }
+        
+        .quick-stats h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            border-radius: 8px;
+            background: #f8fafc;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-label {
+            font-size: 0.875rem;
+            color: #64748b;
         }
         
         .install-prompt {
-            background-color: #e7f3ff;
+            background: linear-gradient(135deg, #dbeafe 0%, #e0f2fe 100%);
             border: 1px solid #007ACC;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            display: none;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
         }
         
-        .install-button {
-            background-color: #007ACC;
-            color: white;
+        .install-prompt h3 {
+            color: #007ACC;
+            margin-bottom: 0.5rem;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
             border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
+            border-radius: 8px;
+            font-weight: 500;
             cursor: pointer;
-            margin-top: 10px;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            font-size: 0.875rem;
         }
         
-        .install-button:hover {
-            background-color: #005a9e;
+        .btn-primary {
+            background: #007ACC;
+            color: white;
         }
         
-        .status-indicator {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            margin-right: 8px;
+        .btn-primary:hover {
+            background: #0056b3;
+            transform: translateY(-1px);
         }
         
-        .online {
-            background-color: #4CAF50;
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
         }
         
-        .offline {
-            background-color: #f44336;
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+        
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 1rem;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .dashboard-sections {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>A-1APSVC</h1>
-        <h2>Dashboard PWA</h2>
-        <div id="connection-status">
-            <span class="status-indicator online" id="status-dot"></span>
-            <span id="status-text">Online</span>
+    <header class="header">
+        <div class="header-content">
+            <div class="header-title">
+                <h1>A-1APSVC Dashboard</h1>
+                <p>Professional Service Management</p>
+            </div>
+            <div class="header-status" id="connection-status">
+                <span class="status-dot" id="status-dot"></span>
+                <span id="status-text">Online</span>
+            </div>
         </div>
-    </div>
-    
-    <div class="install-prompt" id="install-prompt">
-        <h3>Install A-1APSVC Dashboard App</h3>
+    </header>
+
+    <div class="install-prompt" id="install-prompt" style="display: none;">
+        <h3>📱 Install A-1APSVC Dashboard App</h3>
         <p>Install this dashboard as an app on your device for quick access and offline functionality.</p>
-        <button class="install-button" id="install-button">Install App</button>
-        <button class="install-button" id="dismiss-button" style="background-color: #666;">Not Now</button>
-    </div>
-    
-    <div class="dashboard-content">
-        <h3>Welcome to Your A-1APSVC Dashboard</h3>
-        <p>This is a sample dashboard that demonstrates Progressive Web App (PWA) functionality.</p>
-        
-        <h4>PWA Features:</h4>
-        <ul>
-            <li>✅ Installable as a native app</li>
-            <li>✅ Works offline</li>
-            <li>✅ Fast loading with caching</li>
-            <li>✅ Responsive design</li>
-            <li>✅ App-like experience</li>
-        </ul>
-        
-        <h4>Dashboard Sections:</h4>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 15px;">
-            <div class="dashboard-card" style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #007ACC; cursor: pointer; transition: all 0.3s ease;" onclick="window.open('#', '_blank')">
-                <h5>🔧 Service Requests</h5>
-                <p>Manage and track plumbing service requests</p>
-                <small style="color: #666;">Coming Soon</small>
-            </div>
-            <div class="dashboard-card" style="background-color: #e8f5e8; padding: 15px; border-radius: 8px; border-left: 4px solid #28a745; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" onclick="window.open('https://johnniesue.github.io/a1apsvc-dashboard-customers/', '_blank')">
-                <h5>👥 Customer Management</h5>
-                <p>View and manage customer information</p>
-                <small style="color: #28a745; font-weight: bold;">✅ Active System</small>
-            </div>
-            <div class="dashboard-card" style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #007ACC; cursor: pointer; transition: all 0.3s ease;" onclick="window.open('#', '_blank')">
-                <h5>📅 Scheduling</h5>
-                <p>Schedule appointments and manage calendar</p>
-                <small style="color: #666;">Coming Soon</small>
-            </div>
-            <div class="dashboard-card" style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #007ACC; cursor: pointer; transition: all 0.3s ease;" onclick="window.open('#', '_blank')">
-                <h5>📊 Reports</h5>
-                <p>View business analytics and reports</p>
-                <small style="color: #666;">Coming Soon</small>
-            </div>
-        </div>
-        
-        <div style="margin-top: 30px; padding: 20px; background-color: #e7f3ff; border-radius: 8px; border-left: 4px solid #007ACC;">
-            <h4>🚀 Quick Access</h4>
-            <p>Click on the <strong>Customer Management</strong> section above to access your full customer and job management system.</p>
-            <ul style="margin: 10px 0;">
-                <li>✅ Customer data entry and management</li>
-                <li>✅ Job tracking and status updates</li>
-                <li>✅ Technician assignment and scheduling</li>
-                <li>✅ Real-time Firebase database</li>
-                <li>✅ Google Maps integration</li>
-                <li>✅ Mobile-friendly for field work</li>
-            </ul>
+        <div style="margin-top: 1rem;">
+            <button class="btn btn-primary" id="install-button">Install App</button>
+            <button class="btn btn-secondary" id="dismiss-button">Not Now</button>
         </div>
     </div>
+
+    <main class="main-container">
+        <section class="welcome-section">
+            <h2>Hi, Chris 👋</h2>
+            <p>Here's what's happening with your business today</p>
+        </section>
+
+        <section class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-icon" style="background: #dbeafe; color: #1d4ed8;">📋</div>
+                    <div class="metric-change positive">+12%</div>
+                </div>
+                <div class="metric-title">Open Estimates</div>
+                <div class="metric-value">68</div>
+                <div class="metric-subtitle">$326,998.07 total value</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-icon" style="background: #dcfce7; color: #166534;">💰</div>
+                    <div class="metric-change positive">+8%</div>
+                </div>
+                <div class="metric-title">Open Invoices</div>
+                <div class="metric-value">33</div>
+                <div class="metric-subtitle">$46,203.67 outstanding</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-icon" style="background: #fef3c7; color: #d97706;">🔧</div>
+                    <div class="metric-change neutral">274 jobs</div>
+                </div>
+                <div class="metric-title">Unscheduled Jobs</div>
+                <div class="metric-value">274</div>
+                <div class="metric-subtitle">$265,558.37 potential</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <div class="metric-icon" style="background: #e0e7ff; color: #6366f1;">📅</div>
+                    <div class="metric-change neutral">Today</div>
+                </div>
+                <div class="metric-title">Upcoming Visits</div>
+                <div class="metric-value">0</div>
+                <div class="metric-subtitle">Unscheduled service visits</div>
+            </div>
+        </section>
+
+        <section class="quick-stats">
+            <h3>📊 Today's Performance</h3>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value">$0</div>
+                    <div class="stat-label">Revenue Earned</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">Jobs Completed</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">$0</div>
+                    <div class="stat-label">Average Job Size</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">2</div>
+                    <div class="stat-label">Active Technicians</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="dashboard-sections">
+            <div class="section-card active" onclick="window.open('https://johnniesue.github.io/a1apsvc-dashboard-customers/', '_blank')">
+                <div class="section-header">
+                    <div class="section-icon">👥</div>
+                    <div>
+                        <div class="section-title">Customer Management</div>
+                        <div class="section-description">Manage customer data, job tracking, and service history</div>
+                    </div>
+                </div>
+                <div class="section-status status-active">✅ Active System</div>
+            </div>
+
+            <div class="section-card" onclick="window.open('/schedule.html', '_blank')">
+                <div class="section-header">
+                    <div class="section-icon">📅</div>
+                    <div>
+                        <div class="section-title">Scheduling</div>
+                        <div class="section-description">Calendar management and appointment scheduling</div>
+                    </div>
+                </div>
+                <div class="section-status status-active">✅ Available</div>
+            </div>
+
+            <div class="section-card" onclick="window.open('/reports.html', '_blank')">
+                <div class="section-header">
+                    <div class="section-icon">📊</div>
+                    <div>
+                        <div class="section-title">Financial Reports</div>
+                        <div class="section-description">Revenue analytics and business intelligence</div>
+                    </div>
+                </div>
+                <div class="section-status status-active">✅ Available</div>
+            </div>
+
+            <div class="section-card" onclick="showComingSoon('Service Requests')">
+                <div class="section-header">
+                    <div class="section-icon">🔧</div>
+                    <div>
+                        <div class="section-title">Service Requests</div>
+                        <div class="section-description">Track and manage plumbing service requests</div>
+                    </div>
+                </div>
+                <div class="section-status status-coming-soon">⏳ Coming Soon</div>
+            </div>
+        </section>
+
+        <section class="quick-stats">
+            <h3>🚀 Quick Actions</h3>
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem;">
+                <button class="btn btn-primary" onclick="window.open('https://johnniesue.github.io/a1apsvc-dashboard-customers/', '_blank')">
+                    👥 Open Customer System
+                </button>
+                <button class="btn btn-primary" onclick="showSystemStatus()">
+                    📊 System Status
+                </button>
+                <button class="btn btn-secondary" onclick="showHelp()">
+                    ❓ Help & Support
+                </button>
+            </div>
+        </section>
+    </main>
 
     <!-- External JavaScript -->
     <script src="/script.js"></script>
     
-    <!-- PWA Service Worker Registration -->
+    <!-- Enhanced PWA functionality -->
     <script>
         // Service Worker Registration
         if ('serviceWorker' in navigator) {
@@ -173,24 +557,17 @@
         const dismissButton = document.getElementById('dismiss-button');
 
         window.addEventListener('beforeinstallprompt', (e) => {
-            // Prevent the mini-infobar from appearing on mobile
             e.preventDefault();
-            // Stash the event so it can be triggered later
             deferredPrompt = e;
-            // Show the install prompt
             installPrompt.style.display = 'block';
         });
 
         installButton.addEventListener('click', async () => {
             if (deferredPrompt) {
-                // Show the install prompt
                 deferredPrompt.prompt();
-                // Wait for the user to respond to the prompt
                 const { outcome } = await deferredPrompt.userChoice;
                 console.log(`User response to the install prompt: ${outcome}`);
-                // Clear the deferredPrompt variable
                 deferredPrompt = null;
-                // Hide the install prompt
                 installPrompt.style.display = 'none';
             }
         });
@@ -205,19 +582,39 @@
 
         function updateOnlineStatus() {
             if (navigator.onLine) {
-                statusDot.className = 'status-indicator online';
+                statusDot.style.background = '#10b981';
                 statusText.textContent = 'Online';
             } else {
-                statusDot.className = 'status-indicator offline';
+                statusDot.style.background = '#ef4444';
                 statusText.textContent = 'Offline';
             }
         }
 
         window.addEventListener('online', updateOnlineStatus);
         window.addEventListener('offline', updateOnlineStatus);
-        
-        // Initial status check
         updateOnlineStatus();
+
+        // Helper functions
+        function showComingSoon(featureName) {
+            alert(`${featureName} is coming soon! Currently available: Customer Management System`);
+        }
+
+        function showSystemStatus() {
+            alert('System Status:\n\n✅ Main Dashboard: Active\n✅ Customer Management: Active\n⏳ Scheduling: Coming Soon\n⏳ Reports: Coming Soon\n⏳ Service Requests: Coming Soon');
+        }
+
+        function showHelp() {
+            alert('A-1APSVC Dashboard Help:\n\n• Click Customer Management to access your full system\n• Install as PWA for offline access\n• Contact: 469-900-5194\n• Email: johnniesue@a-1apsvc.com');
+        }
+
+        // Simulate real-time updates (demo)
+        function updateMetrics() {
+            // This would connect to real data in production
+            console.log('Metrics updated');
+        }
+
+        // Update metrics every 30 seconds
+        setInterval(updateMetrics, 30000);
     </script>
 </body>
 </html>

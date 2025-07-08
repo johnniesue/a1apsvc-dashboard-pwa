@@ -6,14 +6,14 @@
     <title>A-1APSVC Dashboard PWA</title>
     
     <!-- PWA Manifest -->
-    <link rel="manifest" href="/manifest.json">
-    <link rel="stylesheet" href="/style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
     
     <!-- Theme color for mobile browsers -->
     <meta name="theme-color" content="#007ACC">
     
     <!-- Apple touch icon -->
-    <link rel="apple-touch-icon" href="/images/icon-192.png">
+    <link rel="apple-touch-icon" href="images/icon-192.png">
     
     <style>
         body {
@@ -43,6 +43,15 @@
             display: flex;
             align-items: center;
             gap: 1rem;
+        }
+        
+        .eagle-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: white;
+            padding: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
         
         .company-title {
@@ -260,6 +269,8 @@
             transition: all 0.2s ease;
             position: relative;
             overflow: hidden;
+            text-decoration: none;
+            color: inherit;
         }
         
         .section-card:hover {
@@ -408,19 +419,6 @@
             color: #1e293b;
         }
         
-        .map-placeholder {
-            width: 100%;
-            height: 300px;
-            background: #f1f5f9;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #64748b;
-            font-size: 0.875rem;
-            border: 2px dashed #cbd5e1;
-        }
-        
         .system-status {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -499,6 +497,11 @@
             .actions-grid {
                 grid-template-columns: 1fr;
             }
+            
+            .eagle-logo {
+                width: 50px;
+                height: 50px;
+            }
         }
     </style>
 </head>
@@ -506,6 +509,7 @@
     <header class="header">
         <div class="header-content">
             <div class="logo-section">
+                <img src="images/icon-192.png" alt="A-1APSVC Eagle Logo" class="eagle-logo">
                 <div>
                     <h1 class="company-title">A-1APSVC Dashboard</h1>
                     <p class="company-subtitle">Professional Service Management</p>
@@ -597,7 +601,7 @@
         </div>
 
         <div class="sections-grid">
-            <div class="section-card active" onclick="window.open('https://johnniesue.github.io/a1apsvc-dashboard-customers/', '_blank')">
+            <a href="https://johnniesue.github.io/a1apsvc-dashboard-customers/" target="_blank" class="section-card active">
                 <div class="section-header">
                     <div class="section-icon">👥</div>
                     <div>
@@ -606,9 +610,9 @@
                     </div>
                 </div>
                 <div class="section-status status-active">✅ Active System</div>
-            </div>
+            </a>
 
-            <div class="section-card" onclick="window.open('schedule.html', '_blank')">
+            <a href="schedule.html" class="section-card">
                 <div class="section-header">
                     <div class="section-icon">📅</div>
                     <div>
@@ -617,9 +621,9 @@
                     </div>
                 </div>
                 <div class="section-status status-available">✅ Available</div>
-            </div>
+            </a>
 
-            <div class="section-card" onclick="window.open('reports.html', '_blank')">
+            <a href="reports.html" class="section-card">
                 <div class="section-header">
                     <div class="section-icon">📊</div>
                     <div>
@@ -628,7 +632,7 @@
                     </div>
                 </div>
                 <div class="section-status status-available">✅ Available</div>
-            </div>
+            </a>
 
             <div class="section-card" onclick="showComingSoon('Service Requests')">
                 <div class="section-header">
@@ -680,7 +684,7 @@
                 <span>🗺️</span>
                 <h3 class="service-area-title">Service Area Map</h3>
             </div>
-            <div id="serviceAreaMap" style="width: 100%; height: 300px; border-radius: 8px; border: 1px solid #e2e8f0;">
+            <div id="serviceAreaMap" style="width: 100%; height: 300px; border-radius: 8px; border: 1px solid #e2e8f0; position: relative;">
                 <iframe 
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d429168.10916846283!2d-96.96523!3d33.040417!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x864c19f77b45974b%3A0xb9ec9ba4f647678f!2sLucas%2C%20TX!5e0!3m2!1sen!2sus!4v1635959999999!5m2!1sen!2sus&zoom=10"
                     width="100%" 
@@ -732,12 +736,12 @@
     </main>
 
     <!-- External JavaScript -->
-    <script src="/script.js"></script>
+    <script src="script.js"></script>
     
     <!-- PWA Service Worker Registration -->
     <script>
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/service-worker.js')
+            navigator.serviceWorker.register('service-worker.js')
                 .then(registration => console.log('SW registered'))
                 .catch(error => console.log('SW registration failed'));
         }

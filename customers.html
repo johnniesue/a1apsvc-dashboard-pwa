@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A-1APSVC Customer Management</title>
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#007ACC">
-    
     <style>
         * {
             margin: 0;
@@ -22,40 +20,41 @@
         }
 
         .header {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             padding: 1rem 2rem;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        .logo-section {
+        .logo-container {
             display: flex;
             align-items: center;
             gap: 1rem;
         }
 
-        .header-logo {
-            max-height: 50px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        .logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .company-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #1a365d;
-            margin: 0;
+        .logo img {
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+        }
+
+        h1 {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
         }
 
         .nav-buttons {
@@ -64,217 +63,242 @@
         }
 
         .nav-btn {
-            background: #007bff;
-            color: white;
-            border: none;
             padding: 0.5rem 1rem;
+            border: none;
             border-radius: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
             text-decoration: none;
-            font-size: 0.9rem;
+            font-weight: 500;
             transition: all 0.3s ease;
             cursor: pointer;
         }
 
         .nav-btn:hover {
-            background: #0056b3;
-            transform: translateY(-1px);
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
         }
 
         .container {
             max-width: 1200px;
-            margin: 0 auto;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .main-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
             padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
         }
 
         .page-header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 2rem;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 2rem;
         }
 
         .page-title {
             display: flex;
             align-items: center;
             gap: 1rem;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #2d3748;
         }
 
-        .page-title h2 {
-            font-size: 2rem;
-            color: #1a365d;
-            margin: 0;
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
         }
 
-        .add-customer-btn {
-            background: #10b981;
-            color: white;
-            border: none;
+        .btn {
             padding: 0.75rem 1.5rem;
-            border-radius: 8px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
             cursor: pointer;
-            font-size: 1rem;
             transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .add-customer-btn:hover {
-            background: #059669;
-            transform: translateY(-1px);
+        .btn-primary {
+            background: linear-gradient(135deg, #4299e1, #3182ce);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #ed8936, #dd6b20);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #f56565, #e53e3e);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
 
         .search-section {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 1.5rem;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
             margin-bottom: 2rem;
         }
 
         .search-bar {
-            width: 100%;
-            padding: 0.75rem 1rem;
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 1rem;
             border: 2px solid #e2e8f0;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 1rem;
             transition: border-color 0.3s ease;
         }
 
-        .search-bar:focus {
+        .search-input:focus {
             outline: none;
-            border-color: #007bff;
+            border-color: #4299e1;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 20px;
+            background: white;
+            color: #4a5568;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active {
+            background: #4299e1;
+            color: white;
+            border-color: #4299e1;
         }
 
         .customers-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 1.5rem;
+            margin-bottom: 2rem;
         }
 
         .customer-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            background: white;
+            border-radius: 15px;
             padding: 1.5rem;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 2px solid transparent;
             transition: all 0.3s ease;
-            cursor: pointer;
+            position: relative;
         }
 
         .customer-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
         }
 
-        .customer-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1rem;
+        .customer-card.duplicate {
+            border-color: #f56565;
+            background: #fed7d7;
+        }
+
+        .customer-card.potential-duplicate {
+            border-color: #ed8936;
+            background: #feebc8;
+        }
+
+        .duplicate-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 0.25rem 0.5rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .duplicate-badge.exact {
+            background: #f56565;
+        }
+
+        .duplicate-badge.potential {
+            background: #ed8936;
         }
 
         .customer-name {
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             font-weight: 600;
-            color: #1a365d;
-            margin: 0;
-        }
-
-        .customer-status {
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-
-        .status-active {
-            background: #dcfce7;
-            color: #166534;
-        }
-
-        .status-inactive {
-            background: #fef2f2;
-            color: #dc2626;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
         }
 
         .customer-info {
-            margin-bottom: 1rem;
+            color: #4a5568;
+            margin-bottom: 0.5rem;
         }
 
-        .info-item {
+        .customer-tags {
             display: flex;
-            align-items: center;
             gap: 0.5rem;
-            margin-bottom: 0.5rem;
-            color: #64748b;
-            font-size: 0.9rem;
+            flex-wrap: wrap;
+            margin: 1rem 0;
         }
 
-        .service-history {
-            border-top: 1px solid #e2e8f0;
-            padding-top: 1rem;
+        .tag {
+            padding: 0.25rem 0.5rem;
+            background: #e2e8f0;
+            color: #4a5568;
+            border-radius: 15px;
+            font-size: 0.75rem;
         }
 
-        .history-title {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: #1a365d;
-            margin-bottom: 0.5rem;
-        }
-
-        .history-item {
+        .customer-actions {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid #f1f5f9;
-            font-size: 0.85rem;
+            gap: 0.5rem;
+            margin-top: 1rem;
         }
 
-        .history-item:last-child {
-            border-bottom: none;
-        }
-
-        .service-type {
-            color: #007bff;
-            font-weight: 500;
-        }
-
-        .service-date {
-            color: #64748b;
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
         }
 
         .empty-state {
             text-align: center;
             padding: 4rem 2rem;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            color: #718096;
         }
 
         .empty-icon {
             font-size: 4rem;
             margin-bottom: 1rem;
-            opacity: 0.5;
         }
 
-        .empty-title {
-            font-size: 1.5rem;
-            color: #1a365d;
-            margin-bottom: 0.5rem;
-        }
-
-        .empty-description {
-            color: #64748b;
-            margin-bottom: 2rem;
-        }
-
-        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -282,19 +306,23 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0, 0, 0, 0.5);
             z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .modal-content {
             background: white;
+            border-radius: 20px;
             padding: 2rem;
-            border-radius: 16px;
-            max-width: 500px;
+            max-width: 600px;
             width: 90%;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             max-height: 80vh;
             overflow-y: auto;
         }
@@ -308,8 +336,8 @@
 
         .modal-title {
             font-size: 1.5rem;
-            color: #1a365d;
-            margin: 0;
+            font-weight: 600;
+            color: #2d3748;
         }
 
         .close-btn {
@@ -317,7 +345,7 @@
             border: none;
             font-size: 1.5rem;
             cursor: pointer;
-            color: #64748b;
+            color: #718096;
         }
 
         .form-group {
@@ -327,8 +355,8 @@
         .form-label {
             display: block;
             margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: #1a365d;
+            font-weight: 600;
+            color: #4a5568;
         }
 
         .form-input {
@@ -342,330 +370,1030 @@
 
         .form-input:focus {
             outline: none;
-            border-color: #007bff;
+            border-color: #4299e1;
         }
 
-        .form-textarea {
-            resize: vertical;
-            min-height: 100px;
+        .duplicate-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1rem 0;
         }
 
-        .modal-actions {
+        .comparison-card {
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            background: #f7fafc;
+        }
+
+        .comparison-card.selected {
+            border-color: #4299e1;
+            background: #ebf8ff;
+        }
+
+        .merge-actions {
             display: flex;
             gap: 1rem;
             justify-content: flex-end;
-            margin-top: 2rem;
+            margin-top: 1.5rem;
         }
 
-        .btn-secondary {
-            background: #f1f5f9;
-            color: #64748b;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
+        .import-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .import-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .import-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+
+        .import-subtitle {
+            color: #718096;
+        }
+
+        .file-upload {
+            border: 2px dashed #cbd5e0;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
             cursor: pointer;
         }
 
-        .btn-primary {
-            background: #007bff;
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            cursor: pointer;
+        .file-upload:hover {
+            border-color: #4299e1;
+            background: #f7fafc;
+        }
+
+        .file-upload.dragover {
+            border-color: #4299e1;
+            background: #ebf8ff;
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            color: #cbd5e0;
+            margin-bottom: 1rem;
+        }
+
+        .upload-text {
+            color: #4a5568;
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-hint {
+            color: #718096;
+            font-size: 0.875rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4299e1, #3182ce);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .duplicate-summary {
+            background: #fef5e7;
+            border: 2px solid #ed8936;
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .duplicate-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 1rem;
+        }
+
+        .duplicate-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2d3748;
+        }
+
+        .stat-label {
+            color: #718096;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
         }
 
         @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 1rem;
-                text-align: center;
-            }
-
-            .page-header {
-                flex-direction: column;
-                gap: 1rem;
-                text-align: center;
-            }
-
             .container {
-                padding: 1rem;
+                padding: 0 0.5rem;
             }
-
+            
             .customers-grid {
                 grid-template-columns: 1fr;
             }
-        }
-
-        .hidden {
-            display: none !important;
+            
+            .duplicate-comparison {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="header-content">
-            <div class="logo-section">
-                <img id="headerLogo" class="header-logo hidden" alt="A-1APSVC Logo">
-                <h1 class="company-title">Customer Management</h1>
+    <div class="header">
+        <div class="logo-container">
+            <div class="logo">
+                <img id="headerLogo" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiM0Mjk5ZTEiLz4KPHN2ZyB4PSI4IiB5PSI4IiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMMTMuMDkgOC4yNkwyMCA5TDEzLjA5IDE1Ljc0TDEyIDIyTDEwLjkxIDE1Ljc0TDQgOUwxMC45MSA4LjI2TDEyIDJaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4KPC9zdmc+" alt="A-1APSVC Logo">
             </div>
-            <div class="nav-buttons">
-                <a href="index.html" class="nav-btn">🏠 Dashboard</a>
-                <a href="schedule.html" class="nav-btn">📅 Schedule</a>
-                <a href="reports.html" class="nav-btn">📊 Reports</a>
-            </div>
+            <h1>Customer Management</h1>
         </div>
-    </header>
+        <div class="nav-buttons">
+            <a href="index.html" class="nav-btn">🏠 Dashboard</a>
+            <a href="schedule.html" class="nav-btn">📅 Schedule</a>
+            <a href="reports.html" class="nav-btn">📊 Reports</a>
+        </div>
+    </div>
 
     <div class="container">
-        <div class="page-header">
-            <div class="page-title">
-                <span style="font-size: 2rem;">👥</span>
-                <h2>Customer Management</h2>
+        <!-- Import Section -->
+        <div class="import-section" id="importSection">
+            <div class="import-header">
+                <div class="import-title">📥 Import Customer Data</div>
+                <div class="import-subtitle">Upload your Housecall Pro export file or Excel spreadsheet</div>
             </div>
-            <button class="add-customer-btn" onclick="showAddCustomerModal()">
-                + Add New Customer
-            </button>
+            
+            <div class="file-upload" id="fileUpload">
+                <div class="upload-icon">📁</div>
+                <div class="upload-text">Click to select file or drag and drop</div>
+                <div class="upload-hint">Supports Excel (.xlsx), CSV, and JSON files</div>
+                <input type="file" id="fileInput" accept=".xlsx,.csv,.json" style="display: none;">
+            </div>
+            
+            <div class="progress-bar" id="progressBar" style="display: none;">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            
+            <div class="duplicate-summary" id="duplicateSummary" style="display: none;">
+                <h3>🔍 Duplicate Detection Results</h3>
+                <p id="duplicateCount">Found 0 potential duplicates</p>
+                <div class="duplicate-list" id="duplicateList"></div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 1rem;">
+                <button class="btn btn-primary" id="processImportBtn" style="display: none;">Process Import</button>
+                <button class="btn btn-success" id="confirmImportBtn" style="display: none;">Confirm Import</button>
+            </div>
         </div>
 
-        <div class="search-section">
-            <input type="text" class="search-bar" placeholder="Search customers by name, address, or phone..." id="searchInput">
-        </div>
+        <!-- Main Customer Management -->
+        <div class="main-card">
+            <div class="page-header">
+                <div class="page-title">
+                    👥 Customer Management
+                </div>
+                <div class="action-buttons">
+                    <button class="btn btn-warning" id="findDuplicatesBtn">🔍 Find Duplicates</button>
+                    <button class="btn btn-primary" id="addCustomerBtn">+ Add New Customer</button>
+                </div>
+            </div>
 
-        <div id="customersContainer">
-            <div class="empty-state">
-                <div class="empty-icon">👥</div>
-                <h3 class="empty-title">No Customers Yet</h3>
-                <p class="empty-description">Add your first customer or import from Housecall Pro to get started</p>
-                <button class="add-customer-btn" onclick="showAddCustomerModal()">Add First Customer</button>
+            <!-- Statistics -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalCustomers">0</div>
+                    <div class="stat-label">Total Customers</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="duplicatesFound">0</div>
+                    <div class="stat-label">Duplicates Found</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="recentlyAdded">0</div>
+                    <div class="stat-label">Recently Added</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="activeCustomers">0</div>
+                    <div class="stat-label">Active Customers</div>
+                </div>
+            </div>
+
+            <!-- Search and Filters -->
+            <div class="search-section">
+                <div class="search-bar">
+                    <input type="text" class="search-input" id="searchInput" placeholder="Search customers by name, email, phone, or address...">
+                    <button class="btn btn-primary" id="searchBtn">🔍 Search</button>
+                </div>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter="all">All Customers</button>
+                    <button class="filter-btn" data-filter="recent">Recently Added</button>
+                    <button class="filter-btn" data-filter="duplicates">Potential Duplicates</button>
+                    <button class="filter-btn" data-filter="no-email">Missing Email</button>
+                    <button class="filter-btn" data-filter="no-phone">Missing Phone</button>
+                </div>
+            </div>
+
+            <!-- Customer Grid -->
+            <div class="customers-grid" id="customersGrid">
+                <div class="empty-state">
+                    <div class="empty-icon">👥</div>
+                    <h3>No Customers Yet</h3>
+                    <p>Import your customer data or add your first customer to get started</p>
+                    <button class="btn btn-success" onclick="document.getElementById('fileUpload').click()">📥 Import Customers</button>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Add Customer Modal -->
-    <div id="addCustomerModal" class="modal">
+    <!-- Add/Edit Customer Modal -->
+    <div class="modal" id="customerModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Add New Customer</h3>
-                <button class="close-btn" onclick="closeAddCustomerModal()">&times;</button>
+                <h2 class="modal-title" id="modalTitle">Add New Customer</h2>
+                <button class="close-btn" onclick="closeModal('customerModal')">&times;</button>
             </div>
-            
             <form id="customerForm">
                 <div class="form-group">
-                    <label class="form-label">Customer Name *</label>
-                    <input type="text" class="form-input" id="customerName" required>
+                    <label class="form-label">First Name *</label>
+                    <input type="text" class="form-input" id="firstName" required>
                 </div>
-                
                 <div class="form-group">
-                    <label class="form-label">Phone Number *</label>
-                    <input type="tel" class="form-input" id="customerPhone" required>
+                    <label class="form-label">Last Name *</label>
+                    <input type="text" class="form-input" id="lastName" required>
                 </div>
-                
                 <div class="form-group">
                     <label class="form-label">Email</label>
-                    <input type="email" class="form-input" id="customerEmail">
+                    <input type="email" class="form-input" id="email">
                 </div>
-                
                 <div class="form-group">
-                    <label class="form-label">Service Address *</label>
-                    <input type="text" class="form-input" id="customerAddress" required>
+                    <label class="form-label">Mobile Phone</label>
+                    <input type="tel" class="form-input" id="mobilePhone">
                 </div>
-                
                 <div class="form-group">
-                    <label class="form-label">City *</label>
-                    <input type="text" class="form-input" id="customerCity" required>
+                    <label class="form-label">Home Phone</label>
+                    <input type="tel" class="form-input" id="homePhone">
                 </div>
-                
+                <div class="form-group">
+                    <label class="form-label">Work Phone</label>
+                    <input type="tel" class="form-input" id="workPhone">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Address</label>
+                    <input type="text" class="form-input" id="address">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Company</label>
+                    <input type="text" class="form-input" id="company">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Tags (comma separated)</label>
+                    <input type="text" class="form-input" id="tags" placeholder="VIP, Regular, Commercial">
+                </div>
                 <div class="form-group">
                     <label class="form-label">Notes</label>
-                    <textarea class="form-input form-textarea" id="customerNotes" placeholder="Special instructions, access codes, etc."></textarea>
+                    <textarea class="form-input" id="notes" rows="3"></textarea>
+                </div>
+                <div class="merge-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('customerModal')">Cancel</button>
+                    <button type="submit" class="btn btn-success">Save Customer</button>
                 </div>
             </form>
-            
-            <div class="modal-actions">
-                <button class="btn-secondary" onclick="closeAddCustomerModal()">Cancel</button>
-                <button class="btn-primary" onclick="saveCustomer()">Save Customer</button>
+        </div>
+    </div>
+
+    <!-- Duplicate Merge Modal -->
+    <div class="modal" id="mergeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">🔄 Merge Duplicate Customers</h2>
+                <button class="close-btn" onclick="closeModal('mergeModal')">&times;</button>
+            </div>
+            <p>Select which customer record to keep and merge the data:</p>
+            <div class="duplicate-comparison" id="duplicateComparison">
+                <!-- Duplicate comparison will be populated here -->
+            </div>
+            <div class="merge-actions">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('mergeModal')">Cancel</button>
+                <button type="button" class="btn btn-danger" id="mergeCustomersBtn">Merge Selected</button>
             </div>
         </div>
     </div>
 
+    <script src="logo-manager.js"></script>
     <script>
-        // Load saved logo on page load
-        window.addEventListener('load', function() {
-            const savedLogo = localStorage.getItem('a1apsvc-logo');
-            if (savedLogo) {
-                const headerLogo = document.getElementById('headerLogo');
-                headerLogo.src = savedLogo;
-                headerLogo.classList.remove('hidden');
+        // Customer Management System with Duplicate Detection
+        class CustomerManager {
+            constructor() {
+                this.customers = JSON.parse(localStorage.getItem('a1apsvc_customers') || '[]');
+                this.duplicates = [];
+                this.selectedCustomer = null;
+                this.init();
             }
-            
-            loadCustomers();
-        });
 
-        // Customer data management
-        let customers = JSON.parse(localStorage.getItem('a1apsvc-customers') || '[]');
+            init() {
+                this.setupEventListeners();
+                this.renderCustomers();
+                this.updateStats();
+                this.loadLogo();
+            }
 
-        function loadCustomers() {
-            const container = document.getElementById('customersContainer');
-            
-            if (customers.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-icon">👥</div>
-                        <h3 class="empty-title">No Customers Yet</h3>
-                        <p class="empty-description">Add your first customer or import from Housecall Pro to get started</p>
-                        <button class="add-customer-btn" onclick="showAddCustomerModal()">Add First Customer</button>
+            loadLogo() {
+                const savedLogo = localStorage.getItem('a1apsvc_logo');
+                if (savedLogo) {
+                    document.getElementById('headerLogo').src = savedLogo;
+                }
+            }
+
+            setupEventListeners() {
+                // File upload
+                document.getElementById('fileUpload').addEventListener('click', () => {
+                    document.getElementById('fileInput').click();
+                });
+
+                document.getElementById('fileInput').addEventListener('change', (e) => {
+                    this.handleFileUpload(e.target.files[0]);
+                });
+
+                // Drag and drop
+                const fileUpload = document.getElementById('fileUpload');
+                fileUpload.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    fileUpload.classList.add('dragover');
+                });
+
+                fileUpload.addEventListener('dragleave', () => {
+                    fileUpload.classList.remove('dragover');
+                });
+
+                fileUpload.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    fileUpload.classList.remove('dragover');
+                    this.handleFileUpload(e.dataTransfer.files[0]);
+                });
+
+                // Buttons
+                document.getElementById('addCustomerBtn').addEventListener('click', () => {
+                    this.openCustomerModal();
+                });
+
+                document.getElementById('findDuplicatesBtn').addEventListener('click', () => {
+                    this.findDuplicates();
+                });
+
+                document.getElementById('processImportBtn').addEventListener('click', () => {
+                    this.processImport();
+                });
+
+                document.getElementById('confirmImportBtn').addEventListener('click', () => {
+                    this.confirmImport();
+                });
+
+                // Search
+                document.getElementById('searchInput').addEventListener('input', (e) => {
+                    this.searchCustomers(e.target.value);
+                });
+
+                // Filters
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                        e.target.classList.add('active');
+                        this.filterCustomers(e.target.dataset.filter);
+                    });
+                });
+
+                // Form submission
+                document.getElementById('customerForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.saveCustomer();
+                });
+
+                // Merge customers
+                document.getElementById('mergeCustomersBtn').addEventListener('click', () => {
+                    this.mergeCustomers();
+                });
+            }
+
+            async handleFileUpload(file) {
+                if (!file) return;
+
+                const progressBar = document.getElementById('progressBar');
+                const progressFill = document.getElementById('progressFill');
+                const processBtn = document.getElementById('processImportBtn');
+
+                progressBar.style.display = 'block';
+                progressFill.style.width = '0%';
+
+                try {
+                    // Simulate progress
+                    for (let i = 0; i <= 100; i += 10) {
+                        progressFill.style.width = i + '%';
+                        await new Promise(resolve => setTimeout(resolve, 100));
+                    }
+
+                    const data = await this.parseFile(file);
+                    this.importData = data;
+                    
+                    // Find duplicates in import data
+                    this.findImportDuplicates(data);
+                    
+                    processBtn.style.display = 'inline-block';
+                    
+                } catch (error) {
+                    alert('Error reading file: ' + error.message);
+                    progressBar.style.display = 'none';
+                }
+            }
+
+            async parseFile(file) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    
+                    reader.onload = (e) => {
+                        try {
+                            if (file.name.endsWith('.json')) {
+                                resolve(JSON.parse(e.target.result));
+                            } else if (file.name.endsWith('.csv')) {
+                                resolve(this.parseCSV(e.target.result));
+                            } else if (file.name.endsWith('.xlsx')) {
+                                // For demo purposes, we'll simulate Excel parsing
+                                // In a real implementation, you'd use a library like SheetJS
+                                resolve(this.simulateExcelData());
+                            } else {
+                                reject(new Error('Unsupported file format'));
+                            }
+                        } catch (error) {
+                            reject(error);
+                        }
+                    };
+                    
+                    reader.onerror = () => reject(new Error('Failed to read file'));
+                    reader.readAsText(file);
+                });
+            }
+
+            parseCSV(csvText) {
+                const lines = csvText.split('\n');
+                const headers = lines[0].split(',').map(h => h.trim());
+                const data = [];
+
+                for (let i = 1; i < lines.length; i++) {
+                    if (lines[i].trim()) {
+                        const values = lines[i].split(',').map(v => v.trim());
+                        const customer = {};
+                        headers.forEach((header, index) => {
+                            customer[header] = values[index] || '';
+                        });
+                        data.push(customer);
+                    }
+                }
+
+                return data;
+            }
+
+            simulateExcelData() {
+                // Simulate the data structure from the OneDrive file
+                return [
+                    {
+                        'First Name': 'Frank',
+                        'Last Name': 'Reed',
+                        'Email': 'frankpr1980@gmail.com',
+                        'Mobile Number': '9.17E+09',
+                        'Home Number': '',
+                        'Work Number': '',
+                        'Company': '',
+                        'Tags': '',
+                        'Notes': 'Complete',
+                        'ID': '57414217'
+                    },
+                    {
+                        'First Name': 'Buddy',
+                        'Last Name': 'Lane',
+                        'Email': '',
+                        'Mobile Number': '2.15E+09',
+                        'Home Number': '',
+                        'Work Number': '',
+                        'Company': '',
+                        'Tags': '',
+                        'Notes': '',
+                        'ID': '58438781'
+                    },
+                    {
+                        'First Name': 'Poulins',
+                        'Last Name': 'Syriac',
+                        'Email': 'poulinssyriac@yahoo.com',
+                        'Mobile Number': '2.04E+09',
+                        'Home Number': '',
+                        'Work Number': '',
+                        'Company': '',
+                        'Tags': '',
+                        'Notes': '',
+                        'ID': '58488134'
+                    }
+                    // Add more sample data as needed
+                ];
+            }
+
+            findImportDuplicates(data) {
+                const duplicates = [];
+                const duplicateSummary = document.getElementById('duplicateSummary');
+                const duplicateCount = document.getElementById('duplicateCount');
+                const duplicateList = document.getElementById('duplicateList');
+
+                // Check for duplicates within import data
+                for (let i = 0; i < data.length; i++) {
+                    for (let j = i + 1; j < data.length; j++) {
+                        const similarity = this.calculateSimilarity(data[i], data[j]);
+                        if (similarity > 0.7) {
+                            duplicates.push({
+                                customer1: data[i],
+                                customer2: data[j],
+                                similarity: similarity,
+                                type: similarity > 0.9 ? 'exact' : 'potential'
+                            });
+                        }
+                    }
+                }
+
+                // Check against existing customers
+                data.forEach(importCustomer => {
+                    this.customers.forEach(existingCustomer => {
+                        const similarity = this.calculateSimilarity(importCustomer, existingCustomer);
+                        if (similarity > 0.7) {
+                            duplicates.push({
+                                customer1: importCustomer,
+                                customer2: existingCustomer,
+                                similarity: similarity,
+                                type: similarity > 0.9 ? 'exact' : 'potential',
+                                isExisting: true
+                            });
+                        }
+                    });
+                });
+
+                if (duplicates.length > 0) {
+                    duplicateSummary.style.display = 'block';
+                    duplicateCount.textContent = `Found ${duplicates.length} potential duplicates`;
+                    
+                    duplicateList.innerHTML = duplicates.map(dup => `
+                        <div class="duplicate-item">
+                            <span>${this.getCustomerDisplayName(dup.customer1)} ↔ ${this.getCustomerDisplayName(dup.customer2)}</span>
+                            <span class="duplicate-badge ${dup.type}">${Math.round(dup.similarity * 100)}% match</span>
+                        </div>
+                    `).join('');
+                }
+
+                this.importDuplicates = duplicates;
+            }
+
+            calculateSimilarity(customer1, customer2) {
+                let score = 0;
+                let factors = 0;
+
+                // Name similarity
+                const name1 = `${customer1['First Name'] || customer1.firstName || ''} ${customer1['Last Name'] || customer1.lastName || ''}`.toLowerCase().trim();
+                const name2 = `${customer2['First Name'] || customer2.firstName || ''} ${customer2['Last Name'] || customer2.lastName || ''}`.toLowerCase().trim();
+                
+                if (name1 && name2) {
+                    factors++;
+                    if (name1 === name2) score += 1;
+                    else if (this.levenshteinDistance(name1, name2) <= 2) score += 0.8;
+                    else if (name1.includes(name2) || name2.includes(name1)) score += 0.6;
+                }
+
+                // Email similarity
+                const email1 = (customer1.Email || customer1.email || '').toLowerCase().trim();
+                const email2 = (customer2.Email || customer2.email || '').toLowerCase().trim();
+                
+                if (email1 && email2) {
+                    factors++;
+                    if (email1 === email2) score += 1;
+                    else if (this.levenshteinDistance(email1, email2) <= 2) score += 0.7;
+                }
+
+                // Phone similarity
+                const phone1 = this.normalizePhone(customer1['Mobile Number'] || customer1.mobilePhone || '');
+                const phone2 = this.normalizePhone(customer2['Mobile Number'] || customer2.mobilePhone || '');
+                
+                if (phone1 && phone2) {
+                    factors++;
+                    if (phone1 === phone2) score += 1;
+                    else if (phone1.includes(phone2) || phone2.includes(phone1)) score += 0.8;
+                }
+
+                return factors > 0 ? score / factors : 0;
+            }
+
+            levenshteinDistance(str1, str2) {
+                const matrix = [];
+                for (let i = 0; i <= str2.length; i++) {
+                    matrix[i] = [i];
+                }
+                for (let j = 0; j <= str1.length; j++) {
+                    matrix[0][j] = j;
+                }
+                for (let i = 1; i <= str2.length; i++) {
+                    for (let j = 1; j <= str1.length; j++) {
+                        if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
+                            matrix[i][j] = matrix[i - 1][j - 1];
+                        } else {
+                            matrix[i][j] = Math.min(
+                                matrix[i - 1][j - 1] + 1,
+                                matrix[i][j - 1] + 1,
+                                matrix[i - 1][j] + 1
+                            );
+                        }
+                    }
+                }
+                return matrix[str2.length][str1.length];
+            }
+
+            normalizePhone(phone) {
+                return phone.toString().replace(/\D/g, '');
+            }
+
+            getCustomerDisplayName(customer) {
+                const firstName = customer['First Name'] || customer.firstName || '';
+                const lastName = customer['Last Name'] || customer.lastName || '';
+                return `${firstName} ${lastName}`.trim() || 'Unknown';
+            }
+
+            processImport() {
+                if (!this.importData) return;
+
+                const confirmBtn = document.getElementById('confirmImportBtn');
+                const processBtn = document.getElementById('processImportBtn');
+                
+                // Convert import data to our format
+                this.processedImportData = this.importData.map(customer => ({
+                    id: Date.now() + Math.random(),
+                    firstName: customer['First Name'] || '',
+                    lastName: customer['Last Name'] || '',
+                    email: customer.Email || '',
+                    mobilePhone: customer['Mobile Number'] || '',
+                    homePhone: customer['Home Number'] || '',
+                    workPhone: customer['Work Number'] || '',
+                    company: customer.Company || '',
+                    tags: customer.Tags ? customer.Tags.split(',').map(t => t.trim()) : [],
+                    notes: customer.Notes || '',
+                    address: customer.Address || '',
+                    dateAdded: new Date().toISOString(),
+                    isImported: true
+                }));
+
+                processBtn.style.display = 'none';
+                confirmBtn.style.display = 'inline-block';
+            }
+
+            confirmImport() {
+                if (!this.processedImportData) return;
+
+                // Add processed data to customers
+                this.customers = [...this.customers, ...this.processedImportData];
+                this.saveCustomers();
+                this.renderCustomers();
+                this.updateStats();
+
+                // Hide import section
+                document.getElementById('importSection').style.display = 'none';
+                
+                alert(`Successfully imported ${this.processedImportData.length} customers!`);
+            }
+
+            findDuplicates() {
+                this.duplicates = [];
+                
+                for (let i = 0; i < this.customers.length; i++) {
+                    for (let j = i + 1; j < this.customers.length; j++) {
+                        const similarity = this.calculateSimilarity(this.customers[i], this.customers[j]);
+                        if (similarity > 0.7) {
+                            this.duplicates.push({
+                                customer1: this.customers[i],
+                                customer2: this.customers[j],
+                                similarity: similarity,
+                                type: similarity > 0.9 ? 'exact' : 'potential'
+                            });
+                        }
+                    }
+                }
+
+                if (this.duplicates.length > 0) {
+                    alert(`Found ${this.duplicates.length} potential duplicates. They are now highlighted in red/orange.`);
+                    this.renderCustomers();
+                } else {
+                    alert('No duplicates found!');
+                }
+
+                this.updateStats();
+            }
+
+            openCustomerModal(customer = null) {
+                this.selectedCustomer = customer;
+                const modal = document.getElementById('customerModal');
+                const title = document.getElementById('modalTitle');
+                
+                if (customer) {
+                    title.textContent = 'Edit Customer';
+                    this.populateForm(customer);
+                } else {
+                    title.textContent = 'Add New Customer';
+                    this.clearForm();
+                }
+                
+                modal.classList.add('active');
+            }
+
+            populateForm(customer) {
+                document.getElementById('firstName').value = customer.firstName || '';
+                document.getElementById('lastName').value = customer.lastName || '';
+                document.getElementById('email').value = customer.email || '';
+                document.getElementById('mobilePhone').value = customer.mobilePhone || '';
+                document.getElementById('homePhone').value = customer.homePhone || '';
+                document.getElementById('workPhone').value = customer.workPhone || '';
+                document.getElementById('address').value = customer.address || '';
+                document.getElementById('company').value = customer.company || '';
+                document.getElementById('tags').value = customer.tags ? customer.tags.join(', ') : '';
+                document.getElementById('notes').value = customer.notes || '';
+            }
+
+            clearForm() {
+                document.getElementById('customerForm').reset();
+            }
+
+            saveCustomer() {
+                const formData = {
+                    firstName: document.getElementById('firstName').value,
+                    lastName: document.getElementById('lastName').value,
+                    email: document.getElementById('email').value,
+                    mobilePhone: document.getElementById('mobilePhone').value,
+                    homePhone: document.getElementById('homePhone').value,
+                    workPhone: document.getElementById('workPhone').value,
+                    address: document.getElementById('address').value,
+                    company: document.getElementById('company').value,
+                    tags: document.getElementById('tags').value.split(',').map(t => t.trim()).filter(t => t),
+                    notes: document.getElementById('notes').value
+                };
+
+                if (this.selectedCustomer) {
+                    // Update existing customer
+                    Object.assign(this.selectedCustomer, formData);
+                } else {
+                    // Add new customer
+                    const newCustomer = {
+                        id: Date.now(),
+                        ...formData,
+                        dateAdded: new Date().toISOString()
+                    };
+                    this.customers.push(newCustomer);
+                }
+
+                this.saveCustomers();
+                this.renderCustomers();
+                this.updateStats();
+                closeModal('customerModal');
+            }
+
+            deleteCustomer(customerId) {
+                if (confirm('Are you sure you want to delete this customer?')) {
+                    this.customers = this.customers.filter(c => c.id !== customerId);
+                    this.saveCustomers();
+                    this.renderCustomers();
+                    this.updateStats();
+                }
+            }
+
+            searchCustomers(query) {
+                const filtered = this.customers.filter(customer => {
+                    const searchText = `${customer.firstName} ${customer.lastName} ${customer.email} ${customer.mobilePhone} ${customer.address}`.toLowerCase();
+                    return searchText.includes(query.toLowerCase());
+                });
+                this.renderCustomers(filtered);
+            }
+
+            filterCustomers(filter) {
+                let filtered = this.customers;
+
+                switch (filter) {
+                    case 'recent':
+                        const weekAgo = new Date();
+                        weekAgo.setDate(weekAgo.getDate() - 7);
+                        filtered = this.customers.filter(c => new Date(c.dateAdded) > weekAgo);
+                        break;
+                    case 'duplicates':
+                        const duplicateIds = new Set();
+                        this.duplicates.forEach(dup => {
+                            duplicateIds.add(dup.customer1.id);
+                            duplicateIds.add(dup.customer2.id);
+                        });
+                        filtered = this.customers.filter(c => duplicateIds.has(c.id));
+                        break;
+                    case 'no-email':
+                        filtered = this.customers.filter(c => !c.email);
+                        break;
+                    case 'no-phone':
+                        filtered = this.customers.filter(c => !c.mobilePhone && !c.homePhone && !c.workPhone);
+                        break;
+                }
+
+                this.renderCustomers(filtered);
+            }
+
+            renderCustomers(customersToRender = this.customers) {
+                const grid = document.getElementById('customersGrid');
+                
+                if (customersToRender.length === 0) {
+                    grid.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-icon">👥</div>
+                            <h3>No Customers Found</h3>
+                            <p>Try adjusting your search or filters</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                grid.innerHTML = customersToRender.map(customer => {
+                    const isDuplicate = this.duplicates.some(dup => 
+                        dup.customer1.id === customer.id || dup.customer2.id === customer.id
+                    );
+                    
+                    const duplicateType = isDuplicate ? 
+                        this.duplicates.find(dup => 
+                            dup.customer1.id === customer.id || dup.customer2.id === customer.id
+                        )?.type : null;
+
+                    return `
+                        <div class="customer-card ${isDuplicate ? duplicateType : ''}" data-customer-id="${customer.id}">
+                            ${isDuplicate ? `<div class="duplicate-badge ${duplicateType}">${duplicateType === 'exact' ? 'Exact' : 'Potential'} Duplicate</div>` : ''}
+                            <div class="customer-name">${customer.firstName} ${customer.lastName}</div>
+                            <div class="customer-info">📧 ${customer.email || 'No email'}</div>
+                            <div class="customer-info">📱 ${customer.mobilePhone || 'No mobile'}</div>
+                            <div class="customer-info">🏠 ${customer.address || 'No address'}</div>
+                            ${customer.company ? `<div class="customer-info">🏢 ${customer.company}</div>` : ''}
+                            ${customer.tags && customer.tags.length > 0 ? `
+                                <div class="customer-tags">
+                                    ${customer.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                                </div>
+                            ` : ''}
+                            <div class="customer-actions">
+                                <button class="btn btn-primary btn-small" onclick="customerManager.openCustomerModal(customerManager.customers.find(c => c.id === ${customer.id}))">✏️ Edit</button>
+                                <button class="btn btn-danger btn-small" onclick="customerManager.deleteCustomer(${customer.id})">🗑️ Delete</button>
+                                ${isDuplicate ? `<button class="btn btn-warning btn-small" onclick="customerManager.showMergeModal(${customer.id})">🔄 Merge</button>` : ''}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            showMergeModal(customerId) {
+                const customer = this.customers.find(c => c.id === customerId);
+                const duplicate = this.duplicates.find(dup => 
+                    dup.customer1.id === customerId || dup.customer2.id === customerId
+                );
+
+                if (!duplicate) return;
+
+                const modal = document.getElementById('mergeModal');
+                const comparison = document.getElementById('duplicateComparison');
+                
+                const customer1 = duplicate.customer1;
+                const customer2 = duplicate.customer2;
+
+                comparison.innerHTML = `
+                    <div class="comparison-card" data-customer-id="${customer1.id}">
+                        <h4>Customer 1</h4>
+                        <p><strong>Name:</strong> ${customer1.firstName} ${customer1.lastName}</p>
+                        <p><strong>Email:</strong> ${customer1.email || 'None'}</p>
+                        <p><strong>Phone:</strong> ${customer1.mobilePhone || 'None'}</p>
+                        <p><strong>Address:</strong> ${customer1.address || 'None'}</p>
+                        <p><strong>Company:</strong> ${customer1.company || 'None'}</p>
+                        <button class="btn btn-primary" onclick="this.parentElement.classList.add('selected'); this.parentElement.nextElementSibling.classList.remove('selected')">Select This</button>
+                    </div>
+                    <div class="comparison-card" data-customer-id="${customer2.id}">
+                        <h4>Customer 2</h4>
+                        <p><strong>Name:</strong> ${customer2.firstName} ${customer2.lastName}</p>
+                        <p><strong>Email:</strong> ${customer2.email || 'None'}</p>
+                        <p><strong>Phone:</strong> ${customer2.mobilePhone || 'None'}</p>
+                        <p><strong>Address:</strong> ${customer2.address || 'None'}</p>
+                        <p><strong>Company:</strong> ${customer2.company || 'None'}</p>
+                        <button class="btn btn-primary" onclick="this.parentElement.classList.add('selected'); this.parentElement.previousElementSibling.classList.remove('selected')">Select This</button>
                     </div>
                 `;
-                return;
+
+                modal.classList.add('active');
             }
 
-            const customersGrid = document.createElement('div');
-            customersGrid.className = 'customers-grid';
-            
-            customers.forEach(customer => {
-                const customerCard = createCustomerCard(customer);
-                customersGrid.appendChild(customerCard);
-            });
-            
-            container.innerHTML = '';
-            container.appendChild(customersGrid);
-        }
+            mergeCustomers() {
+                const selected = document.querySelector('.comparison-card.selected');
+                if (!selected) {
+                    alert('Please select which customer record to keep.');
+                    return;
+                }
 
-        function createCustomerCard(customer) {
-            const card = document.createElement('div');
-            card.className = 'customer-card';
-            card.onclick = () => showCustomerDetails(customer);
-            
-            const serviceHistory = customer.serviceHistory || [];
-            const lastService = serviceHistory.length > 0 ? serviceHistory[serviceHistory.length - 1] : null;
-            
-            card.innerHTML = `
-                <div class="customer-header">
-                    <h3 class="customer-name">${customer.name}</h3>
-                    <span class="customer-status ${customer.status === 'active' ? 'status-active' : 'status-inactive'}">
-                        ${customer.status || 'active'}
-                    </span>
-                </div>
-                
-                <div class="customer-info">
-                    <div class="info-item">
-                        <span>📍</span>
-                        <span>${customer.address}, ${customer.city}</span>
-                    </div>
-                    <div class="info-item">
-                        <span>📞</span>
-                        <span>${customer.phone}</span>
-                    </div>
-                    ${customer.email ? `
-                        <div class="info-item">
-                            <span>✉️</span>
-                            <span>${customer.email}</span>
-                        </div>
-                    ` : ''}
-                </div>
-                
-                <div class="service-history">
-                    <div class="history-title">Recent Service History</div>
-                    ${serviceHistory.length > 0 ? 
-                        serviceHistory.slice(-3).map(service => `
-                            <div class="history-item">
-                                <span class="service-type">${service.type}</span>
-                                <span class="service-date">${service.date}</span>
-                            </div>
-                        `).join('') :
-                        '<div class="info-item" style="color: #94a3b8;">No service history yet</div>'
+                const keepId = parseInt(selected.dataset.customerId);
+                const duplicate = this.duplicates.find(dup => 
+                    dup.customer1.id === keepId || dup.customer2.id === keepId
+                );
+
+                if (!duplicate) return;
+
+                const keepCustomer = duplicate.customer1.id === keepId ? duplicate.customer1 : duplicate.customer2;
+                const removeCustomer = duplicate.customer1.id === keepId ? duplicate.customer2 : duplicate.customer1;
+
+                // Merge data (keep non-empty fields from both)
+                Object.keys(removeCustomer).forEach(key => {
+                    if (!keepCustomer[key] && removeCustomer[key]) {
+                        keepCustomer[key] = removeCustomer[key];
                     }
-                </div>
-            `;
-            
-            return card;
-        }
+                });
 
-        function showAddCustomerModal() {
-            document.getElementById('addCustomerModal').style.display = 'flex';
-        }
+                // Remove the duplicate customer
+                this.customers = this.customers.filter(c => c.id !== removeCustomer.id);
+                
+                // Remove from duplicates list
+                this.duplicates = this.duplicates.filter(dup => 
+                    dup.customer1.id !== removeCustomer.id && dup.customer2.id !== removeCustomer.id
+                );
 
-        function closeAddCustomerModal() {
-            document.getElementById('addCustomerModal').style.display = 'none';
-            document.getElementById('customerForm').reset();
-        }
+                this.saveCustomers();
+                this.renderCustomers();
+                this.updateStats();
+                closeModal('mergeModal');
 
-        function saveCustomer() {
-            const form = document.getElementById('customerForm');
-            const formData = new FormData(form);
-            
-            const customer = {
-                id: Date.now(),
-                name: document.getElementById('customerName').value,
-                phone: document.getElementById('customerPhone').value,
-                email: document.getElementById('customerEmail').value,
-                address: document.getElementById('customerAddress').value,
-                city: document.getElementById('customerCity').value,
-                notes: document.getElementById('customerNotes').value,
-                status: 'active',
-                dateAdded: new Date().toISOString().split('T')[0],
-                serviceHistory: []
-            };
-            
-            if (!customer.name || !customer.phone || !customer.address || !customer.city) {
-                alert('Please fill in all required fields');
-                return;
+                alert('Customers merged successfully!');
             }
-            
-            customers.push(customer);
-            localStorage.setItem('a1apsvc-customers', JSON.stringify(customers));
-            
-            loadCustomers();
-            closeAddCustomerModal();
-            showSuccessMessage('Customer added successfully!');
+
+            updateStats() {
+                document.getElementById('totalCustomers').textContent = this.customers.length;
+                document.getElementById('duplicatesFound').textContent = this.duplicates.length;
+                
+                const weekAgo = new Date();
+                weekAgo.setDate(weekAgo.getDate() - 7);
+                const recentCount = this.customers.filter(c => new Date(c.dateAdded) > weekAgo).length;
+                document.getElementById('recentlyAdded').textContent = recentCount;
+                
+                const activeCount = this.customers.filter(c => c.email || c.mobilePhone).length;
+                document.getElementById('activeCustomers').textContent = activeCount;
+            }
+
+            saveCustomers() {
+                localStorage.setItem('a1apsvc_customers', JSON.stringify(this.customers));
+            }
         }
 
-        function showCustomerDetails(customer) {
-            alert(`Customer Details:\n\nName: ${customer.name}\nPhone: ${customer.phone}\nAddress: ${customer.address}, ${customer.city}\n\nService History: ${customer.serviceHistory.length} visits`);
+        // Modal functions
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
         }
 
-        // Search functionality
-        document.getElementById('searchInput').addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase();
-            const customerCards = document.querySelectorAll('.customer-card');
-            
-            customerCards.forEach(card => {
-                const text = card.textContent.toLowerCase();
-                if (text.includes(searchTerm)) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        });
+        // Initialize customer manager
+        const customerManager = new CustomerManager();
 
-        function showSuccessMessage(message) {
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: #10b981;
-                color: white;
-                padding: 1rem 1.5rem;
-                border-radius: 8px;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-                z-index: 1001;
-                font-size: 0.9rem;
-            `;
-            notification.textContent = message;
-            
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                if (notification.parentNode) {
-                    notification.parentNode.removeChild(notification);
-                }
-            }, 3000);
-        }
-
-        // Service Worker Registration
+        // Service worker registration
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('service-worker.js');
         }

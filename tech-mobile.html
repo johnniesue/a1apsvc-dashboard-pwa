@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A-1APSVC Tech Mobile</title>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #1a365d;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+        }
+
+        .mobile-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            object-fit: cover;
+        }
+
+        .logo.hidden {
+            display: none;
+        }
+
+        .header-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1a365d;
+        }
+
+        .tech-selector {
+            padding: 0.5rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .container {
+            padding: 1rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .tech-status-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .tech-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tech-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4299e1, #3182ce);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .tech-details h2 {
+            font-size: 1.25rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .tech-status {
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        .status-available {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .status-scheduled {
+            background: #bee3f8;
+            color: #2b6cb0;
+        }
+
+        .status-en-route {
+            background: #e9d8fd;
+            color: #6b46c1;
+        }
+
+        .status-in-progress {
+            background: #fef5e7;
+            color: #c05621;
+        }
+
+        .status-completed {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .current-appointment {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid #4299e1;
+        }
+
+        .appointment-customer {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1a365d;
+            margin-bottom: 0.5rem;
+        }
+
+        .appointment-details {
+            color: #4a5568;
+            margin-bottom: 0.5rem;
+        }
+
+        .appointment-address {
+            color: #4a5568;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .action-btn {
+            padding: 1rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            min-height: 80px;
+            justify-content: center;
+        }
+
+        .action-btn:active {
+            transform: scale(0.95);
+        }
+
+        .btn-en-route {
+            background: #9f7aea;
+            color: white;
+        }
+
+        .btn-en-route:hover {
+            background: #805ad5;
+        }
+
+        .btn-start {
+            background: #ed8936;
+            color: white;
+        }
+
+        .btn-start:hover {
+            background: #dd6b20;
+        }
+
+        .btn-complete {
+            background: #48bb78;
+            color: white;
+        }
+
+        .btn-complete:hover {
+            background: #38a169;
+        }
+
+        .btn-break {
+            background: #a0aec0;
+            color: white;
+        }
+
+        .btn-break:hover {
+            background: #718096;
+        }
+
+        .appointments-list {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .appointments-header {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #1a365d;
+        }
+
+        .appointment-item {
+            background: #f7fafc;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            border-left: 4px solid #e2e8f0;
+        }
+
+        .appointment-item.current {
+            border-left-color: #4299e1;
+            background: #ebf8ff;
+        }
+
+        .appointment-item.completed {
+            border-left-color: #48bb78;
+            background: #f0fff4;
+            opacity: 0.7;
+        }
+
+        .appointment-time {
+            font-weight: 600;
+            color: #1a365d;
+            margin-bottom: 0.25rem;
+        }
+
+        .appointment-customer-name {
+            color: #4a5568;
+            margin-bottom: 0.25rem;
+        }
+
+        .appointment-service {
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1a365d;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-top: 0.25rem;
+        }
+
+        .emergency-btn {
+            background: #f56565;
+            color: white;
+            padding: 1rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 1rem;
+            transition: all 0.2s;
+        }
+
+        .emergency-btn:hover {
+            background: #e53e3e;
+        }
+
+        .emergency-btn:active {
+            transform: scale(0.98);
+        }
+
+        .navigation-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-around;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.5rem;
+            border: none;
+            background: none;
+            color: #64748b;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .nav-btn.active {
+            color: #4299e1;
+        }
+
+        .nav-btn:hover {
+            color: #4299e1;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #48bb78;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            font-weight: 500;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateX(-50%) translateY(-100%); opacity: 0; }
+            to { transform: translateX(-50%) translateY(0); opacity: 1; }
+        }
+
+        .completion-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 1rem;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #4a5568;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #4a5568;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .btn-primary {
+            background: #4299e1;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0.75rem;
+            }
+            
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-btn {
+                min-height: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-header">
+        <div class="header-content">
+            <div class="logo-section">
+                <img id="headerLogo" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%234299e1'/%3E%3Ctext x='50' y='60' text-anchor='middle' fill='white' font-size='24' font-weight='bold'%3EA1%3C/text%3E%3C/svg%3E" alt="A-1APSVC Logo" class="logo hidden">
+                <div class="header-title">Tech Mobile</div>
+            </div>
+            <select class="tech-selector" id="techSelector" onchange="switchTechnician(this.value)">
+                <option value="chris">Chris Crabtree</option>
+                <option value="kian">Kian Crabtree</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Technician Status Card -->
+        <div class="tech-status-card">
+            <div class="tech-info">
+                <div class="tech-avatar" id="techAvatar">CC</div>
+                <div class="tech-details">
+                    <h2 id="techName">Chris Crabtree</h2>
+                    <div class="tech-status status-available" id="techStatus">Available</div>
+                </div>
+            </div>
+
+            <!-- Current Appointment -->
+            <div id="currentAppointment" class="current-appointment hidden">
+                <div class="appointment-customer" id="currentCustomer">Frank Reed</div>
+                <div class="appointment-details" id="currentDetails">Kitchen sink leak repair - 2 hours</div>
+                <div class="appointment-address" id="currentAddress">📍 Address to be confirmed</div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions" id="quickActions">
+                <button class="action-btn btn-en-route" onclick="updateStatus('en-route')">
+                    🚗
+                    <span>En Route</span>
+                </button>
+                <button class="action-btn btn-start" onclick="updateStatus('in-progress')">
+                    🔧
+                    <span>Start Job</span>
+                </button>
+                <button class="action-btn btn-complete" onclick="showCompletionModal()">
+                    ✅
+                    <span>Complete</span>
+                </button>
+                <button class="action-btn btn-break" onclick="updateStatus('available')">
+                    ☕
+                    <span>Break</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Today's Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="completedJobs">0</div>
+                <div class="stat-label">Jobs Completed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="hoursWorked">0</div>
+                <div class="stat-label">Hours Worked</div>
+            </div>
+        </div>
+
+        <!-- Emergency Button -->
+        <button class="emergency-btn" onclick="callEmergency()">
+            🚨 Emergency Support
+        </button>
+
+        <!-- Today's Appointments -->
+        <div class="appointments-list">
+            <div class="appointments-header">Today's Schedule</div>
+            <div id="appointmentsList">
+                <!-- Appointments will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <div class="navigation-bar">
+        <button class="nav-btn active" onclick="showSection('status')">
+            📊
+            <span>Status</span>
+        </button>
+        <button class="nav-btn" onclick="showSection('schedule')">
+            📅
+            <span>Schedule</span>
+        </button>
+        <button class="nav-btn" onclick="window.location.href='index.html'">
+            🏠
+            <span>Dashboard</span>
+        </button>
+        <button class="nav-btn" onclick="window.location.href='customers.html'">
+            👥
+            <span>Customers</span>
+        </button>
+    </div>
+
+    <!-- Completion Modal -->
+    <div id="completionModal" class="completion-modal hidden">
+        <div class="modal-content">
+            <div class="modal-title">Complete Job</div>
+            <form id="completionForm">
+                <div class="form-group">
+                    <label class="form-label">Time Spent (hours)</label>
+                    <select class="form-select" id="timeSpent">
+                        <option value="1">1 hour</option>
+                        <option value="2" selected>2 hours</option>
+                        <option value="3">3 hours</option>
+                        <option value="4">4 hours</option>
+                        <option value="6">6 hours</option>
+                        <option value="8">8 hours</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Service Completed</label>
+                    <select class="form-select" id="serviceCompleted">
+                        <option value="repair">Repair Completed</option>
+                        <option value="installation">Installation Completed</option>
+                        <option value="maintenance">Maintenance Completed</option>
+                        <option value="inspection">Inspection Completed</option>
+                        <option value="emergency">Emergency Fixed</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Notes</label>
+                    <textarea class="form-textarea" id="completionNotes" placeholder="Job details, parts used, recommendations..."></textarea>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="btn-secondary" onclick="hideCompletionModal()">Cancel</button>
+                    <button type="submit" class="btn-primary">Complete Job</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="logo-manager.js"></script>
+    <script src="customer-data.js"></script>
+    <script src="technician-manager.js"></script>
+    <script>
+        class TechMobileInterface {
+            constructor() {
+                this.currentTech = 'chris';
+                this.appointments = [];
+                this.currentAppointment = null;
+                this.init();
+            }
+
+            init() {
+                this.loadData();
+                this.updateDisplay();
+                this.startAutoRefresh();
+            }
+
+            loadData() {
+                // Load appointments
+                const saved = localStorage.getItem('a1apsvc-appointments');
+                if (saved) {
+                    this.appointments = JSON.parse(saved);
+                } else {
+                    this.appointments = [];
+                }
+
+                // Find current appointment for the technician
+                const today = new Date().toISOString().split('T')[0];
+                this.currentAppointment = this.appointments.find(apt => 
+                    apt.technician === this.currentTech && 
+                    apt.date === today && 
+                    (apt.status === 'scheduled' || apt.status === 'en-route' || apt.status === 'in-progress')
+                );
+            }
+
+            updateDisplay() {
+                this.updateTechInfo();
+                this.updateCurrentAppointment();
+                this.updateQuickActions();
+                this.updateStats();
+                this.updateAppointmentsList();
+            }
+
+            updateTechInfo() {
+                const techData = {
+                    chris: {
+                        name: 'Chris Crabtree',
+                        avatar: 'CC',
+                        color: '#4299e1'
+                    },
+                    kian: {
+                        name: 'Kian Crabtree',
+                        avatar: 'KC',
+                        color: '#ed8936'
+                    }
+                };
+
+                const tech = techData[this.currentTech];
+                document.getElementById('techName').textContent = tech.name;
+                document.getElementById('techAvatar').textContent = tech.avatar;
+                document.getElementById('techAvatar').style.background = `linear-gradient(135deg, ${tech.color}, ${tech.color}dd)`;
+
+                // Update status
+                this.updateTechStatus();
+            }
+
+            updateTechStatus() {
+                const statusElement = document.getElementById('techStatus');
+                let status = 'available';
+                let statusText = 'Available';
+
+                if (this.currentAppointment) {
+                    status = this.currentAppointment.status;
+                    switch (status) {
+                        case 'scheduled':
+                            statusText = 'Scheduled';
+                            break;
+                        case 'en-route':
+                            statusText = `En Route - ${this.currentAppointment.customerName}`;
+                            break;
+                        case 'in-progress':
+                            statusText = `Working - ${this.currentAppointment.customerName}`;
+                            break;
+                    }
+                }
+
+                statusElement.textContent = statusText;
+                statusElement.className = `tech-status status-${status}`;
+            }
+
+            updateCurrentAppointment() {
+                const currentDiv = document.getElementById('currentAppointment');
+                
+                if (this.currentAppointment) {
+                    currentDiv.classList.remove('hidden');
+                    document.getElementById('currentCustomer').textContent = this.currentAppointment.customerName;
+                    document.getElementById('currentDetails').textContent = 
+                        `${this.currentAppointment.serviceType} - ${this.currentAppointment.duration} hours`;
+                    document.getElementById('currentAddress').textContent = 
+                        `📍 ${this.currentAppointment.address}`;
+                } else {
+                    currentDiv.classList.add('hidden');
+                }
+            }
+
+            updateQuickActions() {
+                const actionsDiv = document.getElementById('quickActions');
+                const buttons = actionsDiv.querySelectorAll('.action-btn');
+                
+                // Reset all buttons
+                buttons.forEach(btn => btn.style.display = 'flex');
+
+                if (!this.currentAppointment) {
+                    // No current appointment - hide most actions
+                    buttons.forEach(btn => {
+                        if (!btn.classList.contains('btn-break')) {
+                            btn.style.display = 'none';
+                        }
+                    });
+                } else {
+                    // Show relevant actions based on current status
+                    const status = this.currentAppointment.status;
+                    
+                    buttons.forEach(btn => {
+                        if (status === 'scheduled' && btn.classList.contains('btn-en-route')) {
+                            btn.style.display = 'flex';
+                        } else if (status === 'en-route' && btn.classList.contains('btn-start')) {
+                            btn.style.display = 'flex';
+                        } else if (status === 'in-progress' && btn.classList.contains('btn-complete')) {
+                            btn.style.display = 'flex';
+                        } else if (btn.classList.contains('btn-break')) {
+                            btn.style.display = 'flex';
+                        } else {
+                            btn.style.display = 'none';
+                        }
+                    });
+                }
+            }
+
+            updateStats() {
+                const today = new Date().toISOString().split('T')[0];
+                const todayAppointments = this.appointments.filter(apt => 
+                    apt.technician === this.currentTech && 
+                    apt.date === today
+                );
+
+                const completed = todayAppointments.filter(apt => apt.status === 'completed').length;
+                const totalHours = todayAppointments
+                    .filter(apt => apt.status === 'completed')
+                    .reduce((sum, apt) => sum + (apt.duration || 2), 0);
+
+                document.getElementById('completedJobs').textContent = completed;
+                document.getElementById('hoursWorked').textContent = totalHours;
+            }
+
+            updateAppointmentsList() {
+                const listDiv = document.getElementById('appointmentsList');
+                const today = new Date().toISOString().split('T')[0];
+                const todayAppointments = this.appointments
+                    .filter(apt => apt.technician === this.currentTech && apt.date === today)
+                    .sort((a, b) => a.time.localeCompare(b.time));
+
+                if (todayAppointments.length === 0) {
+                    listDiv.innerHTML = '<p style="color: #a0aec0; text-align: center; padding: 1rem;">No appointments scheduled for today</p>';
+                    return;
+                }
+
+                listDiv.innerHTML = '';
+                todayAppointments.forEach(apt => {
+                    const item = document.createElement('div');
+                    item.className = `appointment-item ${apt.id === this.currentAppointment?.id ? 'current' : ''} ${apt.status === 'completed' ? 'completed' : ''}`;
+                    item.innerHTML = `
+                        <div class="appointment-time">${apt.time}</div>
+                        <div class="appointment-customer-name">${apt.customerName}</div>
+                        <div class="appointment-service">${apt.serviceType} - ${apt.duration}h</div>
+                    `;
+                    listDiv.appendChild(item);
+                });
+            }
+
+            updateStatus(newStatus) {
+                if (!this.currentAppointment) {
+                    this.showNotification('No active appointment to update', 'error');
+                    return;
+                }
+
+                // Update appointment status
+                const appointmentIndex = this.appointments.findIndex(apt => apt.id === this.currentAppointment.id);
+                if (appointmentIndex !== -1) {
+                    this.appointments[appointmentIndex].status = newStatus;
+                    localStorage.setItem('a1apsvc-appointments', JSON.stringify(this.appointments));
+                    
+                    // Update current appointment reference
+                    this.currentAppointment.status = newStatus;
+                    
+                    // Update technician status in technician manager
+                    if (typeof window.technicianManager !== 'undefined') {
+                        window.technicianManager.updateTechnicianStatus(this.currentTech, newStatus, this.currentAppointment.id);
+                    }
+                    
+                    this.updateDisplay();
+                    
+                    const statusMessages = {
+                        'en-route': 'Status updated: En Route',
+                        'in-progress': 'Job started successfully',
+                        'available': 'Break time - status updated'
+                    };
+                    
+                    this.showNotification(statusMessages[newStatus] || 'Status updated', 'success');
+                }
+            }
+
+            showCompletionModal() {
+                if (!this.currentAppointment) {
+                    this.showNotification('No active appointment to complete', 'error');
+                    return;
+                }
+                
+                document.getElementById('completionModal').classList.remove('hidden');
+            }
+
+            hideCompletionModal() {
+                document.getElementById('completionModal').classList.add('hidden');
+                document.getElementById('completionForm').reset();
+            }
+
+            completeJob(timeSpent, serviceType, notes) {
+                if (!this.currentAppointment) return;
+
+                // Update appointment
+                const appointmentIndex = this.appointments.findIndex(apt => apt.id === this.currentAppointment.id);
+                if (appointmentIndex !== -1) {
+                    this.appointments[appointmentIndex].status = 'completed';
+                    this.appointments[appointmentIndex].actualDuration = timeSpent;
+                    this.appointments[appointmentIndex].completionNotes = notes;
+                    this.appointments[appointmentIndex].completedAt = new Date().toISOString();
+                    
+                    localStorage.setItem('a1apsvc-appointments', JSON.stringify(this.appointments));
+                    
+                    // Update technician manager
+                    if (typeof window.technicianManager !== 'undefined') {
+                        const revenue = timeSpent * 200; // $200 per hour
+                        window.technicianManager.completeAppointment(this.currentTech, this.currentAppointment.id, timeSpent, revenue);
+                    }
+                    
+                    // Clear current appointment
+                    this.currentAppointment = null;
+                    
+                    this.updateDisplay();
+                    this.hideCompletionModal();
+                    this.showNotification(`Job completed! +$${timeSpent * 200}`, 'success');
+                }
+            }
+
+            switchTechnician(techId) {
+                this.currentTech = techId;
+                this.loadData();
+                this.updateDisplay();
+            }
+
+            showNotification(message, type = 'success') {
+                const notification = document.createElement('div');
+                notification.className = 'notification';
+                notification.style.background = type === 'error' ? '#f56565' : '#48bb78';
+                notification.textContent = message;
+
+                document.body.appendChild(notification);
+
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 3000);
+            }
+
+            startAutoRefresh() {
+                // Refresh data every 30 seconds
+                setInterval(() => {
+                    this.loadData();
+                    this.updateDisplay();
+                }, 30000);
+            }
+        }
+
+        // Global functions
+        function switchTechnician(techId) {
+            techMobile.switchTechnician(techId);
+            document.getElementById('techSelector').value = techId;
+        }
+
+        function updateStatus(status) {
+            techMobile.updateStatus(status);
+        }
+
+        function showCompletionModal() {
+            techMobile.showCompletionModal();
+        }
+
+        function hideCompletionModal() {
+            techMobile.hideCompletionModal();
+        }
+
+        function callEmergency() {
+            window.location.href = 'tel:+14699005194';
+        }
+
+        function showSection(section) {
+            // Update navigation
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.closest('.nav-btn').classList.add('active');
+            
+            // For now, just refresh the current view
+            techMobile.updateDisplay();
+        }
+
+        // Form submission
+        document.getElementById('completionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const timeSpent = parseInt(document.getElementById('timeSpent').value);
+            const serviceType = document.getElementById('serviceCompleted').value;
+            const notes = document.getElementById('completionNotes').value;
+            
+            techMobile.completeJob(timeSpent, serviceType, notes);
+        });
+
+        // Initialize the mobile interface
+        let techMobile;
+        
+        window.addEventListener('load', function() {
+            techMobile = new TechMobileInterface();
+        });
+
+        // Handle page visibility changes to refresh data
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden && techMobile) {
+                techMobile.loadData();
+                techMobile.updateDisplay();
+            }
+        });
+    </script>
+</body>
+</html>
+

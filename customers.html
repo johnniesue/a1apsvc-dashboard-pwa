@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A-1APSVC Customer Management</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#007ACC">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-logo {
+            max-height: 50px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .company-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1a365d;
+            margin: 0;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .nav-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-btn:hover {
+            background: #0056b3;
+            transform: translateY(-1px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .page-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .page-title h2 {
+            font-size: 2rem;
+            color: #1a365d;
+            margin: 0;
+        }
+
+        .add-customer-btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .add-customer-btn:hover {
+            background: #059669;
+            transform: translateY(-1px);
+        }
+
+        .search-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-bar:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .customers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .customer-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .customer-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        }
+
+        .customer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .customer-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1a365d;
+            margin: 0;
+        }
+
+        .customer-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-active {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-inactive {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        .customer-info {
+            margin-bottom: 1rem;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .service-history {
+            border-top: 1px solid #e2e8f0;
+            padding-top: 1rem;
+        }
+
+        .history-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #1a365d;
+            margin-bottom: 0.5rem;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.85rem;
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .service-type {
+            color: #007bff;
+            font-weight: 500;
+        }
+
+        .service-date {
+            color: #64748b;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .empty-title {
+            font-size: 1.5rem;
+            color: #1a365d;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-description {
+            color: #64748b;
+            margin-bottom: 2rem;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            color: #1a365d;
+            margin: 0;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #64748b;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #1a365d;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #64748b;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .page-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .customers-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-section">
+                <img id="headerLogo" class="header-logo hidden" alt="A-1APSVC Logo">
+                <h1 class="company-title">Customer Management</h1>
+            </div>
+            <div class="nav-buttons">
+                <a href="index.html" class="nav-btn">🏠 Dashboard</a>
+                <a href="schedule.html" class="nav-btn">📅 Schedule</a>
+                <a href="reports.html" class="nav-btn">📊 Reports</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <div class="page-title">
+                <span style="font-size: 2rem;">👥</span>
+                <h2>Customer Management</h2>
+            </div>
+            <button class="add-customer-btn" onclick="showAddCustomerModal()">
+                + Add New Customer
+            </button>
+        </div>
+
+        <div class="search-section">
+            <input type="text" class="search-bar" placeholder="Search customers by name, address, or phone..." id="searchInput">
+        </div>
+
+        <div id="customersContainer">
+            <div class="empty-state">
+                <div class="empty-icon">👥</div>
+                <h3 class="empty-title">No Customers Yet</h3>
+                <p class="empty-description">Add your first customer or import from Housecall Pro to get started</p>
+                <button class="add-customer-btn" onclick="showAddCustomerModal()">Add First Customer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Customer Modal -->
+    <div id="addCustomerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Add New Customer</h3>
+                <button class="close-btn" onclick="closeAddCustomerModal()">&times;</button>
+            </div>
+            
+            <form id="customerForm">
+                <div class="form-group">
+                    <label class="form-label">Customer Name *</label>
+                    <input type="text" class="form-input" id="customerName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Phone Number *</label>
+                    <input type="tel" class="form-input" id="customerPhone" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="customerEmail">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Service Address *</label>
+                    <input type="text" class="form-input" id="customerAddress" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">City *</label>
+                    <input type="text" class="form-input" id="customerCity" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Notes</label>
+                    <textarea class="form-input form-textarea" id="customerNotes" placeholder="Special instructions, access codes, etc."></textarea>
+                </div>
+            </form>
+            
+            <div class="modal-actions">
+                <button class="btn-secondary" onclick="closeAddCustomerModal()">Cancel</button>
+                <button class="btn-primary" onclick="saveCustomer()">Save Customer</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load saved logo on page load
+        window.addEventListener('load', function() {
+            const savedLogo = localStorage.getItem('a1apsvc-logo');
+            if (savedLogo) {
+                const headerLogo = document.getElementById('headerLogo');
+                headerLogo.src = savedLogo;
+                headerLogo.classList.remove('hidden');
+            }
+            
+            loadCustomers();
+        });
+
+        // Customer data management
+        let customers = JSON.parse(localStorage.getItem('a1apsvc-customers') || '[]');
+
+        function loadCustomers() {
+            const container = document.getElementById('customersContainer');
+            
+            if (customers.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">👥</div>
+                        <h3 class="empty-title">No Customers Yet</h3>
+                        <p class="empty-description">Add your first customer or import from Housecall Pro to get started</p>
+                        <button class="add-customer-btn" onclick="showAddCustomerModal()">Add First Customer</button>
+                    </div>
+                `;
+                return;
+            }
+
+            const customersGrid = document.createElement('div');
+            customersGrid.className = 'customers-grid';
+            
+            customers.forEach(customer => {
+                const customerCard = createCustomerCard(customer);
+                customersGrid.appendChild(customerCard);
+            });
+            
+            container.innerHTML = '';
+            container.appendChild(customersGrid);
+        }
+
+        function createCustomerCard(customer) {
+            const card = document.createElement('div');
+            card.className = 'customer-card';
+            card.onclick = () => showCustomerDetails(customer);
+            
+            const serviceHistory = customer.serviceHistory || [];
+            const lastService = serviceHistory.length > 0 ? serviceHistory[serviceHistory.length - 1] : null;
+            
+            card.innerHTML = `
+                <div class="customer-header">
+                    <h3 class="customer-name">${customer.name}</h3>
+                    <span class="customer-status ${customer.status === 'active' ? 'status-active' : 'status-inactive'}">
+                        ${customer.status || 'active'}
+                    </span>
+                </div>
+                
+                <div class="customer-info">
+                    <div class="info-item">
+                        <span>📍</span>
+                        <span>${customer.address}, ${customer.city}</span>
+                    </div>
+                    <div class="info-item">
+                        <span>📞</span>
+                        <span>${customer.phone}</span>
+                    </div>
+                    ${customer.email ? `
+                        <div class="info-item">
+                            <span>✉️</span>
+                            <span>${customer.email}</span>
+                        </div>
+                    ` : ''}
+                </div>
+                
+                <div class="service-history">
+                    <div class="history-title">Recent Service History</div>
+                    ${serviceHistory.length > 0 ? 
+                        serviceHistory.slice(-3).map(service => `
+                            <div class="history-item">
+                                <span class="service-type">${service.type}</span>
+                                <span class="service-date">${service.date}</span>
+                            </div>
+                        `).join('') :
+                        '<div class="info-item" style="color: #94a3b8;">No service history yet</div>'
+                    }
+                </div>
+            `;
+            
+            return card;
+        }
+
+        function showAddCustomerModal() {
+            document.getElementById('addCustomerModal').style.display = 'flex';
+        }
+
+        function closeAddCustomerModal() {
+            document.getElementById('addCustomerModal').style.display = 'none';
+            document.getElementById('customerForm').reset();
+        }
+
+        function saveCustomer() {
+            const form = document.getElementById('customerForm');
+            const formData = new FormData(form);
+            
+            const customer = {
+                id: Date.now(),
+                name: document.getElementById('customerName').value,
+                phone: document.getElementById('customerPhone').value,
+                email: document.getElementById('customerEmail').value,
+                address: document.getElementById('customerAddress').value,
+                city: document.getElementById('customerCity').value,
+                notes: document.getElementById('customerNotes').value,
+                status: 'active',
+                dateAdded: new Date().toISOString().split('T')[0],
+                serviceHistory: []
+            };
+            
+            if (!customer.name || !customer.phone || !customer.address || !customer.city) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            customers.push(customer);
+            localStorage.setItem('a1apsvc-customers', JSON.stringify(customers));
+            
+            loadCustomers();
+            closeAddCustomerModal();
+            showSuccessMessage('Customer added successfully!');
+        }
+
+        function showCustomerDetails(customer) {
+            alert(`Customer Details:\n\nName: ${customer.name}\nPhone: ${customer.phone}\nAddress: ${customer.address}, ${customer.city}\n\nService History: ${customer.serviceHistory.length} visits`);
+        }
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const customerCards = document.querySelectorAll('.customer-card');
+            
+            customerCards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        function showSuccessMessage(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #10b981;
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 1001;
+                font-size: 0.9rem;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 3000);
+        }
+
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js');
+        }
+    </script>
+</body>
+</html>
+

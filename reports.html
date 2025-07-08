@@ -3,33 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A-1APSVC Financial Reports - Dashboard PWA</title>
-    
-    <!-- PWA Manifest -->
+    <title>A-1APSVC Financial Reports</title>
     <link rel="manifest" href="manifest.json">
-    
-    <!-- Theme color for mobile browsers -->
     <meta name="theme-color" content="#007ACC">
-    
-    <!-- Chart.js for data visualization -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: #f8fafc;
+        * {
             margin: 0;
             padding: 0;
-            line-height: 1.6;
+            box-sizing: border-box;
         }
-        
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
         .header {
-            background: linear-gradient(135deg, #007ACC 0%, #0056b3 100%);
-            color: white;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
             padding: 1rem 2rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
-        
+
         .header-content {
             max-width: 1200px;
             margin: 0 auto;
@@ -37,258 +39,341 @@
             justify-content: space-between;
             align-items: center;
         }
-        
+
         .logo-section {
             display: flex;
             align-items: center;
             gap: 1rem;
         }
-        
-        .eagle-logo {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: white;
-            padding: 6px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-            object-fit: contain;
+
+        .header-logo {
+            max-height: 50px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
-        
-        .company-info h1 {
-            margin: 0;
+
+        .company-title {
             font-size: 1.8rem;
             font-weight: 700;
-        }
-        
-        .company-info p {
+            color: #1a365d;
             margin: 0;
-            opacity: 0.9;
-            font-size: 0.9rem;
         }
-        
+
         .nav-buttons {
             display: flex;
             gap: 0.5rem;
         }
-        
+
         .nav-btn {
-            background: rgba(255,255,255,0.2);
+            background: #007bff;
             color: white;
-            border: 1px solid rgba(255,255,255,0.3);
+            border: none;
             padding: 0.5rem 1rem;
-            border-radius: 6px;
+            border-radius: 8px;
             text-decoration: none;
             font-size: 0.9rem;
             transition: all 0.3s ease;
             cursor: pointer;
         }
-        
+
         .nav-btn:hover {
-            background: rgba(255,255,255,0.3);
+            background: #0056b3;
             transform: translateY(-1px);
         }
-        
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 2rem;
         }
-        
-        .dashboard-header {
-            background: white;
+
+        .page-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
             padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
             margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        
-        .dashboard-title {
+
+        .page-title {
             display: flex;
             align-items: center;
             gap: 1rem;
-            margin-bottom: 0.5rem;
         }
-        
-        .dashboard-title h2 {
-            margin: 0;
-            color: #1a365d;
+
+        .page-title h2 {
             font-size: 2rem;
-        }
-        
-        .dashboard-subtitle {
-            color: #64748b;
+            color: #1a365d;
             margin: 0;
         }
-        
+
+        .import-btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .import-btn:hover {
+            background: #059669;
+            transform: translateY(-1px);
+        }
+
         .metrics-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 1.5rem;
             margin-bottom: 2rem;
         }
-        
+
         .metric-card {
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
             padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            text-align: center;
         }
-        
-        .metric-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-        
-        .metric-title {
-            color: #64748b;
-            font-size: 0.9rem;
-            margin: 0;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .metric-trend {
-            font-size: 0.8rem;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-        }
-        
-        .trend-up {
-            background: #dcfce7;
-            color: #166534;
-        }
-        
-        .trend-down {
-            background: #fef2f2;
-            color: #dc2626;
-        }
-        
+
         .metric-value {
             font-size: 2.5rem;
             font-weight: 700;
-            color: #1a365d;
-            margin: 0;
+            color: #64748b;
+            margin-bottom: 0.5rem;
         }
-        
-        .metric-description {
+
+        .metric-label {
             color: #94a3b8;
             font-size: 0.9rem;
-            margin: 0.5rem 0 0 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-        
+
+        .metric-description {
+            color: #cbd5e1;
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+        }
+
         .charts-section {
             display: grid;
             grid-template-columns: 2fr 1fr;
             gap: 2rem;
             margin-bottom: 2rem;
         }
-        
+
         .chart-card {
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
             padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
         }
-        
+
         .chart-title {
             font-size: 1.25rem;
             color: #1a365d;
-            margin: 0 0 1.5rem 0;
+            margin-bottom: 1.5rem;
         }
-        
+
         .chart-container {
             position: relative;
             height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            font-size: 1.1rem;
         }
-        
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .empty-title {
+            font-size: 1.5rem;
+            color: #1a365d;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-description {
+            color: #64748b;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
         .reports-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 1.5rem;
         }
-        
+
         .report-card {
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
             padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
         }
-        
+
         .report-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1rem;
         }
-        
+
         .report-title {
             font-size: 1.1rem;
             color: #1a365d;
             margin: 0;
         }
-        
+
         .export-btn {
-            background: #007ACC;
-            color: white;
+            background: #f1f5f9;
+            color: #94a3b8;
             border: none;
             padding: 0.5rem 1rem;
             border-radius: 6px;
-            cursor: pointer;
+            cursor: not-allowed;
             font-size: 0.8rem;
-            transition: background 0.3s ease;
         }
-        
-        .export-btn:hover {
-            background: #0056b3;
-        }
-        
+
         .report-content {
-            color: #64748b;
-            line-height: 1.6;
+            color: #94a3b8;
+            text-align: center;
+            padding: 2rem 0;
+            font-style: italic;
         }
-        
-        .report-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
         }
-        
-        .report-list li {
-            padding: 0.5rem 0;
-            border-bottom: 1px solid #f1f5f9;
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            max-width: 600px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
         }
-        
-        .report-list li:last-child {
-            border-bottom: none;
+
+        .modal-title {
+            font-size: 1.5rem;
+            color: #1a365d;
+            margin: 0;
         }
-        
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #64748b;
+        }
+
+        .import-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .import-option {
+            border: 2px dashed #cbd5e1;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .import-option:hover {
+            border-color: #007bff;
+            background: #f0f8ff;
+        }
+
+        .option-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .option-title {
+            font-weight: 600;
+            color: #1a365d;
+            margin-bottom: 0.25rem;
+        }
+
+        .option-description {
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
                 gap: 1rem;
                 text-align: center;
             }
-            
-            .nav-buttons {
-                flex-wrap: wrap;
-                justify-content: center;
+
+            .page-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
             }
-            
+
             .container {
                 padding: 1rem;
             }
-            
+
             .charts-section {
                 grid-template-columns: 1fr;
             }
-            
+
             .metrics-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr);
             }
+        }
+
+        .hidden {
+            display: none !important;
         }
     </style>
 </head>
@@ -296,146 +381,172 @@
     <header class="header">
         <div class="header-content">
             <div class="logo-section">
-                <img id="headerLogo" class="eagle-logo" style="display: none;" alt="A-1APSVC Eagle Logo">
-                <div class="company-info">
-                    <h1>A-1APSVC Financial Reports</h1>
-                    <p>Business Analytics & Revenue Tracking</p>
-                </div>
+                <img id="headerLogo" class="header-logo hidden" alt="A-1APSVC Logo">
+                <h1 class="company-title">Financial Reports</h1>
             </div>
             <div class="nav-buttons">
                 <a href="index.html" class="nav-btn">🏠 Dashboard</a>
                 <a href="schedule.html" class="nav-btn">📅 Schedule</a>
-                <a href="#" class="nav-btn">👥 Customers</a>
+                <a href="customers.html" class="nav-btn">👥 Customers</a>
             </div>
         </div>
     </header>
 
     <div class="container">
-        <div class="dashboard-header">
-            <div class="dashboard-title">
+        <div class="page-header">
+            <div class="page-title">
                 <span style="font-size: 2rem;">📊</span>
-                <h2>Financial Dashboard</h2>
+                <h2>Financial Reports</h2>
             </div>
-            <p class="dashboard-subtitle">Track revenue, expenses, and business performance metrics</p>
+            <button class="import-btn" onclick="showImportModal()">
+                📥 Import Data
+            </button>
         </div>
 
         <div class="metrics-grid">
             <div class="metric-card">
-                <div class="metric-header">
-                    <h3 class="metric-title">Monthly Revenue</h3>
-                    <span class="metric-trend trend-up">+12.5%</span>
-                </div>
-                <div class="metric-value">$24,750</div>
-                <div class="metric-description">January 2025 total revenue</div>
+                <div class="metric-value">$0</div>
+                <div class="metric-label">Monthly Revenue</div>
+                <div class="metric-description">No data imported yet</div>
             </div>
             
             <div class="metric-card">
-                <div class="metric-header">
-                    <h3 class="metric-title">Average Job Value</h3>
-                    <span class="metric-trend trend-up">+8.3%</span>
-                </div>
-                <div class="metric-value">$185</div>
-                <div class="metric-description">Per service call average</div>
+                <div class="metric-value">$0</div>
+                <div class="metric-label">Average Job Value</div>
+                <div class="metric-description">No jobs recorded</div>
             </div>
             
             <div class="metric-card">
-                <div class="metric-header">
-                    <h3 class="metric-title">Monthly Expenses</h3>
-                    <span class="metric-trend trend-down">-5.2%</span>
-                </div>
-                <div class="metric-value">$8,950</div>
-                <div class="metric-description">Operating costs this month</div>
+                <div class="metric-value">$0</div>
+                <div class="metric-label">Monthly Expenses</div>
+                <div class="metric-description">No expenses tracked</div>
             </div>
             
             <div class="metric-card">
-                <div class="metric-header">
-                    <h3 class="metric-title">Net Profit</h3>
-                    <span class="metric-trend trend-up">+18.7%</span>
-                </div>
-                <div class="metric-value">$15,800</div>
-                <div class="metric-description">Monthly profit margin: 63.8%</div>
+                <div class="metric-value">$0</div>
+                <div class="metric-label">Net Profit</div>
+                <div class="metric-description">No profit calculated</div>
             </div>
         </div>
 
         <div class="charts-section">
             <div class="chart-card">
-                <h3 class="chart-title">Revenue Trend (Last 6 Months)</h3>
+                <h3 class="chart-title">Revenue Trend</h3>
                 <div class="chart-container">
-                    <canvas id="revenueChart"></canvas>
+                    <div>📈 No revenue data to display<br><small>Import your Housecall Pro data to see charts</small></div>
                 </div>
             </div>
             
             <div class="chart-card">
                 <h3 class="chart-title">Service Distribution</h3>
                 <div class="chart-container">
-                    <canvas id="serviceChart"></canvas>
+                    <div>🔧 No service data available<br><small>Charts will appear after data import</small></div>
                 </div>
             </div>
+        </div>
+
+        <div class="empty-state">
+            <div class="empty-icon">📊</div>
+            <h3 class="empty-title">No Financial Data Yet</h3>
+            <p class="empty-description">
+                Import your data from Housecall Pro to see detailed financial reports, revenue trends, 
+                and business analytics. Your reports will automatically populate with customer data, 
+                job history, and financial metrics.
+            </p>
+            <button class="import-btn" onclick="showImportModal()">Import Housecall Pro Data</button>
         </div>
 
         <div class="reports-grid">
             <div class="report-card">
                 <div class="report-header">
                     <h3 class="report-title">Top Customers</h3>
-                    <button class="export-btn" onclick="exportReport('customers')">Export</button>
+                    <button class="export-btn" disabled>Export</button>
                 </div>
                 <div class="report-content">
-                    <ul class="report-list">
-                        <li><span>Johnson Residence</span><span>$2,450</span></li>
-                        <li><span>McKinney Office Complex</span><span>$1,890</span></li>
-                        <li><span>Smith Family Home</span><span>$1,650</span></li>
-                        <li><span>Plano Restaurant</span><span>$1,420</span></li>
-                        <li><span>Allen Apartment Complex</span><span>$1,280</span></li>
-                    </ul>
+                    No customer data available
                 </div>
             </div>
             
             <div class="report-card">
                 <div class="report-header">
                     <h3 class="report-title">Service Areas Performance</h3>
-                    <button class="export-btn" onclick="exportReport('areas')">Export</button>
+                    <button class="export-btn" disabled>Export</button>
                 </div>
                 <div class="report-content">
-                    <ul class="report-list">
-                        <li><span>McKinney</span><span>$8,950</span></li>
-                        <li><span>Plano</span><span>$6,780</span></li>
-                        <li><span>Allen</span><span>$4,320</span></li>
-                        <li><span>Frisco</span><span>$3,890</span></li>
-                        <li><span>Wylie</span><span>$810</span></li>
-                    </ul>
+                    No service area data available
                 </div>
             </div>
             
             <div class="report-card">
                 <div class="report-header">
                     <h3 class="report-title">Technician Performance</h3>
-                    <button class="export-btn" onclick="exportReport('technicians')">Export</button>
+                    <button class="export-btn" disabled>Export</button>
                 </div>
                 <div class="report-content">
-                    <ul class="report-list">
-                        <li><span>Chris (Lead Tech)</span><span>$14,200</span></li>
-                        <li><span>Ivan (Apprentice)</span><span>$10,550</span></li>
-                        <li><span>Jobs Completed</span><span>134 total</span></li>
-                        <li><span>Customer Rating</span><span>4.9/5.0</span></li>
-                        <li><span>Efficiency Rate</span><span>94%</span></li>
-                    </ul>
+                    No technician data available
                 </div>
             </div>
             
             <div class="report-card">
                 <div class="report-header">
                     <h3 class="report-title">Monthly Breakdown</h3>
-                    <button class="export-btn" onclick="exportReport('monthly')">Export</button>
+                    <button class="export-btn" disabled>Export</button>
                 </div>
                 <div class="report-content">
-                    <ul class="report-list">
-                        <li><span>Emergency Calls</span><span>$8,950</span></li>
-                        <li><span>Scheduled Maintenance</span><span>$6,780</span></li>
-                        <li><span>New Installations</span><span>$5,420</span></li>
-                        <li><span>Repairs</span><span>$3,600</span></li>
-                        <li><span>Total Jobs</span><span>134</span></li>
-                    </ul>
+                    No monthly data available
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Import Modal -->
+    <div id="importModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Import from Housecall Pro</h3>
+                <button class="close-btn" onclick="closeImportModal()">&times;</button>
+            </div>
+            
+            <p style="color: #64748b; margin-bottom: 2rem;">
+                Choose how you'd like to import your Housecall Pro data. This will populate your dashboard 
+                with customers, service history, and financial reports.
+            </p>
+            
+            <div class="import-options">
+                <div class="import-option" onclick="selectImportType('file')">
+                    <div class="option-icon">📁</div>
+                    <div class="option-title">Upload File</div>
+                    <div class="option-description">CSV, Excel, or JSON export from Housecall Pro</div>
+                </div>
+                
+                <div class="import-option" onclick="selectImportType('api')">
+                    <div class="option-icon">🔗</div>
+                    <div class="option-title">API Connection</div>
+                    <div class="option-description">Direct connection to Housecall Pro (coming soon)</div>
+                </div>
+                
+                <div class="import-option" onclick="selectImportType('manual')">
+                    <div class="option-icon">✏️</div>
+                    <div class="option-title">Manual Entry</div>
+                    <div class="option-description">Add customers and jobs manually</div>
+                </div>
+            </div>
+            
+            <div id="fileUploadSection" style="display: none;">
+                <div style="border: 2px dashed #cbd5e1; padding: 2rem; text-align: center; border-radius: 8px; margin-bottom: 1rem;">
+                    <input type="file" id="housecallFile" accept=".csv,.xlsx,.json" style="display: none;">
+                    <button onclick="document.getElementById('housecallFile').click()" style="background: #007bff; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer;">
+                        Choose Housecall Pro File
+                    </button>
+                    <p style="margin-top: 0.5rem; font-size: 0.9rem; color: #64748b;">
+                        Supports customer exports, job reports, and financial data
+                    </p>
+                </div>
+            </div>
+            
+            <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem;">
+                <button onclick="closeImportModal()" style="background: #f1f5f9; color: #64748b; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer;">Cancel</button>
+                <button onclick="processImport()" style="background: #10b981; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer;">Start Import</button>
             </div>
         </div>
     </div>
@@ -447,80 +558,134 @@
             if (savedLogo) {
                 const headerLogo = document.getElementById('headerLogo');
                 headerLogo.src = savedLogo;
-                headerLogo.style.display = 'inline-block';
+                headerLogo.classList.remove('hidden');
             }
         });
 
-        // Revenue Chart
-        const revenueCtx = document.getElementById('revenueChart').getContext('2d');
-        const revenueChart = new Chart(revenueCtx, {
-            type: 'line',
-            data: {
-                labels: ['Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan'],
-                datasets: [{
-                    label: 'Monthly Revenue',
-                    data: [18500, 21200, 19800, 22100, 22000, 24750],
-                    borderColor: '#007ACC',
-                    backgroundColor: 'rgba(0, 122, 204, 0.1)',
-                    borderWidth: 3,
-                    fill: true,
-                    tension: 0.4
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            callback: function(value) {
-                                return '$' + value.toLocaleString();
-                            }
-                        }
-                    }
-                }
-            }
-        });
+        let selectedImportType = null;
 
-        // Service Distribution Chart
-        const serviceCtx = document.getElementById('serviceChart').getContext('2d');
-        const serviceChart = new Chart(serviceCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Emergency', 'Maintenance', 'Installation', 'Repair'],
-                datasets: [{
-                    data: [36, 27, 22, 15],
-                    backgroundColor: [
-                        '#dc2626',
-                        '#007ACC',
-                        '#059669',
-                        '#d97706'
-                    ],
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom'
-                    }
-                }
-            }
-        });
-
-        // Export functionality
-        function exportReport(type) {
-            alert(`Exporting ${type} report - integrate with your accounting system`);
+        function showImportModal() {
+            document.getElementById('importModal').style.display = 'flex';
         }
-        
+
+        function closeImportModal() {
+            document.getElementById('importModal').style.display = 'none';
+            selectedImportType = null;
+            document.getElementById('fileUploadSection').style.display = 'none';
+        }
+
+        function selectImportType(type) {
+            selectedImportType = type;
+            
+            // Reset all options
+            document.querySelectorAll('.import-option').forEach(option => {
+                option.style.borderColor = '#cbd5e1';
+                option.style.background = 'transparent';
+            });
+            
+            // Highlight selected option
+            event.target.closest('.import-option').style.borderColor = '#007bff';
+            event.target.closest('.import-option').style.background = '#f0f8ff';
+            
+            if (type === 'file') {
+                document.getElementById('fileUploadSection').style.display = 'block';
+            } else {
+                document.getElementById('fileUploadSection').style.display = 'none';
+            }
+        }
+
+        function processImport() {
+            if (!selectedImportType) {
+                alert('Please select an import method');
+                return;
+            }
+            
+            if (selectedImportType === 'file') {
+                const fileInput = document.getElementById('housecallFile');
+                if (fileInput.files.length === 0) {
+                    alert('Please select a file to import');
+                    return;
+                }
+            }
+            
+            if (selectedImportType === 'api') {
+                alert('API connection feature coming soon! Please use file upload for now.');
+                return;
+            }
+            
+            if (selectedImportType === 'manual') {
+                alert('Redirecting to customer management for manual entry...');
+                window.location.href = 'customers.html';
+                return;
+            }
+            
+            // Simulate import process
+            showSuccessMessage('Import started! Processing your Housecall Pro data...');
+            closeImportModal();
+            
+            // Simulate data loading
+            setTimeout(() => {
+                populateWithSampleData();
+                showSuccessMessage('Import completed! Your financial reports are now available.');
+            }, 3000);
+        }
+
+        function populateWithSampleData() {
+            // Update metrics with sample data
+            const metrics = document.querySelectorAll('.metric-value');
+            metrics[0].textContent = '$24,750';
+            metrics[0].style.color = '#007bff';
+            metrics[1].textContent = '$185';
+            metrics[1].style.color = '#007bff';
+            metrics[2].textContent = '$8,950';
+            metrics[2].style.color = '#007bff';
+            metrics[3].textContent = '$15,800';
+            metrics[3].style.color = '#10b981';
+            
+            // Update descriptions
+            const descriptions = document.querySelectorAll('.metric-description');
+            descriptions[0].textContent = 'January 2025 total revenue';
+            descriptions[1].textContent = 'Per service call average';
+            descriptions[2].textContent = 'Operating costs this month';
+            descriptions[3].textContent = 'Monthly profit margin: 63.8%';
+            
+            // Enable export buttons
+            document.querySelectorAll('.export-btn').forEach(btn => {
+                btn.disabled = false;
+                btn.style.background = '#007bff';
+                btn.style.color = 'white';
+                btn.style.cursor = 'pointer';
+            });
+            
+            // Hide empty state
+            document.querySelector('.empty-state').style.display = 'none';
+        }
+
+        function showSuccessMessage(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #10b981;
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 1001;
+                font-size: 0.9rem;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 3000);
+        }
+
         // Service Worker Registration
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('service-worker.js');

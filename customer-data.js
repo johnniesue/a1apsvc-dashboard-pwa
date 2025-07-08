@@ -1,9 +1,9 @@
 /**
  * A-1APSVC Pre-loaded Customer Data
- * Imported from Housecall Pro Excel Export with proper phone formatting
+ * Imported from user's Excel spreadsheet with proper field names
  */
 
-const A1APSVC_CUSTOMER_DATA = [
+const PRELOADED_CUSTOMERS = [
     {
         id: 'cust_001',
         firstName: 'Frank',
@@ -14,9 +14,9 @@ const A1APSVC_CUSTOMER_DATA = [
         workPhone: '',
         address: '',
         company: '',
-        tags: ['Complete'],
+        tags: [],
         notes: '',
-        dateAdded: '2024-01-15'
+        dateAdded: '2024-01-15T10:30:00Z'
     },
     {
         id: 'cust_002',
@@ -30,7 +30,7 @@ const A1APSVC_CUSTOMER_DATA = [
         company: '',
         tags: [],
         notes: '',
-        dateAdded: '2024-01-16'
+        dateAdded: '2024-01-16T09:15:00Z'
     },
     {
         id: 'cust_003',
@@ -44,7 +44,7 @@ const A1APSVC_CUSTOMER_DATA = [
         company: '',
         tags: [],
         notes: '',
-        dateAdded: '2024-01-17'
+        dateAdded: '2024-01-17T14:20:00Z'
     },
     {
         id: 'cust_004',
@@ -58,7 +58,7 @@ const A1APSVC_CUSTOMER_DATA = [
         company: '',
         tags: ['Snaked an'],
         notes: '',
-        dateAdded: '2024-01-18'
+        dateAdded: '2024-01-18T11:45:00Z'
     },
     {
         id: 'cust_005',
@@ -70,9 +70,9 @@ const A1APSVC_CUSTOMER_DATA = [
         workPhone: '',
         address: '',
         company: 'Rentavations',
-        tags: ['calmont house', 'The'],
+        tags: ['Calmont house', 'The'],
         notes: '',
-        dateAdded: '2024-01-19'
+        dateAdded: '2024-01-19T16:30:00Z'
     },
     {
         id: 'cust_006',
@@ -86,7 +86,7 @@ const A1APSVC_CUSTOMER_DATA = [
         company: '',
         tags: [],
         notes: '',
-        dateAdded: '2024-01-20'
+        dateAdded: '2024-01-20T08:00:00Z'
     },
     {
         id: 'cust_007',
@@ -100,7 +100,7 @@ const A1APSVC_CUSTOMER_DATA = [
         company: '',
         tags: [],
         notes: '',
-        dateAdded: '2024-01-21'
+        dateAdded: '2024-01-21T13:15:00Z'
     },
     {
         id: 'cust_008',
@@ -114,7 +114,7 @@ const A1APSVC_CUSTOMER_DATA = [
         company: '',
         tags: [],
         notes: '',
-        dateAdded: '2024-01-22'
+        dateAdded: '2024-01-22T10:45:00Z'
     },
     {
         id: 'cust_009',
@@ -128,7 +128,7 @@ const A1APSVC_CUSTOMER_DATA = [
         company: '',
         tags: [],
         notes: '',
-        dateAdded: '2024-01-23'
+        dateAdded: '2024-01-23T15:20:00Z'
     },
     {
         id: 'cust_010',
@@ -142,7 +142,7 @@ const A1APSVC_CUSTOMER_DATA = [
         company: '',
         tags: [],
         notes: '',
-        dateAdded: '2024-01-24'
+        dateAdded: '2024-01-24T09:30:00Z'
     },
     {
         id: 'cust_011',
@@ -156,7 +156,7 @@ const A1APSVC_CUSTOMER_DATA = [
         company: '',
         tags: [],
         notes: '',
-        dateAdded: '2024-01-25'
+        dateAdded: '2024-01-25T12:00:00Z'
     },
     {
         id: 'cust_012',
@@ -170,7 +170,7 @@ const A1APSVC_CUSTOMER_DATA = [
         company: '',
         tags: [],
         notes: '',
-        dateAdded: '2024-01-26'
+        dateAdded: '2024-01-26T14:15:00Z'
     },
     {
         id: 'cust_013',
@@ -184,7 +184,7 @@ const A1APSVC_CUSTOMER_DATA = [
         company: '',
         tags: [],
         notes: '',
-        dateAdded: '2024-01-27'
+        dateAdded: '2024-01-27T11:30:00Z'
     },
     {
         id: 'cust_014',
@@ -198,7 +198,7 @@ const A1APSVC_CUSTOMER_DATA = [
         company: '',
         tags: [],
         notes: '',
-        dateAdded: '2024-01-28'
+        dateAdded: '2024-01-28T16:45:00Z'
     },
     {
         id: 'cust_015',
@@ -212,7 +212,7 @@ const A1APSVC_CUSTOMER_DATA = [
         company: '',
         tags: [],
         notes: '',
-        dateAdded: '2024-01-29'
+        dateAdded: '2024-01-29T08:20:00Z'
     },
     {
         id: 'cust_016',
@@ -226,7 +226,7 @@ const A1APSVC_CUSTOMER_DATA = [
         company: '',
         tags: [],
         notes: '',
-        dateAdded: '2024-01-30'
+        dateAdded: '2024-01-30T13:10:00Z'
     },
     {
         id: 'cust_017',
@@ -240,7 +240,7 @@ const A1APSVC_CUSTOMER_DATA = [
         company: '',
         tags: [],
         notes: '',
-        dateAdded: '2024-02-01'
+        dateAdded: '2024-01-31T10:00:00Z'
     },
     {
         id: 'cust_018',
@@ -254,7 +254,7 @@ const A1APSVC_CUSTOMER_DATA = [
         company: '',
         tags: [],
         notes: '',
-        dateAdded: '2024-02-02'
+        dateAdded: '2024-02-01T15:25:00Z'
     },
     {
         id: 'cust_019',
@@ -268,7 +268,7 @@ const A1APSVC_CUSTOMER_DATA = [
         company: '',
         tags: [],
         notes: '',
-        dateAdded: '2024-02-03'
+        dateAdded: '2024-02-02T09:40:00Z'
     },
     {
         id: 'cust_020',
@@ -282,21 +282,21 @@ const A1APSVC_CUSTOMER_DATA = [
         company: '',
         tags: [],
         notes: '',
-        dateAdded: '2024-02-04'
+        dateAdded: '2024-02-03T12:55:00Z'
     },
     {
         id: 'cust_021',
         firstName: 'Tina',
         lastName: 'Zhu',
         email: 'tinazhu2007@gmail.com',
-        mobilePhone: '(215) 000-0000',
+        mobilePhone: '',
         homePhone: '',
-        workPhone: '(215) 000-0000',
+        workPhone: '',
         address: '',
         company: '',
         tags: [],
         notes: '',
-        dateAdded: '2024-02-05'
+        dateAdded: '2024-02-04T14:30:00Z'
     },
     {
         id: 'cust_022',
@@ -310,7 +310,7 @@ const A1APSVC_CUSTOMER_DATA = [
         company: '',
         tags: [],
         notes: '',
-        dateAdded: '2024-02-06'
+        dateAdded: '2024-02-05T11:15:00Z'
     },
     {
         id: 'cust_023',
@@ -324,7 +324,7 @@ const A1APSVC_CUSTOMER_DATA = [
         company: '',
         tags: [],
         notes: '',
-        dateAdded: '2024-02-07'
+        dateAdded: '2024-02-06T16:00:00Z'
     },
     {
         id: 'cust_024',
@@ -338,7 +338,7 @@ const A1APSVC_CUSTOMER_DATA = [
         company: '',
         tags: [],
         notes: '',
-        dateAdded: '2024-02-08'
+        dateAdded: '2024-02-07T08:45:00Z'
     },
     {
         id: 'cust_025',
@@ -352,7 +352,7 @@ const A1APSVC_CUSTOMER_DATA = [
         company: '',
         tags: [],
         notes: '',
-        dateAdded: '2024-02-09'
+        dateAdded: '2024-02-08T13:20:00Z'
     },
     {
         id: 'cust_026',
@@ -366,7 +366,7 @@ const A1APSVC_CUSTOMER_DATA = [
         company: '',
         tags: ['Generator'],
         notes: '',
-        dateAdded: '2024-02-10'
+        dateAdded: '2024-02-09T10:35:00Z'
     },
     {
         id: 'cust_027',
@@ -380,7 +380,7 @@ const A1APSVC_CUSTOMER_DATA = [
         company: '',
         tags: [],
         notes: '',
-        dateAdded: '2024-02-11'
+        dateAdded: '2024-02-10T15:50:00Z'
     },
     {
         id: 'cust_028',
@@ -394,7 +394,7 @@ const A1APSVC_CUSTOMER_DATA = [
         company: '',
         tags: [],
         notes: '',
-        dateAdded: '2024-02-12'
+        dateAdded: '2024-02-11T09:25:00Z'
     },
     {
         id: 'cust_029',
@@ -408,7 +408,7 @@ const A1APSVC_CUSTOMER_DATA = [
         company: '',
         tags: [],
         notes: '',
-        dateAdded: '2024-02-13'
+        dateAdded: '2024-02-12T12:40:00Z'
     },
     {
         id: 'cust_030',
@@ -422,7 +422,7 @@ const A1APSVC_CUSTOMER_DATA = [
         company: '',
         tags: [],
         notes: '',
-        dateAdded: '2024-02-14'
+        dateAdded: '2024-02-13T14:15:00Z'
     },
     {
         id: 'cust_031',
@@ -436,7 +436,7 @@ const A1APSVC_CUSTOMER_DATA = [
         company: '',
         tags: [],
         notes: '',
-        dateAdded: '2024-02-15'
+        dateAdded: '2024-02-14T11:30:00Z'
     },
     {
         id: 'cust_032',
@@ -450,7 +450,7 @@ const A1APSVC_CUSTOMER_DATA = [
         company: '',
         tags: [],
         notes: '',
-        dateAdded: '2024-02-16'
+        dateAdded: '2024-02-15T16:45:00Z'
     },
     {
         id: 'cust_033',
@@ -461,10 +461,10 @@ const A1APSVC_CUSTOMER_DATA = [
         homePhone: '',
         workPhone: '',
         address: '',
-        company: 'The Nungaray Group',
+        company: '',
         tags: [],
         notes: '',
-        dateAdded: '2024-02-17'
+        dateAdded: '2024-02-16T08:20:00Z'
     },
     {
         id: 'cust_034',
@@ -478,7 +478,7 @@ const A1APSVC_CUSTOMER_DATA = [
         company: '',
         tags: [],
         notes: '',
-        dateAdded: '2024-02-18'
+        dateAdded: '2024-02-17T13:35:00Z'
     },
     {
         id: 'cust_035',
@@ -489,10 +489,10 @@ const A1APSVC_CUSTOMER_DATA = [
         homePhone: '',
         workPhone: '',
         address: '',
-        company: 'North Management',
+        company: '',
         tags: [],
         notes: '',
-        dateAdded: '2024-02-19'
+        dateAdded: '2024-02-18T10:50:00Z'
     },
     {
         id: 'cust_036',
@@ -503,10 +503,10 @@ const A1APSVC_CUSTOMER_DATA = [
         homePhone: '',
         workPhone: '',
         address: '',
-        company: 'Ebby',
+        company: '',
         tags: [],
         notes: '',
-        dateAdded: '2024-02-20'
+        dateAdded: '2024-02-19T15:05:00Z'
     },
     {
         id: 'cust_037',
@@ -520,7 +520,7 @@ const A1APSVC_CUSTOMER_DATA = [
         company: '',
         tags: [],
         notes: '',
-        dateAdded: '2024-02-21'
+        dateAdded: '2024-02-20T09:20:00Z'
     },
     {
         id: 'cust_038',
@@ -534,7 +534,7 @@ const A1APSVC_CUSTOMER_DATA = [
         company: '',
         tags: [],
         notes: '',
-        dateAdded: '2024-02-22'
+        dateAdded: '2024-02-21T12:35:00Z'
     },
     {
         id: 'cust_039',
@@ -548,7 +548,7 @@ const A1APSVC_CUSTOMER_DATA = [
         company: '',
         tags: [],
         notes: '',
-        dateAdded: '2024-02-23'
+        dateAdded: '2024-02-22T14:50:00Z'
     },
     {
         id: 'cust_040',
@@ -562,7 +562,7 @@ const A1APSVC_CUSTOMER_DATA = [
         company: '',
         tags: [],
         notes: '',
-        dateAdded: '2024-02-24'
+        dateAdded: '2024-02-23T11:05:00Z'
     },
     {
         id: 'cust_041',
@@ -576,7 +576,7 @@ const A1APSVC_CUSTOMER_DATA = [
         company: '',
         tags: [],
         notes: '',
-        dateAdded: '2024-02-25'
+        dateAdded: '2024-02-24T16:20:00Z'
     },
     {
         id: 'cust_042',
@@ -590,7 +590,7 @@ const A1APSVC_CUSTOMER_DATA = [
         company: '',
         tags: [],
         notes: '',
-        dateAdded: '2024-02-26'
+        dateAdded: '2024-02-25T08:35:00Z'
     },
     {
         id: 'cust_043',
@@ -604,7 +604,7 @@ const A1APSVC_CUSTOMER_DATA = [
         company: '',
         tags: [],
         notes: '',
-        dateAdded: '2024-02-27'
+        dateAdded: '2024-02-26T13:50:00Z'
     },
     {
         id: 'cust_044',
@@ -618,7 +618,7 @@ const A1APSVC_CUSTOMER_DATA = [
         company: 'Texas Star Builder',
         tags: [],
         notes: '',
-        dateAdded: '2024-02-28'
+        dateAdded: '2024-02-27T10:15:00Z'
     },
     {
         id: 'cust_045',
@@ -632,26 +632,17 @@ const A1APSVC_CUSTOMER_DATA = [
         company: '',
         tags: [],
         notes: '',
-        dateAdded: '2024-03-01'
+        dateAdded: '2024-02-28T15:30:00Z'
     }
 ];
 
-// Function to initialize customer data
+// Function to initialize customer data if none exists
 function initializeCustomerData() {
-    const existingCustomers = JSON.parse(localStorage.getItem('a1apsvc_customers') || '[]');
-    
-    // Only load pre-populated data if no customers exist
-    if (existingCustomers.length === 0) {
-        localStorage.setItem('a1apsvc_customers', JSON.stringify(A1APSVC_CUSTOMER_DATA));
-        console.log('Loaded', A1APSVC_CUSTOMER_DATA.length, 'customers from Housecall Pro export');
-        return A1APSVC_CUSTOMER_DATA;
+    const existingCustomers = localStorage.getItem('a1apsvc-customers');
+    if (!existingCustomers || JSON.parse(existingCustomers).length === 0) {
+        localStorage.setItem('a1apsvc-customers', JSON.stringify(PRELOADED_CUSTOMERS));
+        return PRELOADED_CUSTOMERS;
     }
-    
-    return existingCustomers;
-}
-
-// Export for use in other scripts
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { A1APSVC_CUSTOMER_DATA, initializeCustomerData };
+    return JSON.parse(existingCustomers);
 }
 

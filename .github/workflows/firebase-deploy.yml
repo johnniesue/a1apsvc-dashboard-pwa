@@ -24,7 +24,7 @@ jobs:
           service_account: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
 
       - name: Debug: Echo Project Value
-        run: echo "GOOGLE_PROJECT=${{ secrets.GOOGLE_PROJECT }}"
+        run: echo GOOGLE_PROJECT=${{ secrets.GOOGLE_PROJECT }}
 
       - name: Deploy to Firebase Hosting
         run: |

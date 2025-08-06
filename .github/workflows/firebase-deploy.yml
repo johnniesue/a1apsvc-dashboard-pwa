@@ -1,12 +1,12 @@
 name: Firebase Deploy
 
 on:
-  workflow_dispatch:  # Manual trigger
+  workflow_dispatch:
   push:
     branches:
       - main
 
-i gues  :
+jobs:
   deploy:
     runs-on: ubuntu-latest
     permissions:
@@ -22,12 +22,9 @@ i gues  :
         with:
           workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
-          
-- name : Debug: Echo Project Value
-  run : echo "GOOGLE_PROJECT=${{ secrets.GOOGLE_PROJECT }}"
 
-   - name: Debug: Echo Project Value
-     run: echo "GOOGLE_PROJECT=${{ secrets.GOOGLE_PROJECT }}"
+      - name: Debug: Echo Project Value
+        run: echo "GOOGLE_PROJECT=${{ secrets.GOOGLE_PROJECT }}"
 
       - name: Deploy to Firebase Hosting
         run: |

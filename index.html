@@ -133,7 +133,7 @@
             opacity: 0.9;
         }
 
-        .dashboard-grid {
+        .dashboard-cards {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 1.5rem;
@@ -141,36 +141,85 @@
         }
 
         .card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 2rem;
+            padding: 1.5rem;
             border-radius: 16px;
             box-shadow: 0 8px 32px rgba(0,0,0,0.1);
             cursor: pointer;
             transition: all 0.3s ease;
-            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            min-height: 140px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            border: none;
         }
 
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+        }
+
+        .card.scheduling {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .card.tech-mobile {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .card.financial {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .card.customer {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: #333;
+        }
+
+        .card.import {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            color: #333;
         }
 
         .card-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
+            font-size: 2.5rem;
+            margin-bottom: 0.8rem;
             display: block;
         }
 
         .card h3 {
-            font-size: 1.5rem;
-            color: #1a365d;
+            font-size: 1.3rem;
             margin-bottom: 0.5rem;
+            font-weight: 600;
         }
 
         .card p {
-            color: #64748b;
-            line-height: 1.6;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            opacity: 0.9;
+        }
+
+        .card.customer h3,
+        .card.import h3 {
+            color: #333;
+        }
+
+        .card.customer p,
+        .card.import p {
+            color: #555;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-cards {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .card {
+                min-height: 120px;
+                padding: 1.2rem;
+            }
         }
 
         .service-areas {
@@ -272,34 +321,37 @@
                     <div class="stat-label">Monthly Revenue</div>
                 </div>
             </div>
-            <div class="card" onclick="location.href='schedule.html'">
-                <span class="card-icon"><i class="fas fa-calendar-alt"></i></span>
-                <h3>Scheduling</h3>
-                <p>Manage appointments and technician assignments</p>
-            </div>
+            
+            <div class="dashboard-cards">
+                <div class="card scheduling" onclick="location.href='schedule.html'">
+                    <span class="card-icon"><i class="fas fa-calendar-alt"></i></span>
+                    <h3>Scheduling</h3>
+                    <p>Manage appointments and technician assignments</p>
+                </div>
 
-            <div class="card" onclick="location.href='tech-mobile.html'">
-                <span class="card-icon"><i class="fas fa-mobile-alt"></i></span>
-                <h3>Tech Mobile</h3>
-                <p>Mobile interface for technicians in the field</p>
-            </div>
-            
-            <div class="card" onclick="location.href='reports.html'">
-                <span class="card-icon"><i class="fas fa-chart-bar"></i></span>
-                <h3>Financial Reports</h3>
-                <p>View revenue, expenses, and business analytics</p>
-            </div>
-            
-            <div class="card" onclick="location.href='customers.html'">
-                <span class="card-icon"><i class="fas fa-users"></i></span>
-                <h3>Customer Management</h3>
-                <p>Track customer information and complete service history</p>
-            </div>
-            
-            <div class="card" onclick="showImportModal()">
-                <span class="card-icon"><i class="fas fa-download"></i></span>
-                <h3>Import from Housecall Pro</h3>
-                <p>Import your existing customer data and service history</p>
+                <div class="card tech-mobile" onclick="location.href='tech-mobile.html'">
+                    <span class="card-icon"><i class="fas fa-mobile-alt"></i></span>
+                    <h3>Tech Mobile</h3>
+                    <p>Mobile interface for technicians in the field</p>
+                </div>
+                
+                <div class="card financial" onclick="location.href='reports.html'">
+                    <span class="card-icon"><i class="fas fa-chart-bar"></i></span>
+                    <h3>Financial Reports</h3>
+                    <p>View revenue, expenses, and business analytics</p>
+                </div>
+                
+                <div class="card customer" onclick="location.href='customers.html'">
+                    <span class="card-icon"><i class="fas fa-users"></i></span>
+                    <h3>Customer Management</h3>
+                    <p>Track customer information and complete service history</p>
+                </div>
+                
+                <div class="card import" onclick="showImportModal()">
+                    <span class="card-icon"><i class="fas fa-download"></i></span>
+                    <h3>Import from Housecall Pro</h3>
+                    <p>Import your existing customer data and service history</p>
+                </div>
             </div>
         </div>
 

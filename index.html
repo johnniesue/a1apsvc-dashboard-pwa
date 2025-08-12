@@ -6,6 +6,7 @@
     <title>A-1APSVC Dashboard</title>
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -272,7 +273,7 @@
                 </div>
             </div>
                  <a href="schedule.html" class="dashboard-card">
-                    <div class="card-icon">📅</div>
+                    <div class="card-icon"><i class="fas fa-calendar-alt"></i></div>
                     <div class="card-content">
                         <h3>Scheduling</h3>
                         <p>Manage appointments and technician assignments</p>
@@ -280,32 +281,32 @@
                 </a>
 
                 <a href="tech-mobile.html" class="dashboard-card">
-                    <div class="card-icon">📱</div>
+                    <div class="card-icon"><i class="fas fa-mobile-alt"></i></div>
                     <div class="card-content">
                         <h3>Tech Mobile</h3>
                         <p>Mobile interface for technicians in the field</p>
                     </div>
                 </a>        <div class="card" onclick="location.href='reports.html'">
-                <span class="card-icon">📊</span>
+                <span class="card-icon"><i class="fas fa-chart-bar"></i></span>
                 <h3>Financial Reports</h3>
                 <p>View revenue, expenses, and business analytics</p>
             </div>
             
             <div class="card" onclick="location.href='customers.html'">
-                <span class="card-icon">👥</span>
+                <span class="card-icon"><i class="fas fa-users"></i></span>
                 <h3>Customer Management</h3>
                 <p>Track customer information and complete service history</p>
             </div>
             
             <div class="card" onclick="showImportModal()">
-                <span class="card-icon">📥</span>
+                <span class="card-icon"><i class="fas fa-download"></i></span>
                 <h3>Import from Housecall Pro</h3>
                 <p>Import your existing customer data and service history</p>
             </div>
         </div>
 
         <div class="service-areas">
-            <h3>🗺️ Service Areas</h3>
+            <h3><i class="fas fa-map-marked-alt"></i> Service Areas</h3>
             <div class="map-container">
                 <div style="height: 400px; width: 100%; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; text-align: center; position: relative; overflow: hidden;">
                     <div style="z-index: 2; position: relative;">

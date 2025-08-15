@@ -95,7 +95,7 @@
       const tStart = firebase.firestore.Timestamp.fromDate(startOfDay());
       const tEnd   = firebase.firestore.Timestamp.fromDate(endOfDay());
       // if you get an index error, create the index from Firestore’s link in the console
-      const todaySnap = await db.collection('ServiceRequest')
+      const todaySnap = await db.collection('jobs')
         .where('scheduledAt', '>=', tStart)
         .where('scheduledAt', '<=', tEnd)
         .get();

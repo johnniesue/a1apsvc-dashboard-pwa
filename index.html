@@ -106,7 +106,7 @@
       console.log('🔄 Attempting to get this week\'s jobs from Firestore…');
       const wStart = firebase.firestore.Timestamp.fromDate(startOfWeek());
       const wEnd   = firebase.firestore.Timestamp.fromDate(endOfWeek());
-      const weekSnap = await db.collection('ServiceRequest')
+      const weekSnap = await db.collection('jobs')
         .where('scheduledAt', '>=', wStart)
         .where('scheduledAt', '<=', wEnd)
         .get();

@@ -90,7 +90,7 @@
         return endOfDay(e);
       };
 
-      // 🔄 Today’s Jobs from ServiceRequest.scheduledAt (Timestamp)
+      // 🔄 Today’s Jobs from jobs.scheduledAt (Timestamp)
       console.log('🔄 Attempting to get today\'s jobs from Firestore…');
       const tStart = firebase.firestore.Timestamp.fromDate(startOfDay());
       const tEnd   = firebase.firestore.Timestamp.fromDate(endOfDay());

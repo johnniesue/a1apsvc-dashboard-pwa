@@ -494,9 +494,86 @@ class DashboardIntegration {
         }
     }
 }
+// Firebase Initialization
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
 
-// Initialize dashboard integration
-document.addEventListener('DOMContentLoaded', () => {
-    window.dashboardIntegration = new DashboardIntegration();
-});
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// Utility: Get start/end of today
+function getTodayRange() {
+  const now = new Date();
+  const start = new Date(now.setHours(0, 0, 0, 0));
+  const end = new Date(now.setHours(23, 59, 59, 999));
+  return [firebase.firestore.Timestamp.fromDate(start), firebase.firestore.Timestamp.fromDate(end)];
+}
+
+// Utility: Get start/end of current week (Monday–Sunday)
+function getWeekRange() {
+  const now = new Date();
+  const day = now.getDay(); // Sunday = 0
+  const diffToMonday = day === 0 ? -6 : 1 - day;
+  const monday = new Date(now.setDate(now.getDate() + diffToMonday));
+  monday.setHours(0, 0, 0, 0);
+  const sunday = new Date(monday);
+  sunday.setDate(monday.getDate() + 6);
+  sunday.setHours(23, 59, 59, 999);
+  return [firebase.firestore.Timestamp.fromDate(monday), firebase.firestore.Timestamp.fromDate(sunday)];
+}
+
+// Update stat blocks
+async function updateDashboardStats() {
+  try {
+    console.log("🚀 Starting dashboard boot…");
+
+    // Get today's jobs
+    const [tStart, tEnd] = getTodayRange();
+    console.log("🔄 Attempting to get today's jobs from Firestore…");
+    const todaySnap = await db.collection("jobs")
+      .where("scheduledAt", ">=", tStart)
+      .where("scheduledAt", "<=", tEnd)
+      .get();
+    const todayCount = todaySnap.size;
+    console.log(`✅ Today's jobs: ${todayCount}`);
+
+    // Get this week's jobs
+    const [wStart, wEnd] = getWeekRange();
+    console.log("🔄 Attempting to get this week's jobs from Firestore…");
+    const weekSnap = await db.collection("jobs")
+      .where("scheduledAt", ">=", wStart)
+      .where("scheduledAt", "<=", wEnd)
+      .get();
+    const weekCount = weekSnap.size;
+    console.log(`✅ This week's jobs: ${weekCount}`);
+
+    // Compute average invoice value
+    console.log("🔄 Attempting to compute average job value…");
+    const invoiceSnap = await db.collection("Invoice").get();
+    let total = 0;
+    invoiceSnap.forEach(doc => {
+      const amount = doc.data().amount;
+      if (typeof amount === "number") total += amount;
+    });
+    const avgValue = invoiceSnap.size > 0 ? (total / invoiceSnap.size).toFixed(2) : "0.00";
+    console.log(`✅ Average job value from ${invoiceSnap.size} invoice(s): $${avgValue}`);
+
+    // Update DOM
+    document.getElementById("today-jobs").textContent = todayCount;
+    document.getElementById("week-jobs").textContent = weekCount;
+    document.getElementById("avg-job-value").textContent = `$${avgValue}`;
+
+  } catch (error) {
+    console.error("❌ Dashboard error:", error);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", updateDashboardStats);
+
 

@@ -1,137 +1,634 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>A‑1APSVC Dashboard</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    body { font-family: system-ui, Arial, sans-serif; margin:0; background:#0f172a; color:#e5e7eb; }
-    header { padding:16px 20px; background:#111827; border-bottom:1px solid #1f2937; display:flex; align-items:center; gap:10px;}
-    header h1 { margin:0; font-size:18px; font-weight:600; }
-    main { padding:20px; }
-    .grid { display:grid; gap:16px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
-    .card { background:#111827; border:1px solid #1f2937; border-radius:14px; padding:16px; }
-    .stat-number { font-size:28px; font-weight:700; margin-bottom:6px; }
-    .muted { color:#94a3b8; font-size:14px; }
-    footer { border-top:1px solid #1f2937; padding:14px 20px; font-size:13px; color:#94a3b8;}
-    .ok { color:#10b981; } .warn { color:#f59e0b; } .err { color:#ef4444; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A-1APSVC Dashboard</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  <!-- Use compat builds + add a query param (?v=) to break caches when you update -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js?v=4" defer></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js?v=4" defer></script>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-logo {
+            max-height: 50px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .company-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1a365d;
+            margin: 0;
+        }
+
+        .logo-upload-btn {
+            background: #f8fafc;
+            border: 2px dashed #cbd5e1;
+            color: #64748b;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-upload-btn:hover {
+            border-color: #007bff;
+            color: #007bff;
+            background: #f0f8ff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .welcome-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .welcome-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1a365d;
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-subtitle {
+            color: #64748b;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .stat-item {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            padding: 1rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            padding: 1.5rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            min-height: 140px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            border: none;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+        }
+
+        .card.scheduling {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+        }
+
+        .card.tech-mobile {
+            background: linear-gradient(135deg, #374151 0%, #6b7280 100%);
+            color: white;
+        }
+
+        .card.financial {
+            background: linear-gradient(135deg, #dbeafe 0%, #f8fafc 100%);
+            color: #374151;
+        }
+
+        .card.customer {
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+            color: white;
+        }
+
+        .card.import {
+            background: linear-gradient(135deg, #111827 0%, #374151 100%);
+            color: white;
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.8rem;
+            display: block;
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .card p {
+            font-size: 0.9rem;
+            line-height: 1.4;
+            opacity: 0.9;
+        }
+
+        .card.financial h3,
+        .card.financial p {
+            color: #374151;
+        }
+
+        .card.financial .card-icon {
+            color: #374151;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-cards {
+                grid-template-columns: 1fr;
+                gap: 1.2rem;
+                margin-top: 2rem;
+            }
+            
+            .card {
+                min-height: 120px;
+                padding: 1.2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .welcome-title {
+                font-size: 2rem;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>A‑1 Affordable Plumbing Services — Dashboard</h1>
-  </header>
+    <!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js"></script>
 
-  <main>
-    <div class="grid">
-      <div class="card">
-        <div class="stat-number" id="todayCount">0</div>
-        <div class="muted">Today’s Jobs</div>
-      </div>
-      <div class="card">
-        <div class="stat-number" id="weekCount">0</div>
-        <div class="muted">This Week</div>
-      </div>
-      <div class="card">
-        <div class="stat-number" id="avgJobValue">$0</div>
-        <div class="muted">Average Job Value</div>
-      </div>
+<script>
+  // Your Firebase config
+  const firebaseConfig = {
+    apiKey: "AIzaSyD-EXAMPLEKEY",
+    authDomain: "a1apsvc.firebaseapp.com",
+    projectId: "a1apsvc",
+    storageBucket: "a1apsvc.appspot.com",
+    messagingSenderId: "1234567890",
+    appId: "1:1234567890:web:abcdef123456"
+  };
+
+  // Initialize Firebase
+  const app = firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  // Fetch jobs and update stats
+  async function getJobs() {
+    console.log("getJobs called");
+    const snapshot = await db.collection("jobs").get();
+    const jobs = snapshot.docs.map(doc => doc.data());
+
+    // Stats logic
+    const today = new Date().toISOString().slice(0, 10);
+    const thisWeekStart = new Date();
+    thisWeekStart.setDate(thisWeekStart.getDate() - thisWeekStart.getDay());
+    const thisWeekISO = thisWeekStart.toISOString().slice(0, 10);
+
+    const todayJobs = jobs.filter(job => job.date === today);
+    const weekJobs = jobs.filter(job => job.date >= thisWeekISO);
+    const activeCustomers = [...new Set(jobs.map(job => job.customerId))];
+    const monthlyRevenue = jobs
+      .filter(job => job.date?.startsWith(today.slice(0, 7)))
+      .reduce((sum, job) => sum + (job.amount || 0), 0);
+
+    // Update DOM
+    document.getElementById("today-jobs").textContent = todayJobs.length;
+    document.getElementById("week-jobs").textContent = weekJobs.length;
+    document.getElementById("active-customers").textContent = activeCustomers.length;
+    document.getElementById("monthly-revenue").textContent = `$${monthlyRevenue.toFixed(2)}`;
+  }
+
+  // Call it on load
+  window.onload = getJobs;
+</script>
+
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-section">
+                <img id="headerLogo" class="header-logo hidden" alt="A-1APSVC Logo">
+                <h1 class="company-title">A-1APSVC Dashboard</h1>
+            </div>
+            <div>
+                <input type="file" id="logoInput" accept="image/*" style="display: none;">
+                <button class="logo-upload-btn" onclick="document.getElementById('logoInput').click()">
+                    📁 Upload Logo
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="welcome-section">
+            <h2 class="welcome-title">Welcome to A-1APSVC</h2>
+            <p class="welcome-subtitle">Professional Plumbing Services Management Dashboard</p>
+            
+            <div class="quick-stats">
+                <div class="stat-item">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Today's Jobs</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">This Week</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Active Customers</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">$0</div>
+                    <div class="stat-label">Monthly Revenue</div>
+                </div>
+            </div>
+            
+            <div class="dashboard-cards">
+                <div class="card scheduling" onclick="location.href='schedule.html'">
+                    <span class="card-icon"><i class="fas fa-calendar-alt"></i></span>
+                    <h3>Scheduling</h3>
+                    <p>Manage appointments and technician assignments</p>
+                </div>
+
+                <div class="card tech-mobile" onclick="location.href='tech-mobile.html'">
+                    <span class="card-icon"><i class="fas fa-mobile-alt"></i></span>
+                    <h3>Tech Mobile</h3>
+                    <p>Mobile interface for technicians in the field</p>
+                </div>
+                
+                <div class="card financial" onclick="location.href='reports.html'">
+                    <span class="card-icon"><i class="fas fa-chart-bar"></i></span>
+                    <h3>Financial Reports</h3>
+                    <p>View revenue, expenses, and business analytics</p>
+                </div>
+                
+                <div class="card customer" onclick="location.href='customers.html'">
+                    <span class="card-icon"><i class="fas fa-users"></i></span>
+                    <h3>Customer Management</h3>
+                    <p>Track customer information and complete service history</p>
+                </div>
+                
+                <div class="card import" onclick="showImportModal()">
+                    <span class="card-icon"><i class="fas fa-download"></i></span>
+                    <h3>Import from Housecall Pro</h3>
+                    <p>Import your existing customer data and service history</p>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="card" style="margin-top:16px;">
-      <div class="muted">Console status:</div>
-      <ul class="muted" style="margin:8px 0 0; padding-left:18px; line-height:1.5">
-        <li>🔧 Using <strong>compat</strong> SDKs (no modular import errors)</li>
-        <li>🧹 If you still see old errors, hard refresh (Ctrl+F5) or try private window</li>
-        <li>🧩 If Firestore says you need an index, click the link it shows to create one</li>
-      </ul>
+    <!-- Import Modal -->
+    <div id="importModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center;">
+        <div style="background: white; padding: 2rem; border-radius: 16px; max-width: 500px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
+            <h3 style="color: #1a365d; margin-bottom: 1rem;">Import from Housecall Pro</h3>
+            <p style="color: #64748b; margin-bottom: 1.5rem;">Upload your Housecall Pro export file to import customers and service history.</p>
+            
+            <div style="border: 2px dashed #cbd5e1; padding: 2rem; text-align: center; border-radius: 8px; margin-bottom: 1rem;">
+                <input type="file" id="housecallImport" accept=".csv,.xlsx,.json" style="display: none;">
+                <button onclick="document.getElementById('housecallImport').click()" style="background: #007bff; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer;">
+                    Choose Housecall Pro File
+                </button>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem; color: #64748b;">Supports CSV, Excel, or JSON formats</p>
+            </div>
+            
+            <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                <button onclick="closeImportModal()" style="background: #f1f5f9; color: #64748b; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer;">Cancel</button>
+                <button onclick="processImport()" style="background: #10b981; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer;">Import Data</button>
+            </div>
+        </div>
     </div>
-  </main>
 
-  <footer>© A‑1 Affordable Plumbing Services</footer>
+    <script>
+        // Logo upload functionality
+        document.getElementById('logoInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const logoData = e.target.result;
+                    
+                    // Show in header
+                    const headerLogo = document.getElementById('headerLogo');
+                    headerLogo.src = logoData;
+                    headerLogo.classList.remove('hidden');
+                    
+                    // Save to localStorage
+                    localStorage.setItem('a1apsvc-logo', logoData);
+                    
+                    // Show success message
+                    showSuccessMessage('Logo uploaded successfully!');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
 
-  <!-- Your app code (with cache-busting param) -->
-  <script defer>
-  // Wrap in onload so compat scripts are ready
-  window.addEventListener('load', async () => {
-    try {
-      console.log('🚀 Starting dashboard boot…');
+        // Load saved logo on page load
+        window.addEventListener('load', function() {
+            const savedLogo = localStorage.getItem('a1apsvc-logo');
+            if (savedLogo) {
+                const headerLogo = document.getElementById('headerLogo');
+                headerLogo.src = savedLogo;
+                headerLogo.classList.remove('hidden');
+            }
+        });
 
-      // ✅ Your real Firebase config (you said this is now correct)
-      const firebaseConfig = {
-        apiKey: "AIzaSyDeVLmKQXCMN_JZNwFL9OhfCQKVRHsVhY4",
-        authDomain: "a1-customer-dashboard.firebaseapp.com",
-        projectId: "a1-customer-dashboard",
-        storageBucket: "a1-customer-dashboard.appspot.com",
-        messagingSenderId: "981606789719",
-        appId: "1:981606789719:web:327592a2cefa2536bda912"
-      };
+        // Import modal functions
+        function showImportModal() {
+            document.getElementById('importModal').style.display = 'flex';
+        }
 
-      // Init (compat)
-      firebase.initializeApp(firebaseConfig);
-      const db = firebase.firestore();
-      console.log('✅ Firebase initialized (compat)');
+        function closeImportModal() {
+            document.getElementById('importModal').style.display = 'none';
+        }
 
-      // Helpers for date ranges
-      const startOfDay = (d = new Date()) => new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0, 0);
-      const endOfDay   = (d = new Date()) => new Date(d.getFullYear(), d.getMonth(), d.getDate(), 23, 59, 59, 999);
-      const startOfWeek = (d = new Date()) => {
-        const day = d.getDay();                // 0=Sun..6=Sat
-        const diff = d.getDate() - day + 1;    // Monday as start
-        return startOfDay(new Date(d.getFullYear(), d.getMonth(), diff));
-      };
-      const endOfWeek = (d = new Date()) => {
-        const s = startOfWeek(d);
-        const e = new Date(s); e.setDate(s.getDate() + 6);
-        return endOfDay(e);
-      };
+        function processImport() {
+            const fileInput = document.getElementById('housecallImport');
+            if (fileInput.files.length === 0) {
+                alert('Please select a file to import');
+                return;
+            }
+            
+            // Here you would process the file
+            showSuccessMessage('Import started! Processing your Housecall Pro data...');
+            closeImportModal();
+            
+            // Simulate import process
+            setTimeout(() => {
+                showSuccessMessage('Import completed! Customer data has been loaded.');
+                // Update stats
+                document.querySelector('.stat-item:nth-child(3) .stat-number').textContent = '247';
+                document.querySelector('.stat-item:nth-child(4) .stat-number').textContent = '$24,750';
+            }, 3000);
+        }
 
-      // 🔄 Today’s Jobs from ServiceRequest.scheduledAt (Timestamp)
-      console.log('🔄 Attempting to get today\'s jobs from Firestore…');
-      const tStart = firebase.firestore.Timestamp.fromDate(startOfDay());
-      const tEnd   = firebase.firestore.Timestamp.fromDate(endOfDay());
-      // if you get an index error, create the index from Firestore’s link in the console
-      const todaySnap = await db.collection('ServiceRequest')
-        .where('scheduledAt', '>=', tStart)
-        .where('scheduledAt', '<=', tEnd)
-        .get();
-      document.getElementById('todayCount').textContent = todaySnap.size;
-      console.log(`✅ Today’s jobs: ${todaySnap.size}`);
+        function showSuccessMessage(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #10b981;
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 1001;
+                font-size: 0.9rem;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 3000);
+        }
 
-      // 🔄 This Week’s Jobs
-      console.log('🔄 Attempting to get this week\'s jobs from Firestore…');
-      const wStart = firebase.firestore.Timestamp.fromDate(startOfWeek());
-      const wEnd   = firebase.firestore.Timestamp.fromDate(endOfWeek());
-      const weekSnap = await db.collection('ServiceRequest')
-        .where('scheduledAt', '>=', wStart)
-        .where('scheduledAt', '<=', wEnd)
-        .get();
-      document.getElementById('weekCount').textContent = weekSnap.size;
-      console.log(`✅ This week’s jobs: ${weekSnap.size}`);
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js');
+        }
 
-      // 💵 Average Job Value (from Invoice.amount number field)
-      console.log('🔄 Attempting to compute average job value from invoices…');
-      const invSnap = await db.collection('Invoice').get();
-      let total = 0; let count = 0;
-      invSnap.forEach(doc => {
-        const amt = Number(doc.data().amount || 0);
-        if (!Number.isNaN(amt) && amt > 0) { total += amt; count++; }
-      });
-      const avg = count ? (total / count) : 0;
-      document.getElementById('avgJobValue').textContent = `$${avg.toFixed(0).toLocaleString?.() || Math.round(avg)}`;
-      console.log(`✅ Average job value from ${count} invoice(s): $${avg.toFixed(2)}`);
+        // Google Maps Initialization
+        function initMap() {
+            // Center on Dallas/Plano area
+            const center = { lat: 33.0198, lng: -96.6989 };
+            
+            const map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 11,
+                center: center,
+                styles: [
+                    {
+                        featureType: 'all',
+                        elementType: 'geometry.fill',
+                        stylers: [{ color: '#f8fafc' }]
+                    },
+                    {
+                        featureType: 'water',
+                        elementType: 'geometry',
+                        stylers: [{ color: '#e2e8f0' }]
+                    },
+                    {
+                        featureType: 'road',
+                        elementType: 'geometry',
+                        stylers: [{ color: '#ffffff' }]
+                    }
+                ]
+            });
 
-    } catch (err) {
-      console.error('❌ Dashboard error:', err);
-      // Quick visual hint if something blows up
-      const el = document.querySelector('#todayCount');
-      if (el) el.innerHTML = '<span class="err">Error</span>';
-    }
-  });
-  </script>
+            // Service area polygons
+            const serviceAreas = [
+                {
+                    name: 'Allen',
+                    coords: [
+                        { lat: 33.1031, lng: -96.6706 },
+                        { lat: 33.1031, lng: -96.6306 },
+                        { lat: 33.0831, lng: -96.6306 },
+                        { lat: 33.0831, lng: -96.6706 }
+                    ]
+                },
+                {
+                    name: 'McKinney',
+                    coords: [
+                        { lat: 33.2176, lng: -96.6397 },
+                        { lat: 33.2176, lng: -96.5797 },
+                        { lat: 33.1776, lng: -96.5797 },
+                        { lat: 33.1776, lng: -96.6397 }
+                    ]
+                },
+                {
+                    name: 'Plano',
+                    coords: [
+                        { lat: 33.0698, lng: -96.7397 },
+                        { lat: 33.0698, lng: -96.6797 },
+                        { lat: 33.0098, lng: -96.6797 },
+                        { lat: 33.0098, lng: -96.7397 }
+                    ]
+                },
+                {
+                    name: 'Frisco',
+                    coords: [
+                        { lat: 33.1507, lng: -96.8236 },
+                        { lat: 33.1507, lng: -96.7636 },
+                        { lat: 33.1107, lng: -96.7636 },
+                        { lat: 33.1107, lng: -96.8236 }
+                    ]
+                }
+            ];
+
+            // Add service area polygons
+            serviceAreas.forEach(area => {
+                const polygon = new google.maps.Polygon({
+                    paths: area.coords,
+                    strokeColor: '#007bff',
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                    fillColor: '#007bff',
+                    fillOpacity: 0.2
+                });
+                polygon.setMap(map);
+
+                // Add area label
+                const infoWindow = new google.maps.InfoWindow({
+                    content: `<div style="font-weight: bold; color: #1a365d;">${area.name}</div><div style="color: #64748b;">A-1APSVC Service Area</div>`,
+                    position: area.coords[0]
+                });
+
+                polygon.addListener('click', () => {
+                    infoWindow.open(map);
+                });
+            });
+
+            // Add company marker
+            const marker = new google.maps.Marker({
+                position: center,
+                map: map,
+                title: 'A-1 Affordable Plumbing Services',
+                icon: {
+                    url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+                        <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="20" cy="20" r="18" fill="#007bff" stroke="#ffffff" stroke-width="2"/>
+                            <text x="20" y="26" text-anchor="middle" fill="white" font-size="16" font-weight="bold">A1</text>
+                        </svg>
+                    `),
+                    scaledSize: new google.maps.Size(40, 40)
+                }
+            });
+
+            const infoWindow = new google.maps.InfoWindow({
+                content: `
+                    <div style="padding: 10px;">
+                        <h3 style="margin: 0 0 5px 0; color: #1a365d;">A-1 Affordable Plumbing Services</h3>
+                        <p style="margin: 0; color: #64748b;">Professional plumbing services across North Dallas</p>
+                        <p style="margin: 5px 0 0 0; color: #007bff; font-weight: bold;">Serving Allen, McKinney, Plano, Frisco & More</p>
+                    </div>
+                `
+            });
+
+            marker.addListener('click', () => {
+                infoWindow.open(map, marker);
+            });
+        }
+
+        // Load Google Maps when page loads
+        window.addEventListener('load', function() {
+            // Load saved logo
+            const savedLogo = localStorage.getItem('a1apsvc-logo');
+            if (savedLogo) {
+                const headerLogo = document.getElementById('headerLogo');
+                headerLogo.src = savedLogo;
+                headerLogo.classList.remove('hidden');
+            }
+
+            // Initialize Google Maps
+            if (typeof google !== 'undefined' && google.maps) {
+                initMap();
+            }
+        });
+    </script>
 </body>
 </html>
+

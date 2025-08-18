@@ -8,8 +8,7 @@ const urlsToCache = [
   './script.js',
   './manifest.json',
   './images/icon-192.png',
-  './images/icon-512.png'
-];
+  // './images/icon-512.png' ← temporarily removed];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(

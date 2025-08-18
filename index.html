@@ -442,25 +442,51 @@
             document.getElementById('importModal').style.display = 'none';
         }
 
-        function processImport() {
-            const fileInput = document.getElementById('housecallImport');
-            if (fileInput.files.length === 0) {
-                alert('Please select a file to import');
-                return;
-            }
-            
-            // Here you would process the file
-            showSuccessMessage('Import started! Processing your Housecall Pro data...');
-            closeImportModal();
-            
-            // Simulate import process
-            setTimeout(() => {
-                showSuccessMessage('Import completed! Customer data has been loaded.');
-                // Update stats
-                document.querySelector('.stat-item:nth-child(3) .stat-number').textContent = '247';
-                document.querySelector('.stat-item:nth-child(4) .stat-number').textContent = '$24,750';
-            }, 3000);
-        }
+function processImport() {
+  const fileInput = document.getElementById('housecallImport');
+  if (fileInput.files.length === 0) {
+    alert('Please select a file to import');
+    return;
+  }
+
+  const file = fileInput.files[0];
+  const reader = new FileReader();
+
+  reader.onload = function(e) {
+    let data;
+    try {
+      data = JSON.parse(e.target.result); // Assumes JSON format
+    } catch {
+      alert("File format not supported. Please upload a JSON file.");
+      return;
+    }
+
+    data.forEach(row => {
+      const customerData = {
+        first_name: row.first_name || "",
+        last_name: row.last_name || "",
+        company_name: row.company_name || null,
+        email: row.email || "",
+        phone: row.phone || "",
+        status: row.status || "active",
+        created_at: firebase.firestore.Timestamp.now(),
+        updated_at: firebase.firestore.Timestamp.now(),
+        created_by: "admin",
+        updated_by: "admin"
+      };
+
+      db.collection("customers").add(customerData)
+        .then(() => console.log("Customer added:", customerData.email))
+        .catch(err => console.error("Error adding customer:", err));
+    });
+
+    showSuccessMessage("Import completed! Customer data has been loaded.");
+    closeImportModal();
+  };
+
+  reader.readAsText(file);
+}
+
 
         function showSuccessMessage(message) {
             const notification = document.createElement('div');

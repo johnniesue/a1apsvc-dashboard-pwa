@@ -1,631 +1,592 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A-1APSVC Dashboard</title>
-    <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>A-1APSVC Customer Management</title>
+  <link rel="manifest" href="manifest.json">
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: #333;
-        }
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;color:#333}
+    .header{background:rgba(255,255,255,.1);backdrop-filter:blur(10px);padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,.2)}
+    .logo-container{display:flex;align-items:center;gap:1rem}
+    .logo{width:40px;height:40px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center}
+    .logo img{width:30px;height:30px;object-fit:contain}
+    h1{color:#fff;font-size:1.5rem;font-weight:600}
+    .nav-buttons{display:flex;gap:.5rem}
+    .nav-btn{padding:.5rem 1rem;border:none;border-radius:8px;background:rgba(255,255,255,.2);color:#fff;text-decoration:none;font-weight:500;transition:.3s;cursor:pointer}
+    .nav-btn:hover{background:rgba(255,255,255,.3);transform:translateY(-2px)}
+    .container{max-width:1200px;margin:2rem auto;padding:0 1rem}
+    .main-card{background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border-radius:20px;padding:2rem;box-shadow:0 20px 40px rgba(0,0,0,.1);margin-bottom:2rem}
+    .page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem}
+    .page-title{display:flex;align-items:center;gap:1rem;font-size:1.8rem;font-weight:600;color:#2d3748}
+    .action-buttons{display:flex;gap:1rem}
+    .btn{padding:.75rem 1.5rem;border:none;border-radius:10px;font-weight:600;cursor:pointer;transition:.3s;text-decoration:none;display:inline-flex;align-items:center;gap:.5rem}
+    .btn-primary{background:linear-gradient(135deg,#4299e1,#3182ce);color:#fff}
+    .btn-success{background:linear-gradient(135deg,#48bb78,#38a169);color:#fff}
+    .btn-warning{background:linear-gradient(135deg,#ed8936,#dd6b20);color:#fff}
+    .btn-danger{background:linear-gradient(135deg,#f56565,#e53e3e);color:#fff}
+    .btn:hover{transform:translateY(-2px);box-shadow:0 10px 20px rgba(0,0,0,.2)}
+    .search-section{margin-bottom:2rem}
+    .search-bar{display:flex;gap:1rem;margin-bottom:1rem}
+    .search-input{flex:1;padding:1rem;border:2px solid #e2e8f0;border-radius:10px;font-size:1rem;transition:border-color .3s}
+    .search-input:focus{outline:none;border-color:#4299e1}
+    .filter-buttons{display:flex;gap:.5rem;flex-wrap:wrap}
+    .filter-btn{padding:.5rem 1rem;border:2px solid #e2e8f0;border-radius:20px;background:#fff;color:#4a5568;cursor:pointer;transition:.3s}
+    .filter-btn.active{background:#4299e1;color:#fff;border-color:#4299e1}
+    .customers-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(350px,1fr));gap:1.5rem;margin-bottom:2rem}
+    .customer-card{background:#fff;border-radius:15px;padding:1.5rem;box-shadow:0 4px 6px rgba(0,0,0,.1);border:2px solid transparent;transition:.3s;position:relative}
+    .customer-card:hover{transform:translateY(-5px);box-shadow:0 10px 25px rgba(0,0,0,.15)}
+    .customer-card.duplicate{border-color:#f56565;background:#fed7d7}
+    .customer-card.potential-duplicate{border-color:#ed8936;background:#feebc8}
+    .duplicate-badge{position:absolute;top:10px;right:10px;padding:.25rem .5rem;border-radius:20px;font-size:.75rem;font-weight:600;color:#fff}
+    .duplicate-badge.exact{background:#f56565}
+    .duplicate-badge.potential{background:#ed8936}
+    .customer-name{font-size:1.2rem;font-weight:600;color:#2d3748;margin-bottom:.5rem}
+    .customer-info{color:#4a5568;margin-bottom:.5rem}
+    .customer-tags{display:flex;gap:.5rem;flex-wrap:wrap;margin:1rem 0}
+    .tag{padding:.25rem .5rem;background:#e2e8f0;color:#4a5568;border-radius:15px;font-size:.75rem}
+    .customer-actions{display:flex;gap:.5rem;margin-top:1rem}
+    .btn-small{padding:.5rem 1rem;font-size:.875rem}
+    .empty-state{text-align:center;padding:4rem 2rem;color:#718096}
+    .empty-icon{font-size:4rem;margin-bottom:1rem}
+    .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:1000;backdrop-filter:blur(5px)}
+    .modal.active{display:flex;align-items:center;justify-content:center}
+    .modal-content{background:#fff;border-radius:20px;padding:2rem;max-width:600px;width:90%;max-height:80vh;overflow-y:auto}
+    .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem}
+    .modal-title{font-size:1.5rem;font-weight:600;color:#2d3748}
+    .close-btn{background:none;border:none;font-size:1.5rem;cursor:pointer;color:#718096}
+    .form-group{margin-bottom:1rem}
+    .form-label{display:block;margin-bottom:.5rem;font-weight:600;color:#4a5568}
+    .form-input{width:100%;padding:.75rem;border:2px solid #e2e8f0;border-radius:8px;font-size:1rem;transition:border-color .3s}
+    .form-input:focus{outline:none;border-color:#4299e1}
+    .duplicate-comparison{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0}
+    .comparison-card{padding:1rem;border:2px solid #e2e8f0;border-radius:10px;background:#f7fafc}
+    .comparison-card.selected{border-color:#4299e1;background:#ebf8ff}
+    .merge-actions{display:flex;gap:1rem;justify-content:flex-end;margin-top:1.5rem}
+    .import-section{background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border-radius:20px;padding:2rem;box-shadow:0 20px 40px rgba(0,0,0,.1);margin-bottom:2rem}
+    .import-header{text-align:center;margin-bottom:2rem}
+    .import-title{font-size:1.5rem;font-weight:600;color:#2d3748;margin-bottom:.5rem}
+    .import-subtitle{color:#718096}
+    .file-upload{border:2px dashed #cbd5e0;border-radius:15px;padding:2rem;text-align:center;margin-bottom:1rem;transition:.3s;cursor:pointer}
+    .file-upload:hover{border-color:#4299e1;background:#f7fafc}
+    .file-upload.dragover{border-color:#4299e1;background:#ebf8ff}
+    .upload-icon{font-size:3rem;color:#cbd5e0;margin-bottom:1rem}
+    .upload-text{color:#4a5568;margin-bottom:.5rem}
+    .upload-hint{color:#718096;font-size:.875rem}
+    .progress-bar{width:100%;height:8px;background:#e2e8f0;border-radius:4px;overflow:hidden;margin:1rem 0}
+    .progress-fill{height:100%;background:linear-gradient(90deg,#4299e1,#3182ce);width:0%;transition:width .3s}
+    .duplicate-summary{background:#fef5e7;border:2px solid #ed8936;border-radius:10px;padding:1rem;margin:1rem 0}
+    .duplicate-list{max-height:300px;overflow-y:auto;margin-top:1rem}
+    .duplicate-item{display:flex;justify-content:space-between;align-items:center;padding:.5rem;border-bottom:1px solid #e2e8f0}
+    .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:2rem}
+    .stat-card{background:#fff;border-radius:15px;padding:1.5rem;text-align:center;box-shadow:0 4px 6px rgba(0,0,0,.1)}
+    .stat-number{font-size:2rem;font-weight:700;color:#2d3748}
+    .stat-label{color:#718096;font-size:.875rem;margin-top:.5rem}
+    @media (max-width:768px){
+      .container{padding:0 .5rem}
+      .customers-grid{grid-template-columns:1fr}
+      .duplicate-comparison{grid-template-columns:1fr}
+      .action-buttons{flex-direction:column}
+    }
+  </style>
 
-        .header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 1rem 2rem;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
+  <!-- Firebase compat builds -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+</head>
+<body>
+  <div class="header">
+    <div class="logo-container">
+      <div class="logo">
+        <img id="headerLogo" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIyMCIgY3k9IjIwIiByPSIyMCIgZmlsbD0iIzQyOTllMSIvPjxzdmcgeD0iOCIgeT0iOCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEyIDJMMTMuMDkgOC4yNkwyMCA5TDEzLjA5IDE1Ljc0TDEyIDIyTDEwLjkxIDE1Ljc0TDQgOUwxMC45MSA4LjI2TDEyIDJaIiBmaWxsPSJ3aGl0ZSIvPjwvc3ZnPjwvc3ZnPg==" alt="A-1APSVC Logo">
+      </div>
+      <h1>Customer Management</h1>
+    </div>
+    <div class="nav-buttons">
+      <a href="index.html" class="nav-btn">🏠 Dashboard</a>
+      <a href="schedule.html" class="nav-btn">📅 Schedule</a>
+      <a href="reports.html" class="nav-btn">📊 Reports</a>
+    </div>
+  </div>
 
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+  <div class="container">
+    <!-- Import -->
+    <div class="import-section" id="importSection">
+      <div class="import-header">
+        <div class="import-title">📥 Import Customer Data</div>
+        <div class="import-subtitle">Upload your Housecall Pro export file or Excel spreadsheet</div>
+      </div>
 
-        .logo-section {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
+      <div class="file-upload" id="fileUpload">
+        <div class="upload-icon">📁</div>
+        <div class="upload-text">Click to select file or drag and drop</div>
+        <div class="upload-hint">Supports Excel (.xlsx), CSV, and JSON files</div>
+        <input type="file" id="fileInput" accept=".xlsx,.csv,.json" style="display:none;">
+      </div>
 
-        .header-logo {
-            max-height: 50px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
+      <div class="progress-bar" id="progressBar" style="display:none;">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
 
-        .company-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #1a365d;
-            margin: 0;
-        }
+      <div class="duplicate-summary" id="duplicateSummary" style="display:none;">
+        <h3>🔍 Duplicate Detection Results</h3>
+        <p id="duplicateCount">Found 0 potential duplicates</p>
+        <div class="duplicate-list" id="duplicateList"></div>
+      </div>
 
-        .logo-upload-btn {
-            background: #f8fafc;
-            border: 2px dashed #cbd5e1;
-            color: #64748b;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .logo-upload-btn:hover {
-            border-color: #007bff;
-            color: #007bff;
-            background: #f0f8ff;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        .welcome-section {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 2rem;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
-            text-align: center;
-        }
-
-        .welcome-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #1a365d;
-            margin-bottom: 0.5rem;
-        }
-
-        .welcome-subtitle {
-            color: #64748b;
-            font-size: 1.1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .quick-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        .stat-item {
-            background: linear-gradient(135deg, #007bff, #0056b3);
-            color: white;
-            padding: 1rem;
-            border-radius: 12px;
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 0.25rem;
-        }
-
-        .stat-label {
-            font-size: 0.9rem;
-            opacity: 0.9;
-        }
-
-        .dashboard-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-            margin-bottom: 2rem;
-        }
-
-        .card {
-            padding: 1.5rem;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            color: white;
-            min-height: 140px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            text-align: center;
-            border: none;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.2);
-        }
-
-        .card.scheduling {
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-            color: white;
-        }
-
-        .card.tech-mobile {
-            background: linear-gradient(135deg, #374151 0%, #6b7280 100%);
-            color: white;
-        }
-
-        .card.financial {
-            background: linear-gradient(135deg, #dbeafe 0%, #f8fafc 100%);
-            color: #374151;
-        }
-
-        .card.customer {
-            background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
-            color: white;
-        }
-
-        .card.import {
-            background: linear-gradient(135deg, #111827 0%, #374151 100%);
-            color: white;
-        }
-
-        .card-icon {
-            font-size: 2.5rem;
-            margin-bottom: 0.8rem;
-            display: block;
-        }
-
-        .card h3 {
-            font-size: 1.3rem;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-
-        .card p {
-            font-size: 0.9rem;
-            line-height: 1.4;
-            opacity: 0.9;
-        }
-
-        .card.financial h3,
-        .card.financial p {
-            color: #374151;
-        }
-
-        .card.financial .card-icon {
-            color: #374151;
-        }
-
-  // Call it on load
-  window.onload = getJobs;
-</script>
-
-    <header class="header">
-        <div class="header-content">
-            <div class="logo-section">
-                <img id="headerLogo" class="header-logo hidden" alt="A-1APSVC Logo">
-                <h1 class="company-title">A-1APSVC Dashboard</h1>
-            </div>
-            <div>
-                <input type="file" id="logoInput" accept="image/*" style="display: none;">
-                <button class="logo-upload-btn" onclick="document.getElementById('logoInput').click()">
-                    📁 Upload Logo
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <div class="container">
-        <div class="welcome-section">
-            <h2 class="welcome-title">Welcome to A-1APSVC</h2>
-            <p class="welcome-subtitle">Professional Plumbing Services Management Dashboard</p>
-            
-            <div class="quick-stats">
-                <div class="stat-item">
-                    <div class="stat-number">0</div>
-                    <div class="stat-label">Today's Jobs</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">0</div>
-                    <div class="stat-label">This Week</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">0</div>
-                    <div class="stat-label">Active Customers</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">$0</div>
-                    <div class="stat-label">Monthly Revenue</div>
-                </div>
-            </div>
-            
-            <div class="dashboard-cards">
-                <div class="card scheduling" onclick="location.href='schedule.html'">
-                    <span class="card-icon"><i class="fas fa-calendar-alt"></i></span>
-                    <h3>Scheduling</h3>
-                    <p>Manage appointments and technician assignments</p>
-                </div>
-
-                <div class="card tech-mobile" onclick="location.href='tech-mobile.html'">
-                    <span class="card-icon"><i class="fas fa-mobile-alt"></i></span>
-                    <h3>Tech Mobile</h3>
-                    <p>Mobile interface for technicians in the field</p>
-                </div>
-                
-                <div class="card financial" onclick="location.href='reports.html'">
-                    <span class="card-icon"><i class="fas fa-chart-bar"></i></span>
-                    <h3>Financial Reports</h3>
-                    <p>View revenue, expenses, and business analytics</p>
-                </div>
-                
-                <div class="card customer" onclick="location.href='customers.html'">
-                    <span class="card-icon"><i class="fas fa-users"></i></span>
-                    <h3>Customer Management</h3>
-                    <p>Track customer information and complete service history</p>
-                </div>
-                
-                <div class="card import" onclick="showImportModal()">
-                    <span class="card-icon"><i class="fas fa-download"></i></span>
-                    <h3>Import from Housecall Pro</h3>
-                    <p>Import your existing customer data and service history</p>
-                </div>
-            </div>
-        </div>
+      <div style="text-align:center;margin-top:1rem;">
+        <button class="btn btn-primary" id="processImportBtn" style="display:none;">Process Import</button>
+        <button class="btn btn-success" id="confirmImportBtn" style="display:none;">Confirm Import</button>
+      </div>
     </div>
 
-    <!-- Import Modal -->
-    <div id="importModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center;">
-        <div style="background: white; padding: 2rem; border-radius: 16px; max-width: 500px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
-            <h3 style="color: #1a365d; margin-bottom: 1rem;">Import from Housecall Pro</h3>
-            <p style="color: #64748b; margin-bottom: 1.5rem;">Upload your Housecall Pro export file to import customers and service history.</p>
-            
-            <div style="border: 2px dashed #cbd5e1; padding: 2rem; text-align: center; border-radius: 8px; margin-bottom: 1rem;">
-                <input type="file" id="housecallImport" accept=".csv,.xlsx,.json" style="display: none;">
-                <button onclick="document.getElementById('housecallImport').click()" style="background: #007bff; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer;">
-                    Choose Housecall Pro File
-                </button>
-                <p style="margin-top: 0.5rem; font-size: 0.9rem; color: #64748b;">Supports CSV, Excel, or JSON formats</p>
-            </div>
-            
-            <div style="display: flex; gap: 1rem; justify-content: flex-end;">
-                <button onclick="closeImportModal()" style="background: #f1f5f9; color: #64748b; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer;">Cancel</button>
-                <button onclick="processImport()" style="background: #10b981; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer;">Import Data</button>
-            </div>
+    <!-- Main -->
+    <div class="main-card">
+      <div class="page-header">
+        <div class="page-title">👥 Customer Management</div>
+        <div class="action-buttons">
+          <button class="btn btn-warning" id="findDuplicatesBtn">🔍 Find Duplicates</button>
+          <button class="btn btn-primary" id="addCustomerBtn">+ Add New Customer</button>
         </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-number" id="totalCustomers">0</div><div class="stat-label">Total Customers</div></div>
+        <div class="stat-card"><div class="stat-number" id="duplicatesFound">0</div><div class="stat-label">Duplicates Found</div></div>
+        <div class="stat-card"><div class="stat-number" id="recentlyAdded">0</div><div class="stat-label">Recently Added</div></div>
+        <div class="stat-card"><div class="stat-number" id="activeCustomers">0</div><div class="stat-label">Active Customers</div></div>
+      </div>
+
+      <!-- Search/Filters -->
+      <div class="search-section">
+        <div class="search-bar">
+          <input type="text" class="search-input" id="searchInput" placeholder="Search customers by name, email, phone, or address...">
+          <button class="btn btn-primary" id="searchBtn">🔍 Search</button>
+        </div>
+        <div class="filter-buttons">
+          <button class="filter-btn active" data-filter="all">All Customers</button>
+          <button class="filter-btn" data-filter="recent">Recently Added</button>
+          <button class="filter-btn" data-filter="duplicates">Potential Duplicates</button>
+          <button class="filter-btn" data-filter="no-email">Missing Email</button>
+          <button class="filter-btn" data-filter="no-phone">Missing Phone</button>
+        </div>
+      </div>
+
+      <!-- Grid -->
+      <div class="customers-grid" id="customersGrid">
+        <div class="empty-state">
+          <div class="empty-icon">👥</div>
+          <h3>No Customers Yet</h3>
+          <p>Import your customer data or add your first customer to get started</p>
+          <button class="btn btn-success" onclick="document.getElementById('fileUpload').click()">📥 Import Customers</button>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <script>
-        // Logo upload functionality
-        document.getElementById('logoInput').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const logoData = e.target.result;
-                    
-                    // Show in header
-                    const headerLogo = document.getElementById('headerLogo');
-                    headerLogo.src = logoData;
-                    headerLogo.classList.remove('hidden');
-                    
-                    // Save to localStorage
-                    localStorage.setItem('a1apsvc-logo', logoData);
-                    
-                    // Show success message
-                    showSuccessMessage('Logo uploaded successfully!');
-                };
-                reader.readAsDataURL(file);
-            }
+  <!-- Add/Edit Modal -->
+  <div class="modal" id="customerModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modalTitle">Add New Customer</h2>
+        <button class="close-btn" onclick="closeModal('customerModal')">&times;</button>
+      </div>
+      <form id="customerForm">
+        <div class="form-group"><label class="form-label">First Name *</label><input type="text" class="form-input" id="firstName" required></div>
+        <div class="form-group"><label class="form-label">Last Name *</label><input type="text" class="form-input" id="lastName" required></div>
+        <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input" id="email"></div>
+        <div class="form-group"><label class="form-label">Mobile Phone</label><input type="tel" class="form-input" id="mobilePhone"></div>
+        <div class="form-group"><label class="form-label">Home Phone</label><input type="tel" class="form-input" id="homePhone"></div>
+        <div class="form-group"><label class="form-label">Work Phone</label><input type="tel" class="form-input" id="workPhone"></div>
+        <div class="form-group"><label class="form-label">Address</label><input type="text" class="form-input" id="address"></div>
+        <div class="form-group"><label class="form-label">Company</label><input type="text" class="form-input" id="company"></div>
+        <div class="form-group"><label class="form-label">Tags (comma separated)</label><input type="text" class="form-input" id="tags" placeholder="VIP, Regular, Commercial"></div>
+        <div class="form-group"><label class="form-label">Notes</label><textarea class="form-input" id="notes" rows="3"></textarea></div>
+        <div class="merge-actions">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('customerModal')">Cancel</button>
+          <button type="submit" class="btn btn-success">Save Customer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Merge Modal -->
+  <div class="modal" id="mergeModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">🔄 Merge Duplicate Customers</h2>
+        <button class="close-btn" onclick="closeModal('mergeModal')">&times;</button>
+      </div>
+      <p>Select which customer record to keep and merge the data:</p>
+      <div class="duplicate-comparison" id="duplicateComparison"></div>
+      <div class="merge-actions">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('mergeModal')">Cancel</button>
+        <button type="button" class="btn btn-danger" id="mergeCustomersBtn">Merge Selected</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="logo-manager.js"></script>
+  <script src="customer-data.js"></script>
+
+  <script>
+    // ===== FIREBASE (compat) =====
+    const firebaseConfig = {
+      apiKey: "AIzaSyDeVLmKQXCMN_JZNwFL9OhfCQKVRHsVhY4",
+      authDomain: "a1-customer-dashboard.firebaseapp.com",
+      projectId: "a1-customer-dashboard",
+      storageBucket: "a1-customer-dashboard.appspot.com",
+      messagingSenderId: "981606789719",
+      appId: "1:981606789719:web:327592a2cefa2536bda912"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // ===== CUSTOMER MANAGER =====
+    class CustomerManager {
+      constructor(){
+        this.customers = [];
+        this.duplicates = [];
+        this.selectedCustomer = null;
+        this.unsubscribe = null;
+        this.init();
+      }
+
+      async init(){
+        this.setupEventListeners();
+        this.loadLogo();
+        console.log("🔌 Connecting to Firestore…");
+        try {
+          await this.subscribeFirestore();
+          console.log("✅ Firestore live subscription active (Customer collection).");
+        } catch (e) {
+          console.error("❌ Firestore failed, loading local seed instead:", e);
+          this.customers = initializeCustomerData();
+          this.renderCustomers();
+          this.updateStats();
+        }
+      }
+
+      loadLogo(){
+        const savedLogo = localStorage.getItem('a1apsvc_logo');
+        if (savedLogo) document.getElementById('headerLogo').src = savedLogo;
+      }
+
+      // --- Firestore live read ---
+      async subscribeFirestore(){
+        if (this.unsubscribe){ this.unsubscribe(); this.unsubscribe=null; }
+        this.renderLoading();
+        // Use "Customer" collection (capital C). Change here if your collection name differs.
+        this.unsubscribe = db.collection("Customer").orderBy("firstName")
+          .onSnapshot(snap=>{
+            this.customers = snap.docs.map(d=>({ id:d.id, ...d.data() }));
+            console.log(`📥 Loaded ${this.customers.length} customer(s)`);
+            this.renderCustomers();
+            this.updateStats();
+          }, err=>{ throw err; });
+      }
+
+      // --- CRUD ---
+      async addCustomer(payload){
+        const doc = { ...payload, dateAdded: firebase.firestore.FieldValue.serverTimestamp() };
+        await db.collection("Customer").add(doc);
+      }
+      async updateCustomer(id,payload){
+        await db.collection("Customer").doc(String(id)).update({
+          ...payload, updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      }
+      async deleteCustomer(id){
+        if (!confirm("Delete this customer?")) return;
+        await db.collection("Customer").doc(String(id)).delete();
+      }
+
+      // --- Events/UI ---
+      setupEventListeners(){
+        document.getElementById('fileUpload').addEventListener('click', ()=>document.getElementById('fileInput').click());
+        document.getElementById('fileInput').addEventListener('change', (e)=>this.handleFileUpload(e.target.files[0]));
+        const fileUpload = document.getElementById('fileUpload');
+        fileUpload.addEventListener('dragover', e=>{e.preventDefault();fileUpload.classList.add('dragover')});
+        fileUpload.addEventListener('dragleave', ()=>fileUpload.classList.remove('dragover'));
+        fileUpload.addEventListener('drop', e=>{e.preventDefault();fileUpload.classList.remove('dragover');this.handleFileUpload(e.dataTransfer.files[0])});
+
+        document.getElementById('addCustomerBtn').addEventListener('click', ()=>this.openCustomerModal());
+        document.getElementById('findDuplicatesBtn').addEventListener('click', ()=>this.findDuplicates());
+        document.getElementById('processImportBtn').addEventListener('click', ()=>this.processImport());
+        document.getElementById('confirmImportBtn').addEventListener('click', ()=>this.confirmImport());
+
+        document.getElementById('searchInput').addEventListener('input', e=>this.searchCustomers(e.target.value));
+        document.querySelectorAll('.filter-btn').forEach(btn=>{
+          btn.addEventListener('click', (e)=>{
+            document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+            e.target.classList.add('active');
+            this.filterCustomers(e.target.dataset.filter);
+          });
         });
 
-        // Load saved logo on page load
-        window.addEventListener('load', function() {
-            const savedLogo = localStorage.getItem('a1apsvc-logo');
-            if (savedLogo) {
-                const headerLogo = document.getElementById('headerLogo');
-                headerLogo.src = savedLogo;
-                headerLogo.classList.remove('hidden');
-            }
+        document.getElementById('customerForm').addEventListener('submit', async (e)=>{
+          e.preventDefault(); await this.saveCustomer();
         });
 
-        // Import modal functions
-        function showImportModal() {
-            document.getElementById('importModal').style.display = 'flex';
+        document.getElementById('mergeCustomersBtn').addEventListener('click', ()=>this.mergeCustomers());
+      }
+
+      // --- Import flow (writes to Firestore on confirm) ---
+      async handleFileUpload(file){
+        if (!file) return;
+        const progressBar=document.getElementById('progressBar');
+        const progressFill=document.getElementById('progressFill');
+        const processBtn=document.getElementById('processImportBtn');
+        progressBar.style.display='block'; progressFill.style.width='0%';
+        try{
+          for(let i=0;i<=100;i+=10){progressFill.style.width=i+'%';await new Promise(r=>setTimeout(r,80))}
+          const data = await this.parseFile(file);
+          this.importData = data;
+          this.findImportDuplicates(data);
+          processBtn.style.display='inline-block';
+        }catch(err){
+          alert('Error reading file: '+err.message);
+          progressBar.style.display='none';
         }
-
-        function closeImportModal() {
-            document.getElementById('importModal').style.display = 'none';
-        }
-
-function processImport() {
-  const fileInput = document.getElementById('housecallImport');
-  if (fileInput.files.length === 0) {
-    alert('Please select a file to import');
-    return;
-  }
-
-  const file = fileInput.files[0];
-  const reader = new FileReader();
-
-  reader.onload = function(e) {
-    let data;
-    try {
-      data = JSON.parse(e.target.result); // Assumes JSON format
-    } catch {
-      alert("File format not supported. Please upload a JSON file.");
-      return;
-    }
-
-    data.forEach(row => {
-      const customerData = {
-        first_name: row.first_name || "",
-        last_name: row.last_name || "",
-        company_name: row.company_name || null,
-        email: row.email || "",
-        phone: row.phone || "",
-        status: row.status || "active",
-        created_at: firebase.firestore.Timestamp.now(),
-        updated_at: firebase.firestore.Timestamp.now(),
-        created_by: "admin",
-        updated_by: "admin"
-      };
-
-      db.collection("customers").add(customerData)
-        .then(() => console.log("Customer added:", customerData.email))
-        .catch(err => console.error("Error adding customer:", err));
-    });
-
-    showSuccessMessage("Import completed! Customer data has been loaded.");
-    closeImportModal();
-  };
-
-  reader.readAsText(file);
-}
-
-
-        function showSuccessMessage(message) {
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: #10b981;
-                color: white;
-                padding: 1rem 1.5rem;
-                border-radius: 8px;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-                z-index: 1001;
-                font-size: 0.9rem;
-            `;
-            notification.textContent = message;
-            
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                if (notification.parentNode) {
-                    notification.parentNode.removeChild(notification);
-                }
-            }, 3000);
-        }
-
-        // Service Worker Registration
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('service-worker.js');
-        }
-
-        // Google Maps Initialization
-        function initMap() {
-            // Center on Dallas/Plano area
-            const center = { lat: 33.0198, lng: -96.6989 };
-            
-            const map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 11,
-                center: center,
-                styles: [
-                    {
-                        featureType: 'all',
-                        elementType: 'geometry.fill',
-                        stylers: [{ color: '#f8fafc' }]
-                    },
-                    {
-                        featureType: 'water',
-                        elementType: 'geometry',
-                        stylers: [{ color: '#e2e8f0' }]
-                    },
-                    {
-                        featureType: 'road',
-                        elementType: 'geometry',
-                        stylers: [{ color: '#ffffff' }]
-                    }
-                ]
-            });
-
-            // Service area polygons
-            const serviceAreas = [
-                {
-                    name: 'Allen',
-                    coords: [
-                        { lat: 33.1031, lng: -96.6706 },
-                        { lat: 33.1031, lng: -96.6306 },
-                        { lat: 33.0831, lng: -96.6306 },
-                        { lat: 33.0831, lng: -96.6706 }
-                    ]
-                },
-                {
-                    name: 'McKinney',
-                    coords: [
-                        { lat: 33.2176, lng: -96.6397 },
-                        { lat: 33.2176, lng: -96.5797 },
-                        { lat: 33.1776, lng: -96.5797 },
-                        { lat: 33.1776, lng: -96.6397 }
-                    ]
-                },
-                {
-                    name: 'Plano',
-                    coords: [
-                        { lat: 33.0698, lng: -96.7397 },
-                        { lat: 33.0698, lng: -96.6797 },
-                        { lat: 33.0098, lng: -96.6797 },
-                        { lat: 33.0098, lng: -96.7397 }
-                    ]
-                },
-                {
-                    name: 'Frisco',
-                    coords: [
-                        { lat: 33.1507, lng: -96.8236 },
-                        { lat: 33.1507, lng: -96.7636 },
-                        { lat: 33.1107, lng: -96.7636 },
-                        { lat: 33.1107, lng: -96.8236 }
-                    ]
-                }
-            ];
-
-            // Add service area polygons
-            serviceAreas.forEach(area => {
-                const polygon = new google.maps.Polygon({
-                    paths: area.coords,
-                    strokeColor: '#007bff',
-                    strokeOpacity: 0.8,
-                    strokeWeight: 2,
-                    fillColor: '#007bff',
-                    fillOpacity: 0.2
-                });
-                polygon.setMap(map);
-
-                // Add area label
-                const infoWindow = new google.maps.InfoWindow({
-                    content: `<div style="font-weight: bold; color: #1a365d;">${area.name}</div><div style="color: #64748b;">A-1APSVC Service Area</div>`,
-                    position: area.coords[0]
-                });
-
-                polygon.addListener('click', () => {
-                    infoWindow.open(map);
-                });
-            });
-
-            // Add company marker
-            const marker = new google.maps.Marker({
-                position: center,
-                map: map,
-                title: 'A-1 Affordable Plumbing Services',
-                icon: {
-                    url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
-                        <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="20" cy="20" r="18" fill="#007bff" stroke="#ffffff" stroke-width="2"/>
-                            <text x="20" y="26" text-anchor="middle" fill="white" font-size="16" font-weight="bold">A1</text>
-                        </svg>
-                    `),
-                    scaledSize: new google.maps.Size(40, 40)
-                }
-            });
-
-            const infoWindow = new google.maps.InfoWindow({
-                content: `
-                    <div style="padding: 10px;">
-                        <h3 style="margin: 0 0 5px 0; color: #1a365d;">A-1 Affordable Plumbing Services</h3>
-                        <p style="margin: 0; color: #64748b;">Professional plumbing services across North Dallas</p>
-                        <p style="margin: 5px 0 0 0; color: #007bff; font-weight: bold;">Serving Allen, McKinney, Plano, Frisco & More</p>
-                    </div>
-                `
-            });
-
-            marker.addListener('click', () => {
-                infoWindow.open(map, marker);
-            });
-        }
-
-        // Load Google Maps when page loads
-        window.addEventListener('load', function() {
-            // Load saved logo
-            const savedLogo = localStorage.getItem('a1apsvc-logo');
-            if (savedLogo) {
-                const headerLogo = document.getElementById('headerLogo');
-                headerLogo.src = savedLogo;
-                headerLogo.classList.remove('hidden');
-            }
-
-            // Initialize Google Maps
-            if (typeof google !== 'undefined' && google.maps) {
-                initMap();
-            }
+      }
+      async parseFile(file){
+        return new Promise((resolve,reject)=>{
+          const reader=new FileReader();
+          reader.onload=(e)=>{
+            try{
+              if (file.name.endsWith('.json')) resolve(JSON.parse(e.target.result));
+              else if (file.name.endsWith('.csv')) resolve(this.parseCSV(e.target.result));
+              else if (file.name.endsWith('.xlsx')) resolve(this.simulateExcelData());
+              else reject(new Error('Unsupported file format'));
+            }catch(er){reject(er)}
+          };
+          reader.onerror=()=>reject(new Error('Failed to read file'));
+          reader.readAsText(file);
         });
+      }
+      parseCSV(csvText){
+        const lines=csvText.split('\n'); const headers=lines[0].split(',').map(h=>h.trim()); const data=[];
+        for(let i=1;i<lines.length;i++){ if(lines[i].trim()){ const values=lines[i].split(',').map(v=>v.trim()); const obj={}; headers.forEach((h,idx)=>obj[h]=values[idx]||''); data.push(obj);} }
+        return data;
+      }
+      simulateExcelData(){
+        return [
+          {'First Name':'Frank','Last Name':'Reed','Email':'frankpr1980@gmail.com','Mobile Number':'9.17E+09','Home Number':'','Work Number':'','Company':'','Tags':'','Notes':'Complete','ID':'57414217'},
+          {'First Name':'Buddy','Last Name':'Lane','Email':'','Mobile Number':'2.15E+09','Home Number':'','Work Number':'','Company':'','Tags':'','Notes':'','ID':'58438781'},
+          {'First Name':'Poulins','Last Name':'Syriac','Email':'poulinssyriac@yahoo.com','Mobile Number':'2.04E+09','Home Number':'','Work Number':'','Company':'','Tags':'','Notes':'','ID':'58488134'}
+        ];
+      }
+      findImportDuplicates(data){
+        const dups=[]; const dupSummary=document.getElementById('duplicateSummary'); const dupCount=document.getElementById('duplicateCount'); const dupList=document.getElementById('duplicateList');
+        for(let i=0;i<data.length;i++){ for(let j=i+1;j<data.length;j++){ const s=this.calculateSimilarity(data[i],data[j]); if(s>0.7) dups.push({customer1:data[i],customer2:data[j],similarity:s,type:s>0.9?'exact':'potential'}); } }
+        data.forEach(c1=>{ this.customers.forEach(c2=>{ const s=this.calculateSimilarity(c1,c2); if(s>0.7) dups.push({customer1:c1,customer2:c2,similarity:s,type:s>0.9?'exact':'potential',isExisting:true}); }); });
+        if(dups.length){ dupSummary.style.display='block'; dupCount.textContent=`Found ${dups.length} potential duplicates`; dupList.innerHTML=dups.map(d=>`<div class="duplicate-item"><span>${this.getCustomerDisplayName(d.customer1)} ↔ ${this.getCustomerDisplayName(d.customer2)}</span><span class="duplicate-badge ${d.type}">${Math.round(d.similarity*100)}% match</span></div>`).join(''); }
+        this.importDuplicates=dups;
+      }
+      calculateSimilarity(a,b){
+        let s=0,f=0;
+        const n1=`${a['First Name']||a.firstName||''} ${a['Last Name']||a.lastName||''}`.toLowerCase().trim();
+        const n2=`${b['First Name']||b.firstName||''} ${b['Last Name']||b.lastName||''}`.toLowerCase().trim();
+        if(n1 && n2){ f++; if(n1===n2)s+=1; else if(this.lev(n1,n2)<=2)s+=.8; else if(n1.includes(n2)||n2.includes(n1))s+=.6; }
+        const e1=(a.Email||a.email||'').toLowerCase().trim(), e2=(b.Email||b.email||'').toLowerCase().trim();
+        if(e1 && e2){ f++; if(e1===e2)s+=1; else if(this.lev(e1,e2)<=2)s+=.7; }
+        const p1=this.normPhone(a['Mobile Number']||a.mobilePhone||''), p2=this.normPhone(b['Mobile Number']||b.mobilePhone||'');
+        if(p1 && p2){ f++; if(p1===p2)s+=1; else if(p1.includes(p2)||p2.includes(p1))s+=.8; }
+        return f? s/f : 0;
+      }
+      lev(a,b){const m=[];for(let i=0;i<=b.length;i++){m[i]=[i]}for(let j=0;j<=a.length;j++){m[0][j]=j}for(let i=1;i<=b.length;i++){for(let j=1;j<=a.length;j++){m[i][j]=b[i-1]===a[j-1]?m[i-1][j-1]:Math.min(m[i-1][j-1]+1,m[i][j-1]+1,m[i-1][j]+1)}}return m[b.length][a.length]}
+      normPhone(p){return String(p||'').replace(/\D/g,'')}
+      getCustomerDisplayName(c){const f=c['First Name']||c.firstName||'';const l=c['Last Name']||c.lastName||'';return `${f} ${l}`.trim()||'Unknown'}
 
-  const jobsSnapshot = await db.collection('jobs')
-    .where('customerId', '==', customerId)
-    .get();
+      processImport(){
+        if(!this.importData)return;
+        const confirmBtn=document.getElementById('confirmImportBtn'); const processBtn=document.getElementById('processImportBtn');
+        this.processedImportData=this.importData.map(c=>({
+          firstName:c['First Name']||'', lastName:c['Last Name']||'', email:c.Email||'',
+          mobilePhone:c['Mobile Number']||'', homePhone:c['Home Number']||'', workPhone:c['Work Number']||'',
+          company:c.Company||'', tags:c.Tags?c.Tags.split(',').map(t=>t.trim()).filter(Boolean):[],
+          notes:c.Notes||'', address:c.Address||'', dateAdded:new Date().toISOString(), isImported:true
+        }));
+        processBtn.style.display='none'; confirmBtn.style.display='inline-block';
+      }
+      async confirmImport(){
+        if(!this.processedImportData)return;
+        try{
+          for(const payload of this.processedImportData){ await this.addCustomer(payload); }
+          document.getElementById('importSection').style.display='none';
+          alert(`Successfully imported ${this.processedImportData.length} customers!`);
+        }catch(e){console.error(e);alert('Import failed—see console.');}
+      }
 
-  insights.totalJobs = jobsSnapshot.size;
+      // --- Duplicates / Merge ---
+      findDuplicates(){
+        this.duplicates=[];
+        for(let i=0;i<this.customers.length;i++){
+          for(let j=i+1;j<this.customers.length;j++){
+            const sim=this.calculateSimilarity(this.customers[i],this.customers[j]);
+            if(sim>0.7)this.duplicates.push({customer1:this.customers[i],customer2:this.customers[j],similarity:sim,type:sim>0.9?'exact':'potential'});
+          }
+        }
+        alert(this.duplicates.length?`Found ${this.duplicates.length} potential duplicates.`:'No duplicates found!');
+        this.renderCustomers(); this.updateStats();
+      }
+      showMergeModal(customerId){
+        const dup=this.duplicates.find(d=>d.customer1.id===customerId||d.customer2.id===customerId);
+        if(!dup)return;
+        const c1=dup.customer1, c2=dup.customer2, cmp=document.getElementById('duplicateComparison');
+        cmp.innerHTML=`
+          <div class="comparison-card" data-customer-id="${c1.id}">
+            <h4>Customer 1</h4>
+            <p><strong>Name:</strong> ${c1.firstName||''} ${c1.lastName||''}</p>
+            <p><strong>Email:</strong> ${c1.email||'None'}</p>
+            <p><strong>Phone:</strong> ${c1.mobilePhone||'None'}</p>
+            <p><strong>Address:</strong> ${c1.address||'None'}</p>
+            <p><strong>Company:</strong> ${c1.company||'None'}</p>
+            <button class="btn btn-primary" onclick="this.parentElement.classList.add('selected'); this.parentElement.nextElementSibling.classList.remove('selected')">Select This</button>
+          </div>
+          <div class="comparison-card" data-customer-id="${c2.id}">
+            <h4>Customer 2</h4>
+            <p><strong>Name:</strong> ${c2.firstName||''} ${c2.lastName||''}</p>
+            <p><strong>Email:</strong> ${c2.email||'None'}</p>
+            <p><strong>Phone:</strong> ${c2.mobilePhone||'None'}</p>
+            <p><strong>Address:</strong> ${c2.address||'None'}</p>
+            <p><strong>Company:</strong> ${c2.company||'None'}</p>
+            <button class="btn btn-primary" onclick="this.parentElement.classList.add('selected'); this.parentElement.previousElementSibling.classList.remove('selected')">Select This</button>
+          </div>`;
+        document.getElementById('mergeModal').classList.add('active');
+      }
+      async mergeCustomers(){
+        const selected=document.querySelector('.comparison-card.selected'); if(!selected){alert('Select a record to keep.');return;}
+        const keepId=selected.dataset.customerId;
+        const dup=this.duplicates.find(d=>d.customer1.id===keepId||d.customer2.id===keepId); if(!dup)return;
+        const keep=dup.customer1.id===keepId?dup.customer1:dup.customer2;
+        const remove=dup.customer1.id===keepId?dup.customer2:dup.customer1;
+        const merged={...keep}; for(const k of Object.keys(remove)){ if(merged[k]==null||merged[k]==='') merged[k]=remove[k]; }
+        try{
+          await this.updateCustomer(keep.id, merged);
+          await this.deleteCustomer(remove.id);
+          this.duplicates=this.duplicates.filter(d=>d.customer1.id!==remove.id&&d.customer2.id!==remove.id);
+          this.renderCustomers(); this.updateStats(); closeModal('mergeModal'); alert('Customers merged successfully!');
+        }catch(e){console.error(e);alert('Merge failed—see console.');}
+      }
 
-  jobsSnapshot.forEach(doc => {
-    const job = doc.data();
-    const jobType = job.type || 'Unknown';
-    const jobDate = job.date ? new Date(job.date) : null;
+      // --- Save (modal) ---
+      async saveCustomer(){
+        const payload={
+          firstName:document.getElementById('firstName').value.trim(),
+          lastName:document.getElementById('lastName').value.trim(),
+          email:document.getElementById('email').value.trim(),
+          mobilePhone:document.getElementById('mobilePhone').value.trim(),
+          homePhone:document.getElementById('homePhone').value.trim(),
+          workPhone:document.getElementById('workPhone').value.trim(),
+          address:document.getElementById('address').value.trim(),
+          company:document.getElementById('company').value.trim(),
+          tags:document.getElementById('tags').value.split(',').map(t=>t.trim()).filter(Boolean),
+          notes:document.getElementById('notes').value.trim()
+        };
+        if(!payload.firstName||!payload.lastName){alert('First and Last name are required.');return;}
+        if(this.selectedCustomer){ await this.updateCustomer(this.selectedCustomer.id, payload); }
+        else { await this.addCustomer(payload); }
+        this.selectedCustomer=null; closeModal('customerModal');
+      }
 
-    insights.jobTypes[jobType] = (insights.jobTypes[jobType] || 0) + 1;
+      // --- Search/Filter/Stats/Render ---
+      searchCustomers(q){
+        const needle=(q||'').toLowerCase();
+        if(!needle){ this.renderCustomers(); return; }
+        const list=this.customers.filter(c=>{
+          const text=`${c.firstName||''} ${c.lastName||''} ${c.email||''} ${c.mobilePhone||''} ${c.address||''}`.toLowerCase();
+          return text.includes(needle);
+        });
+        this.renderCustomers(list);
+      }
+      filterCustomers(f){
+        if(f==='all') return this.renderCustomers();
+        let list=this.customers;
+        if(f==='recent'){
+          const weekAgo=new Date(); weekAgo.setDate(weekAgo.getDate()-7);
+          list=this.customers.filter(c=>{
+            const d=c.dateAdded?.toDate ? c.dateAdded.toDate() : (c.dateAdded?new Date(c.dateAdded):null);
+            return d && d>weekAgo;
+          });
+        } else if(f==='duplicates'){
+          const ids=new Set(); this.duplicates.forEach(d=>{ids.add(d.customer1.id);ids.add(d.customer2.id)});
+          list=this.customers.filter(c=>ids.has(c.id));
+        } else if(f==='no-email'){
+          list=this.customers.filter(c=>!c.email);
+        } else if(f==='no-phone'){
+          list=this.customers.filter(c=>!c.mobilePhone && !c.homePhone && !c.workPhone);
+        }
+        this.renderCustomers(list);
+      }
+      updateStats(){
+        document.getElementById('totalCustomers').textContent=this.customers.length;
+        document.getElementById('duplicatesFound').textContent=this.duplicates.length;
+        const weekAgo=new Date(); weekAgo.setDate(weekAgo.getDate()-7);
+        const recent=this.customers.filter(c=>{
+          const d=c.dateAdded?.toDate?c.dateAdded.toDate():(c.dateAdded?new Date(c.dateAdded):null);
+          return d && d>weekAgo;
+        }).length;
+        document.getElementById('recentlyAdded').textContent=recent;
+        document.getElementById('activeCustomers').textContent=this.customers.filter(c=>c.email||c.mobilePhone).length;
+      }
+      renderLoading(){
+        document.getElementById('customersGrid').innerHTML=`<div class="empty-state"><div class="empty-icon">⏳</div><h3>Loading Customers…</h3><p>Connecting to database</p></div>`;
+      }
+      renderCustomers(list=this.customers){
+        const grid=document.getElementById('customersGrid');
+        if(!list.length){
+          grid.innerHTML=`<div class="empty-state"><div class="empty-icon">👥</div><h3>No Customers Found</h3><p>Try adjusting your search or filters</p></div>`;
+          return;
+        }
+        grid.innerHTML=list.map(c=>{
+          const isDup=this.duplicates.some(d=>d.customer1.id===c.id||d.customer2.id===c.id);
+          const dupType=isDup?(this.duplicates.find(d=>d.customer1.id===c.id||d.customer2.id===c.id)?.type):null;
+          const tags=(c.tags&&c.tags.length)?`<div class="customer-tags">${c.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>`:'';
+          return `
+            <div class="customer-card ${isDup?dupType:''}" data-customer-id="${c.id}">
+              ${isDup?`<div class="duplicate-badge ${dupType}">${dupType==='exact'?'Exact':'Potential'} Duplicate</div>`:''}
+              <div class="customer-name">${(c.firstName||'')+' '+(c.lastName||'')}</div>
+              <div class="customer-info">📧 ${c.email||'No email'}</div>
+              <div class="customer-info">📱 ${c.mobilePhone||'No mobile'}</div>
+              <div class="customer-info">🏠 ${c.address||'No address'}</div>
+              ${c.company?`<div class="customer-info">🏢 ${c.company}</div>`:''}
+              ${tags}
+              <div class="customer-actions">
+                <button class="btn btn-primary btn-small" onclick="customerManager.openCustomerModal(customerManager.customers.find(x=>x.id==='${c.id}'))">✏️ Edit</button>
+                <button class="btn btn-danger btn-small" onclick="customerManager.deleteCustomer('${c.id}')">🗑️ Delete</button>
+                ${isDup?`<button class="btn btn-warning btn-small" onclick="customerManager.showMergeModal('${c.id}')">🔄 Merge</button>`:''}
+              </div>
+            </div>`;
+        }).join('');
+      }
 
-    if (!insights.lastServiceDate || jobDate > insights.lastServiceDate) {
-      insights.lastServiceDate = jobDate;
+      // Modal helpers
+      openCustomerModal(c=null){
+        this.selectedCustomer=c;
+        document.getElementById('modalTitle').textContent=c?'Edit Customer':'Add New Customer';
+        if(c){ this.populateForm(c); } else { this.clearForm(); }
+        document.getElementById('customerModal').classList.add('active');
+      }
+      populateForm(c){
+        firstName.value=c.firstName||''; lastName.value=c.lastName||''; email.value=c.email||'';
+        mobilePhone.value=c.mobilePhone||''; homePhone.value=c.homePhone||''; workPhone.value=c.workPhone||'';
+        address.value=c.address||''; company.value=c.company||'';
+        tags.value=(c.tags||[]).join(', '); notes.value=c.notes||'';
+      }
+      clearForm(){ document.getElementById('customerForm').reset(); }
     }
 
-    if (job.notes && job.notes.toLowerCase().includes('leak')) {
-      insights.recurringIssues.push(job);
-    }
-  });
+    function closeModal(id){ document.getElementById(id).classList.remove('active'); }
 
-  const invoicesSnapshot = await db.collection('invoices')
-    .where('customerId', '==', customerId)
-    .get();
+    // Boot
+    const customerManager=new CustomerManager();
 
-  insights.totalInvoices = invoicesSnapshot.size;
-
-  invoicesSnapshot.forEach(doc => {
-    const invoice = doc.data();
-    insights.lifetimeSpend += invoice.total || 0;
-  });
-
-  const now = new Date();
-  const daysSinceLastService = insights.lastServiceDate
-    ? Math.floor((now - insights.lastServiceDate) / (1000 * 60 * 60 * 24))
-    : null;
-
-  if (insights.recurringIssues.length >= 3) {
-    insights.suggestions.push("Recurring leak issue – consider upsell");
-  }
-
-  if (daysSinceLastService && daysSinceLastService > 90) {
-    insights.suggestions.push("Customer due for follow-up");
-  }
-
-  return insights;
-}
-
-    </script>
-    <!-- Firebase SDKs and inline scripts -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script>
-  // Your Firebase config and inline logic
-</script>
-
-<!-- Your shared utility script -->
-<script src="scripts/dashboard-utils.js"></script>
+    // PWA
+    if('serviceWorker' in navigator){ navigator.serviceWorker.register('service-worker.js'); }
+  </script>
 </body>
 </html>
-

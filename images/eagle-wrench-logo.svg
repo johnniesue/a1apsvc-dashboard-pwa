@@ -1,0 +1,27 @@
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Eagle silhouette -->
+  <g transform="translate(2,5)">
+    <!-- Eagle body -->
+    <ellipse cx="18" cy="20" rx="10" ry="8" fill="#1a365d"/>
+    <!-- Eagle head -->
+    <circle cx="12" cy="12" rx="6" ry="5" fill="#1a365d"/>
+    <!-- Eagle beak -->
+    <polygon points="6,12 2,10 4,14" fill="#ed8936"/>
+    <!-- Eagle wings -->
+    <path d="M8 16 C4 12, 0 15, 2 20 C4 18, 8 18, 12 20" fill="#2d3748"/>
+    <path d="M28 16 C32 12, 36 15, 34 20 C32 18, 28 18, 24 20" fill="#2d3748"/>
+    <!-- Eagle tail -->
+    <polygon points="28,22 36,24 34,28 30,26" fill="#2d3748"/>
+  </g>
+  <!-- Wrench overlay -->
+  <g transform="translate(22,22)">
+    <rect x="0" y="0" width="2" height="12" fill="#e53e3e" transform="rotate(45)"/>
+    <circle cx="0" cy="0" r="3" fill="none" stroke="#e53e3e" stroke-width="2"/>
+    <circle cx="8" cy="8" r="2" fill="none" stroke="#e53e3e" stroke-width="1.5"/>
+  </g>
+  <!-- Patriotic stars -->
+  <g fill="#ffffff">
+    <polygon points="35,5 36,7 38,7 36.5,8.5 37,11 35,9.5 33,11 33.5,8.5 32,7 34,7" transform="scale(0.6)"/>
+    <polygon points="5,35 6,37 8,37 6.5,38.5 7,41 5,39.5 3,41 3.5,38.5 2,37 4,37" transform="scale(0.5)"/>
+  </g>
+</svg>

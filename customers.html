@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A-1APSVC Customer Management</title>
     <link rel="manifest" href="manifest.json">
+    
+    <!-- Mapbox GL JS -->
+    <script src='https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.css' rel='stylesheet' />
+    
+    <!-- Mapbox Geocoding -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.1/mapbox-gl-geocoder.min.js"></script>
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.1/mapbox-gl-geocoder.css" type="text/css" />
+    
     <style>
         * {
             margin: 0;
@@ -525,6 +534,73 @@
             margin-top: 0.5rem;
         }
 
+        /* Intake Form Styles */
+        .intake-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .intake-form {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .map-container {
+            margin: 1.5rem 0;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .intake-map {
+            width: 100%;
+            height: 300px;
+            background: #e2e8f0;
+            position: relative;
+        }
+
+        .address-help {
+            font-size: 0.875rem;
+            color: #718096;
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: #4a5568;
+            cursor: pointer;
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            margin-top: 0.25rem;
+        }
+
+        .btn-large {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            min-width: 200px;
+        }
+
+        .form-input[type="date"],
+        .form-input[type="time"] {
+            max-width: 200px;
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 0 0.5rem;
@@ -548,7 +624,7 @@
     <div class="header">
         <div class="logo-container">
             <div class="logo">
-                <img id="headerLogo" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiM0Mjk5ZTEiLz4KPHN2ZyB4PSI4IiB5PSI4IiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMMTMuMDkgOC4yNkwyMCA5TDEzLjA5IDE1Ljc0TDEyIDIyTDEwLjkxIDE1Ljc0TDQgOUwxMC45MSA4LjI2TDEyIDJaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4KPC9zdmc+" alt="A-1APSVC Logo">
+                <img id="headerLogo" src="images/eagle-wrench-logo.png" alt="A-1 Logo">
             </div>
             <h1>Customer Management</h1>
         </div>
@@ -560,6 +636,100 @@
     </div>
 
     <div class="container">
+        <!-- Customer Intake Form Section -->
+        <div class="intake-section" id="intakeSection">
+            <div class="import-header">
+                <div class="import-title">📝 Customer Service Request</div>
+                <div class="import-subtitle">Fill out your information to request A-1 Affordable Plumbing Services</div>
+            </div>
+            
+            <form id="intakeForm" class="intake-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">First Name *</label>
+                        <input type="text" class="form-input" id="intakeFirstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Last Name *</label>
+                        <input type="text" class="form-input" id="intakeLastName" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Email *</label>
+                        <input type="email" class="form-input" id="intakeEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Phone Number *</label>
+                        <input type="tel" class="form-input" id="intakePhone" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Service Address *</label>
+                    <input type="text" class="form-input" id="intakeAddress" placeholder="Enter your address" required>
+                    <div class="address-help">Click on the map below to confirm your exact location</div>
+                </div>
+                
+                <!-- Map Container -->
+                <div class="map-container">
+                    <div id="intake-map" class="intake-map"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Service Type *</label>
+                    <select class="form-input" id="intakeServiceType" required>
+                        <option value="">Select a service</option>
+                        <option value="emergency">Emergency Plumbing</option>
+                        <option value="installation">New Installation</option>
+                        <option value="repair">Repair Service</option>
+                        <option value="maintenance">Routine Maintenance</option>
+                        <option value="inspection">Inspection</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Preferred Date & Time</label>
+                    <div class="form-row">
+                        <input type="date" class="form-input" id="intakeDate">
+                        <input type="time" class="form-input" id="intakeTime">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Problem Description *</label>
+                    <textarea class="form-input" id="intakeDescription" rows="4" placeholder="Please describe the plumbing issue you're experiencing..." required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Priority Level</label>
+                    <select class="form-input" id="intakePriority">
+                        <option value="normal">Normal</option>
+                        <option value="urgent">Urgent</option>
+                        <option value="emergency">Emergency</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Additional Notes</label>
+                    <textarea class="form-input" id="intakeNotes" rows="3" placeholder="Any additional information..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="intakeConsent" required>
+                        I consent to A-1 Affordable Plumbing Services contacting me about this service request
+                    </label>
+                </div>
+                
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button type="submit" class="btn btn-success btn-large">📞 Request Service</button>
+                </div>
+            </form>
+        </div>
+
         <!-- Import Section -->
         <div class="import-section" id="importSection">
             <div class="import-header">
@@ -726,6 +896,285 @@
     <script src="logo-manager.js"></script>
     <script src="customer-data.js"></script>
     <script>
+        // Intake Form and Map Management
+        class IntakeManager {
+            constructor() {
+                this.map = null;
+                this.marker = null;
+                this.selectedCoordinates = null;
+                this.init();
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.initializeMap();
+            }
+
+            setupEventListeners() {
+                // Form submission
+                document.getElementById('intakeForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.submitIntakeForm();
+                });
+
+                // Address input for geocoding
+                document.getElementById('intakeAddress').addEventListener('input', 
+                    this.debounce((e) => this.geocodeAddress(e.target.value), 500)
+                );
+            }
+
+            initializeMap() {
+                // Note: In production, you would use a real Mapbox access token
+                // For demo purposes, we'll create a placeholder map
+                const mapContainer = document.getElementById('intake-map');
+                
+                if (typeof mapboxgl !== 'undefined') {
+                    // Real Mapbox implementation
+                    mapboxgl.accessToken = 'pk.your_mapbox_access_token_here'; // Replace with actual token
+                    
+                    this.map = new mapboxgl.Map({
+                        container: 'intake-map',
+                        style: 'mapbox://styles/mapbox/streets-v11',
+                        center: [-74.5, 40], // Default to New Jersey area
+                        zoom: 10
+                    });
+
+                    // Add click handler for map
+                    this.map.on('click', (e) => {
+                        this.handleMapClick(e.lngLat);
+                    });
+
+                    // Add navigation controls
+                    this.map.addControl(new mapboxgl.NavigationControl());
+                } else {
+                    // Fallback: Create a simple interactive map placeholder
+                    this.createFallbackMap(mapContainer);
+                }
+            }
+
+            createFallbackMap(container) {
+                container.innerHTML = `
+                    <div style="
+                        width: 100%; 
+                        height: 100%; 
+                        background: linear-gradient(45deg, #e2e8f0 25%, transparent 25%, transparent 75%, #e2e8f0 75%, #e2e8f0),
+                                   linear-gradient(45deg, #e2e8f0 25%, transparent 25%, transparent 75%, #e2e8f0 75%, #e2e8f0);
+                        background-size: 20px 20px;
+                        background-position: 0 0, 10px 10px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        position: relative;
+                        cursor: crosshair;
+                    ">
+                        <div style="
+                            background: rgba(255, 255, 255, 0.9);
+                            padding: 2rem;
+                            border-radius: 10px;
+                            text-align: center;
+                            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                        ">
+                            <h3>📍 Interactive Map</h3>
+                            <p>Click anywhere to set your location</p>
+                            <div id="coordinatesDisplay" style="margin-top: 1rem; font-family: monospace; color: #666;"></div>
+                        </div>
+                    </div>
+                `;
+
+                // Add click handler for fallback map
+                container.addEventListener('click', (e) => {
+                    const rect = container.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    // Convert pixel coordinates to approximate lat/lng (demo purposes)
+                    const lng = -74.5 + (x / rect.width - 0.5) * 2;
+                    const lat = 40 + (0.5 - y / rect.height) * 2;
+                    
+                    this.handleMapClick({lng, lat});
+                });
+            }
+
+            handleMapClick(coordinates) {
+                this.selectedCoordinates = coordinates;
+                
+                // Update coordinates display
+                const display = document.getElementById('coordinatesDisplay');
+                if (display) {
+                    display.textContent = `Selected: ${coordinates.lat.toFixed(4)}, ${coordinates.lng.toFixed(4)}`;
+                }
+
+                // Add/update marker (for real Mapbox)
+                if (this.map && typeof mapboxgl !== 'undefined') {
+                    if (this.marker) {
+                        this.marker.remove();
+                    }
+                    this.marker = new mapboxgl.Marker()
+                        .setLngLat([coordinates.lng, coordinates.lat])
+                        .addTo(this.map);
+                }
+
+                // Reverse geocode to get address
+                this.reverseGeocode(coordinates);
+            }
+
+            async geocodeAddress(address) {
+                if (!address || address.length < 3) return;
+
+                try {
+                    // In production, use Mapbox Geocoding API
+                    // For demo, we'll simulate geocoding
+                    console.log('Geocoding address:', address);
+                    
+                    // Simulate API delay
+                    await new Promise(resolve => setTimeout(resolve, 300));
+                    
+                    // Mock coordinates for demo
+                    const mockCoordinates = {
+                        lng: -74.5 + (Math.random() - 0.5) * 0.1,
+                        lat: 40 + (Math.random() - 0.5) * 0.1
+                    };
+                    
+                    this.handleMapClick(mockCoordinates);
+                } catch (error) {
+                    console.error('Geocoding error:', error);
+                }
+            }
+
+            async reverseGeocode(coordinates) {
+                try {
+                    // In production, use Mapbox Geocoding API for reverse geocoding
+                    // For demo, we'll simulate reverse geocoding
+                    const mockAddress = `${Math.floor(Math.random() * 999) + 1} Main St, Anytown, NJ`;
+                    
+                    // Only update if the address field is empty or very different
+                    const addressField = document.getElementById('intakeAddress');
+                    if (!addressField.value || addressField.value.length < 10) {
+                        addressField.value = mockAddress;
+                    }
+                } catch (error) {
+                    console.error('Reverse geocoding error:', error);
+                }
+            }
+
+            debounce(func, wait) {
+                let timeout;
+                return function executedFunction(...args) {
+                    const later = () => {
+                        clearTimeout(timeout);
+                        func(...args);
+                    };
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, wait);
+                };
+            }
+
+            async submitIntakeForm() {
+                // Collect form data
+                const formData = {
+                    firstName: document.getElementById('intakeFirstName').value,
+                    lastName: document.getElementById('intakeLastName').value,
+                    email: document.getElementById('intakeEmail').value,
+                    phone: document.getElementById('intakePhone').value,
+                    address: document.getElementById('intakeAddress').value,
+                    serviceType: document.getElementById('intakeServiceType').value,
+                    preferredDate: document.getElementById('intakeDate').value,
+                    preferredTime: document.getElementById('intakeTime').value,
+                    description: document.getElementById('intakeDescription').value,
+                    priority: document.getElementById('intakePriority').value,
+                    notes: document.getElementById('intakeNotes').value,
+                    coordinates: this.selectedCoordinates,
+                    timestamp: new Date().toISOString()
+                };
+
+                // Validate required fields
+                if (!formData.firstName || !formData.lastName || !formData.email || 
+                    !formData.phone || !formData.address || !formData.serviceType || 
+                    !formData.description) {
+                    alert('Please fill in all required fields.');
+                    return;
+                }
+
+                // Check consent
+                if (!document.getElementById('intakeConsent').checked) {
+                    alert('Please consent to being contacted about your service request.');
+                    return;
+                }
+
+                try {
+                    // Show loading state
+                    const submitBtn = document.querySelector('#intakeForm button[type="submit"]');
+                    const originalText = submitBtn.textContent;
+                    submitBtn.textContent = '⏳ Submitting...';
+                    submitBtn.disabled = true;
+
+                    // Simulate API submission
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+
+                    // Save to local storage for demo purposes
+                    const existingRequests = JSON.parse(localStorage.getItem('a1apsvc_service_requests') || '[]');
+                    existingRequests.push({
+                        id: Date.now(),
+                        ...formData
+                    });
+                    localStorage.setItem('a1apsvc_service_requests', JSON.stringify(existingRequests));
+
+                    // Also add to customers if they want
+                    const newCustomer = {
+                        id: Date.now() + 1,
+                        firstName: formData.firstName,
+                        lastName: formData.lastName,
+                        email: formData.email,
+                        mobilePhone: formData.phone,
+                        address: formData.address,
+                        notes: `Service Request: ${formData.serviceType} - ${formData.description}`,
+                        tags: ['Service Request', formData.serviceType],
+                        dateAdded: formData.timestamp,
+                        coordinates: formData.coordinates
+                    };
+
+                    // Add to customer list
+                    if (typeof customerManager !== 'undefined') {
+                        customerManager.customers.push(newCustomer);
+                        customerManager.saveCustomers();
+                        customerManager.renderCustomers();
+                        customerManager.updateStats();
+                    }
+
+                    // Show success message
+                    alert(`Thank you ${formData.firstName}! Your service request has been submitted. We'll contact you soon at ${formData.phone}.`);
+                    
+                    // Reset form
+                    document.getElementById('intakeForm').reset();
+                    this.selectedCoordinates = null;
+                    
+                    // Clear map marker
+                    if (this.marker) {
+                        this.marker.remove();
+                        this.marker = null;
+                    }
+                    
+                    // Clear coordinates display
+                    const display = document.getElementById('coordinatesDisplay');
+                    if (display) {
+                        display.textContent = '';
+                    }
+
+                    // Restore button
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+
+                } catch (error) {
+                    console.error('Error submitting form:', error);
+                    alert('Sorry, there was an error submitting your request. Please try again.');
+                    
+                    // Restore button
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                }
+            }
+        }
+
         // Customer Management System with Duplicate Detection
         class CustomerManager {
             constructor() {
@@ -1394,6 +1843,9 @@
 
         // Initialize customer manager
         const customerManager = new CustomerManager();
+
+        // Initialize intake manager
+        const intakeManager = new IntakeManager();
 
         // Service worker registration
         if ('serviceWorker' in navigator) {

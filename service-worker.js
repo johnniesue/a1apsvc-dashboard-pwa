@@ -1,14 +1,17 @@
-const CACHE_NAME = 'a1apsvc-dashboard-cache-v2';
+const CACHE_NAME = 'a1apsvc-dashboard-cache-v3';
 const urlsToCache = [
   './',
   './index.html',
+  './customers.html',
   './schedule.html',
   './reports.html',
   './style.css',
   './script.js',
   './manifest.json',
   './images/icon-192.png',
-  // './images/icon-512.png' ← temporarily removed];
+  './images/icon-512.png',
+  './images/eagle-wrench-logo.png'
+];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(

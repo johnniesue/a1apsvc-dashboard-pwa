@@ -287,7 +287,7 @@ document.head.appendChild(style);
 
 // Initialize the dashboard when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    new A1Dashboard();
+    window.a1Dashboard = new A1Dashboard();
 });
 
 // Export for use in other modules
@@ -494,6 +494,12 @@ class DashboardIntegration {
         }
     }
 }
+
+// Initialize dashboard integration
+document.addEventListener('DOMContentLoaded', () => {
+    window.dashboardIntegration = new DashboardIntegration();
+});
+
 // Firebase Initialization
 const firebaseConfig = {
   apiKey: "YOUR_API_KEY",
@@ -575,5 +581,3 @@ async function updateDashboardStats() {
 }
 
 document.addEventListener("DOMContentLoaded", updateDashboardStats);
-
-

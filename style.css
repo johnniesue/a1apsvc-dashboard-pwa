@@ -66,6 +66,8 @@ body {
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     border-left: 4px solid var(--primary-color);
+    position: relative;
+    overflow: hidden;
 }
 
 .dashboard-card:hover {
@@ -153,6 +155,34 @@ body {
     background-color: #545b62;
 }
 
+/* Housecall Pro-style Customers Table */
+.customers-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    margin-bottom: 2rem;
+}
+.customers-table th, .customers-table td {
+    padding: 12px 8px;
+    border-bottom: 1px solid #f0f0f0;
+    text-align: left;
+    font-size: 1rem;
+}
+.customers-table th {
+    background: #f9f9f9;
+    font-weight: 600;
+    color: #444;
+}
+.customers-table tr:hover td {
+    background: #f2f8ff;
+}
+.customers-table th:first-child, .customers-table td:first-child {
+    width: 32px;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .container {
@@ -175,6 +205,10 @@ body {
     
     .dashboard-card {
         padding: 20px;
+    }
+    .customers-table th, .customers-table td {
+        padding: 8px 4px;
+        font-size: 0.95em;
     }
 }
 
@@ -202,11 +236,6 @@ body {
 
 
 /* Enhanced Dashboard Card Styles */
-.dashboard-card {
-    position: relative;
-    overflow: hidden;
-}
-
 .dashboard-card::before {
     content: '';
     position: absolute;
@@ -307,4 +336,3 @@ body {
         margin-top: 20px;
     }
 }
-

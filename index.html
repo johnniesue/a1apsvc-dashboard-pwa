@@ -97,6 +97,58 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 </head>
 <body>
+  <!-- === A-1 Top Toolbar === -->
+<header class="topbar" role="banner">
+  <div class="topbar__inner">
+    <button class="topbar__menu-btn" aria-label="Toggle navigation" aria-controls="topbarNav" aria-expanded="false">
+      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+        <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+      </svg>
+    </button>
+
+    <a class="topbar__brand" href="index.html" aria-label="A-1 APSVC Dashboard">A-1APSvc</a>
+
+    <nav id="topbarNav" class="topbar__nav" role="navigation" aria-label="Primary">
+      <a href="index.html" class="topbar__link" data-path="index.html">Home</a>
+      <a href="index.html#dashboard" class="topbar__link" data-path="index.html#dashboard">Dash</a>
+      <a href="index.html#inbox" class="topbar__link" data-path="index.html#inbox">Inbox</a>
+      <a href="schedule.html" class="topbar__link" data-path="schedule.html">Schedule</a>
+      <a href="index.html#customers" class="topbar__link" data-path="customers">Customers</a>
+      <a href="index.html#money" class="topbar__link" data-path="money">My Money</a>
+      <a href="index.html#payroll" class="topbar__link" data-path="payroll">Payroll</a>
+      <a href="reports.html" class="topbar__link" data-path="reports.html">Reporting</a>
+      <a href="index.html#marketing" class="topbar__link" data-path="marketing">Marketing</a>
+      <a href="index.html#pricebook" class="topbar__link" data-path="pricebook">Price Book</a>
+      <a href="index.html#pipeline" class="topbar__link" data-path="pipeline">Pipeline</a>
+    </nav>
+
+    <form class="topbar__search" role="search">
+      <input class="topbar__search-input" name="q" type="search" placeholder="Search" aria-label="Search" />
+    </form>
+
+    <div class="topbar__actions">
+      <button class="topbar__new" type="button">Create</button>
+      <button class="icon-btn" aria-label="Notifications">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+          <path d="M12 22a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22Zm7-6V11a7 7 0 1 0-14 0v5l-2 2v1h18v-1l-2-2Z" fill="currentColor"/>
+        </svg>
+      </button>
+      <button class="icon-btn" aria-label="Apps">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+          <path d="M3 3h8v8H3V3Zm10 0h8v8h-8V3ZM3 13h8v8H3v-8Zm10 0h8v8h-8v-8Z" fill="currentColor"/>
+        </svg>
+      </button>
+      <a class="icon-btn" href="settings.html" aria-label="Settings">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+          <path d="M19.14 12.94a7.5 7.5 0 0 0 .05-.94 7.5 7.5 0 0 0-.05-.94l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.6-.22l-2.39.96a7.6 7.6 0 0 0-1.63-.94l-.36-2.54A.5.5 0 0 0 12 1h-4a.5.5 0 0 0-.5.42l-.36 2.54c-.58.23-1.12.53-1.63.94l-2.39-.96a.5.5 0 0 0-.6.22L.6 7.98a.5.5 0 0 0 .12.64l2.03 1.58c-.03.31-.05.63-.05.94s.02.63.05.94L.72 13.66a.5.5 0 0 0-.12.64l1.92 3.32a.5.5 0 0 0 .6.22l2.39-.96c.51.41 1.05.71 1.63.94l.36 2.54A.5.5 0 0 0 8 23h4a.5.5 0 0 0 .5-.42l.36-2.54c.58-.23 1.12-.53 1.63-.94l2.39.96a.5.5 0 0 0 .6-.22l1.92-3.32a.5.5 0 0 0-.12-.64l-2.03-1.58ZM10 12a2 2 0 1 1 4 0 2 2 0 0 1-4 0Z" fill="currentColor"/>
+        </svg>
+      </a>
+      <div class="avatar" title="Chris Crabtree">CC</div>
+    </div>
+  </div>
+</header>
+<!-- === /A-1 Top Toolbar === -->
+
   <div class="header">
     <div class="logo-container">
       <div class="logo">
